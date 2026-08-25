@@ -1,13 +1,25 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useReducedMotion, Variants } from 'framer-motion';
 
 /**
  * MakeIT Centralized Motion System
  * Reusable motion tokens & primitives using Framer Motion.
  * Fully supports prefers-reduced-motion.
+ *
+ * HYDRATION SAFETY: All primitives render as static visible content
+ * during SSR and first client render. Animations only activate after
+ * mount via useHasMounted(), preventing style mismatches between
+ * server HTML (no JS) and client hydration.
  */
+
+/** Returns false during SSR and first render, true after mount. */
+function useHasMounted(): boolean {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  return mounted;
+}
 
 export const MOTION_TIMINGS = {
   fast: 0.2,
@@ -17,7 +29,7 @@ export const MOTION_TIMINGS = {
 };
 
 export const MOTION_EASINGS = {
-  easeOut: [0.16, 1, 0.3, 1], // Smooth editorial ease-out
+  easeOut: [0.16, 1, 0.3, 1] as [number, number, number, number], // Smooth editorial ease-out
   spring: { type: 'spring', stiffness: 300, damping: 25 },
 };
 
@@ -41,8 +53,10 @@ export const Reveal: React.FC<RevealProps> = ({
   once = true,
 }) => {
   const shouldReduceMotion = useReducedMotion();
+  const mounted = useHasMounted();
 
-  if (shouldReduceMotion) {
+  // Before mount or when reduced motion is active, render static content
+  if (!mounted || shouldReduceMotion) {
     return <div className={className}>{children}</div>;
   }
 
@@ -65,7 +79,7 @@ export const Reveal: React.FC<RevealProps> = ({
       transition={{
         duration,
         delay,
-        ease: [0.16, 1, 0.3, 1],
+        ease: MOTION_EASINGS.easeOut,
       }}
       className={className}
     >
@@ -86,8 +100,10 @@ export const StaggerContainer: React.FC<StaggerContainerProps> = ({
   className = '',
 }) => {
   const shouldReduceMotion = useReducedMotion();
+  const mounted = useHasMounted();
 
-  if (shouldReduceMotion) {
+  // Before mount or when reduced motion is active, render static content
+  if (!mounted || shouldReduceMotion) {
     return <div className={className}>{children}</div>;
   }
 
@@ -119,8 +135,10 @@ export const StaggerItem: React.FC<{ children: React.ReactNode; className?: stri
   className = '',
 }) => {
   const shouldReduceMotion = useReducedMotion();
+  const mounted = useHasMounted();
 
-  if (shouldReduceMotion) {
+  // Before mount or when reduced motion is active, render static content
+  if (!mounted || shouldReduceMotion) {
     return <div className={className}>{children}</div>;
   }
 
@@ -131,7 +149,7 @@ export const StaggerItem: React.FC<{ children: React.ReactNode; className?: stri
       y: 0,
       transition: {
         duration: MOTION_TIMINGS.standard,
-        ease: [0.16, 1, 0.3, 1],
+        ease: MOTION_EASINGS.easeOut,
       },
     },
   };
@@ -155,6 +173,7 @@ export const ParallaxLayer: React.FC<ParallaxLayerProps> = ({
   className = '',
 }) => {
   const shouldReduceMotion = useReducedMotion();
+  const mounted = useHasMounted();
   const ref = React.useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -163,7 +182,7 @@ export const ParallaxLayer: React.FC<ParallaxLayerProps> = ({
 
   const y = useTransform(scrollYProgress, [0, 1], [0, speed]);
 
-  if (shouldReduceMotion) {
+  if (!mounted || shouldReduceMotion) {
     return <div className={className}>{children}</div>;
   }
 
@@ -188,8 +207,9 @@ export const HoverArrow: React.FC<{ className?: string }> = ({ className = 'w-4 
 
 export const PageTransition: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const shouldReduceMotion = useReducedMotion();
+  const mounted = useHasMounted();
 
-  if (shouldReduceMotion) {
+  if (!mounted || shouldReduceMotion) {
     return <>{children}</>;
   }
 

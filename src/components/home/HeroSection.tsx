@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Search, ArrowRight, CheckCircle2, ArrowDown } from 'lucide-react';
@@ -21,6 +21,11 @@ export const HeroSection: React.FC = () => {
   const [parsedState, setParsedState] = useState<ReturnType<typeof parseRequirementText> | null>(null);
 
   const shouldReduceMotion = useReducedMotion();
+
+  // Hydration safety: defer animation props until after mount
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const animate = mounted && !shouldReduceMotion;
 
   // Scroll parallax logic for right side artwork
   const { scrollY } = useScroll();
@@ -93,13 +98,13 @@ export const HeroSection: React.FC = () => {
           {/* Left Column (7 cols): Editorial Headline & Central Requirement Input */}
           <motion.div 
             className="lg:col-span-7 space-y-9"
-            variants={shouldReduceMotion ? undefined : containerVariants}
-            initial={shouldReduceMotion ? undefined : "hidden"}
-            animate={shouldReduceMotion ? undefined : "visible"}
+            variants={animate ? containerVariants : undefined}
+            initial={animate ? "hidden" : undefined}
+            animate={animate ? "visible" : undefined}
           >
             
             {/* Eyebrow */}
-            <motion.div variants={shouldReduceMotion ? undefined : itemVariants}>
+            <motion.div variants={animate ? itemVariants : undefined}>
               <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FFF0E6] border border-[#FFD8C2] text-[#111111] text-xs font-bold tracking-wide">
                 <span className="w-2 h-2 rounded-full bg-[#F97316]"></span>
                 <span>MAKEIT — EXPERT TECHNOLOGY NETWORK</span>
@@ -107,7 +112,7 @@ export const HeroSection: React.FC = () => {
             </motion.div>
 
             {/* Main Editorial Headline */}
-            <motion.div variants={shouldReduceMotion ? undefined : itemVariants} className="space-y-4">
+            <motion.div variants={animate ? itemVariants : undefined} className="space-y-4">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#111111] tracking-tight leading-[1.08] font-heading">
                 You Have the Idea.<br />
                 <span className="text-[#F97316]">We Have the Expertise</span><br />
@@ -120,7 +125,7 @@ export const HeroSection: React.FC = () => {
             </motion.div>
 
             {/* Hero Requirement Input (Central Product Interaction) */}
-            <motion.div variants={shouldReduceMotion ? undefined : itemVariants} className="space-y-4 pt-1">
+            <motion.div variants={animate ? itemVariants : undefined} className="space-y-4 pt-1">
               <div className="space-y-2">
                 <label className="text-xs font-bold uppercase tracking-wider text-[#111111] block">
                   What are you trying to build?
@@ -196,7 +201,7 @@ export const HeroSection: React.FC = () => {
             </motion.div>
 
             {/* Direct Action Links */}
-            <motion.div variants={shouldReduceMotion ? undefined : itemVariants} className="flex flex-wrap items-center gap-4 pt-2">
+            <motion.div variants={animate ? itemVariants : undefined} className="flex flex-wrap items-center gap-4 pt-2">
               <Link href="/start-project">
                 <Button variant="primary" size="lg" icon={<ArrowRight className="w-4 h-4" />}>
                   START A PROJECT
@@ -214,11 +219,11 @@ export const HeroSection: React.FC = () => {
           {/* Right Column (5 cols): Lightweight Visual representing REQUIREMENT -> CAPABILITIES -> EXPERTISE */}
           <motion.div 
             className="lg:col-span-5 flex justify-center"
-            initial={shouldReduceMotion ? undefined : { opacity: 0, scale: 0.97 }}
-            animate={shouldReduceMotion ? undefined : { opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+            initial={animate ? { opacity: 0, scale: 0.97 } : undefined}
+            animate={animate ? { opacity: 1, scale: 1 } : undefined}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number], delay: 0.2 }}
           >
-            <motion.div style={shouldReduceMotion ? undefined : { y: visualParallaxY }} className="w-full max-w-md relative space-y-4">
+            <motion.div style={animate ? { y: visualParallaxY } : undefined} className="w-full max-w-md relative space-y-4">
               
               <div className="p-6 sm:p-8 bg-white border border-[#E5E0D5] rounded-3xl space-y-6 relative overflow-hidden shadow-xs">
                 <div className="flex items-center justify-between border-b border-[#E5E0D5] pb-4">
@@ -226,7 +231,7 @@ export const HeroSection: React.FC = () => {
                     MakeIT Routing Framework
                   </span>
                   <motion.span 
-                    style={shouldReduceMotion ? undefined : { y: bgBadgeParallaxY }}
+                    style={animate ? { y: bgBadgeParallaxY } : undefined}
                     className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-[#FFF0E6] text-[#F97316]"
                   >
                     PRECISION MATCH
