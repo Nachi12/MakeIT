@@ -1,8 +1,12 @@
 'use client';
 
 import React from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { Reveal, StaggerContainer, StaggerItem } from '../ui/Motion';
 
 export const TechStackSection: React.FC = () => {
+  const shouldReduceMotion = useReducedMotion();
+
   const techCategories = [
     { domain: "FRONTEND", items: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'HTML5/CSS3'] },
     { domain: "BACKEND & APIS", items: ['Node.js', 'Express.js', 'PHP', 'Laravel', 'RESTful APIs'] },
@@ -15,38 +19,46 @@ export const TechStackSection: React.FC = () => {
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
         {/* Section Header */}
-        <div className="space-y-3 text-center max-w-xl mx-auto">
-          <span className="text-xs font-bold uppercase tracking-wider text-[#F97316] block">
-            MODERN TECHNOLOGY STACK
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-black text-[#111111] tracking-tight font-heading">
-            Built With Proven Technologies
-          </h2>
-          <p className="text-sm text-[#4A4A45]">
-            Modern frameworks, languages, databases, and design platforms.
-          </p>
-        </div>
+        <Reveal direction="up" distance={16}>
+          <div className="space-y-3 text-center max-w-xl mx-auto">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#F97316] block">
+              MODERN TECHNOLOGY STACK
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-black text-[#111111] tracking-tight font-heading">
+              Built With Proven Technologies
+            </h2>
+            <p className="text-sm text-[#4A4A45]">
+              Modern frameworks, languages, databases, and design platforms.
+            </p>
+          </div>
+        </Reveal>
 
         {/* Organized Editorial Tech Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+        <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
           {techCategories.map((cat) => (
-            <div key={cat.domain} className="p-6 rounded-3xl bg-white border border-[#E5E0D5] space-y-3">
-              <span className="text-[10px] font-black uppercase tracking-wider text-[#787870] block">
-                {cat.domain}
-              </span>
-              <div className="flex flex-wrap gap-2">
-                {cat.items.map((tech) => (
-                  <span 
-                    key={tech}
-                    className="px-3 py-1 rounded-full bg-[#F7F3E8] border border-[#E5E0D5] text-xs font-bold text-[#111111]"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
+            <StaggerItem key={cat.domain}>
+              <motion.div 
+                whileHover={shouldReduceMotion ? undefined : { y: -2, borderColor: '#F97316' }}
+                transition={{ duration: 0.18, ease: 'easeOut' }}
+                className="p-6 rounded-3xl bg-white border border-[#E5E0D5] space-y-3 transition-colors h-full"
+              >
+                <span className="text-[10px] font-black uppercase tracking-wider text-[#787870] block">
+                  {cat.domain}
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  {cat.items.map((tech) => (
+                    <span 
+                      key={tech}
+                      className="px-3 py-1 rounded-full bg-[#F7F3E8] border border-[#E5E0D5] text-xs font-bold text-[#111111]"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
 
       </div>
     </section>

@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Search, ArrowRight, CheckCircle2, ArrowDown } from 'lucide-react';
+import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import { parseRequirementText, rankExpertsForRequirement } from '@/lib/services/matchingEngine';
 import { useAppState } from '@/lib/services/store';
 import { Button } from '../ui/Button';
@@ -18,6 +19,13 @@ export const HeroSection: React.FC = () => {
   const [matchResultModalOpen, setMatchResultModalOpen] = useState(false);
   const [activeResult, setActiveResult] = useState<ReturnType<typeof rankExpertsForRequirement> | null>(null);
   const [parsedState, setParsedState] = useState<ReturnType<typeof parseRequirementText> | null>(null);
+
+  const shouldReduceMotion = useReducedMotion();
+
+  // Scroll parallax logic for right side artwork
+  const { scrollY } = useScroll();
+  const visualParallaxY = useTransform(scrollY, [0, 400], [0, -18]);
+  const bgBadgeParallaxY = useTransform(scrollY, [0, 400], [0, -32]);
 
   // Strictly 4 clean example requirements as specified
   const exampleRequirements = [
@@ -51,24 +59,55 @@ export const HeroSection: React.FC = () => {
 
   const liveParsed = query.trim() ? parseRequirementText(query) : null;
 
+  // Staggered entry animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.05,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 16 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.45,
+        ease: [0.16, 1, 0.3, 1],
+      },
+    },
+  };
+
   return (
-    <section className="bg-[#F7F3E8] border-b border-[#E5E0D5] pt-12 pb-20 lg:pt-20 lg:pb-28 font-sans">
+    <section className="bg-[#F7F3E8] border-b border-[#E5E0D5] pt-12 pb-20 lg:pt-20 lg:pb-28 font-sans overflow-hidden">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Asymmetric 12-Column Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
           
           {/* Left Column (7 cols): Editorial Headline & Central Requirement Input */}
-          <div className="lg:col-span-7 space-y-9">
+          <motion.div 
+            className="lg:col-span-7 space-y-9"
+            variants={shouldReduceMotion ? undefined : containerVariants}
+            initial={shouldReduceMotion ? undefined : "hidden"}
+            animate={shouldReduceMotion ? undefined : "visible"}
+          >
             
             {/* Eyebrow */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FFF0E6] border border-[#FFD8C2] text-[#111111] text-xs font-bold tracking-wide">
-              <span className="w-2 h-2 rounded-full bg-[#F97316]"></span>
-              <span>MAKEIT — EXPERT TECHNOLOGY NETWORK</span>
-            </div>
+            <motion.div variants={shouldReduceMotion ? undefined : itemVariants}>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FFF0E6] border border-[#FFD8C2] text-[#111111] text-xs font-bold tracking-wide">
+                <span className="w-2 h-2 rounded-full bg-[#F97316]"></span>
+                <span>MAKEIT — EXPERT TECHNOLOGY NETWORK</span>
+              </div>
+            </motion.div>
 
             {/* Main Editorial Headline */}
-            <div className="space-y-4">
+            <motion.div variants={shouldReduceMotion ? undefined : itemVariants} className="space-y-4">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#111111] tracking-tight leading-[1.08] font-heading">
                 You Have the Idea.<br />
                 <span className="text-[#F97316]">We Have the Expertise</span><br />
@@ -78,10 +117,10 @@ export const HeroSection: React.FC = () => {
               <p className="text-base sm:text-lg text-[#4A4A45] leading-relaxed max-w-2xl font-normal">
                 MakeIT helps you define your business requirements, maps the technical capabilities needed, and connects you directly with the right senior software specialists to deliver your project.
               </p>
-            </div>
+            </motion.div>
 
             {/* Hero Requirement Input (Central Product Interaction) */}
-            <div className="space-y-4 pt-1">
+            <motion.div variants={shouldReduceMotion ? undefined : itemVariants} className="space-y-4 pt-1">
               <div className="space-y-2">
                 <label className="text-xs font-bold uppercase tracking-wider text-[#111111] block">
                   What are you trying to build?
@@ -116,7 +155,12 @@ export const HeroSection: React.FC = () => {
 
                   {/* Instant Requirement Preview */}
                   {liveParsed && (
-                    <div className="mt-3 pt-3 border-t border-[#E5E0D5] px-3 space-y-2 text-xs">
+                    <motion.div 
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      transition={{ duration: 0.2 }}
+                      className="mt-3 pt-3 border-t border-[#E5E0D5] px-3 space-y-2 text-xs overflow-hidden"
+                    >
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="text-[#111111] font-bold">Mapped Scope:</span>
                         <span className="px-2.5 py-0.5 rounded-full bg-[#FFF0E6] text-[#F97316] font-bold border border-[#FFD8C2]">
@@ -128,7 +172,7 @@ export const HeroSection: React.FC = () => {
                           </span>
                         ))}
                       </div>
-                    </div>
+                    </motion.div>
                   )}
                 </form>
               </div>
@@ -149,10 +193,10 @@ export const HeroSection: React.FC = () => {
                   ))}
                 </div>
               </div>
-            </div>
+            </motion.div>
 
             {/* Direct Action Links */}
-            <div className="flex flex-wrap items-center gap-4 pt-2">
+            <motion.div variants={shouldReduceMotion ? undefined : itemVariants} className="flex flex-wrap items-center gap-4 pt-2">
               <Link href="/start-project">
                 <Button variant="primary" size="lg" icon={<ArrowRight className="w-4 h-4" />}>
                   START A PROJECT
@@ -163,22 +207,30 @@ export const HeroSection: React.FC = () => {
                   EXPLORE SERVICES
                 </Button>
               </Link>
-            </div>
+            </motion.div>
 
-          </div>
+          </motion.div>
 
           {/* Right Column (5 cols): Lightweight Visual representing REQUIREMENT -> CAPABILITIES -> EXPERTISE */}
-          <div className="lg:col-span-5 flex justify-center">
-            <div className="w-full max-w-md relative space-y-4">
+          <motion.div 
+            className="lg:col-span-5 flex justify-center"
+            initial={shouldReduceMotion ? undefined : { opacity: 0, scale: 0.97 }}
+            animate={shouldReduceMotion ? undefined : { opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+          >
+            <motion.div style={shouldReduceMotion ? undefined : { y: visualParallaxY }} className="w-full max-w-md relative space-y-4">
               
-              <div className="p-6 sm:p-8 bg-white border border-[#E5E0D5] rounded-3xl space-y-6 relative overflow-hidden">
+              <div className="p-6 sm:p-8 bg-white border border-[#E5E0D5] rounded-3xl space-y-6 relative overflow-hidden shadow-xs">
                 <div className="flex items-center justify-between border-b border-[#E5E0D5] pb-4">
                   <span className="text-xs font-bold uppercase tracking-wider text-[#111111]">
                     MakeIT Routing Framework
                   </span>
-                  <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-[#FFF0E6] text-[#F97316]">
+                  <motion.span 
+                    style={shouldReduceMotion ? undefined : { y: bgBadgeParallaxY }}
+                    className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-[#FFF0E6] text-[#F97316]"
+                  >
                     PRECISION MATCH
-                  </span>
+                  </motion.span>
                 </div>
 
                 {/* Flow Step 1: REQUIREMENT */}
@@ -234,8 +286,8 @@ export const HeroSection: React.FC = () => {
 
               </div>
 
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
         </div>
 

@@ -2,8 +2,12 @@
 
 import React from 'react';
 import { ArrowRight, CheckCircle2, MessageSquare, Compass, Cpu, Users, Rocket } from 'lucide-react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { Reveal, StaggerContainer, StaggerItem } from '../ui/Motion';
 
 export const RequirementToExpertiseSection: React.FC = () => {
+  const shouldReduceMotion = useReducedMotion();
+
   const steps = [
     {
       num: "01",
@@ -42,69 +46,76 @@ export const RequirementToExpertiseSection: React.FC = () => {
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         
         {/* Section Header */}
-        <div className="max-w-3xl space-y-4">
-          <span className="text-xs font-bold uppercase tracking-wider text-[#F97316] block">
-            THE MAKEIT DIFFERENTIATOR
-          </span>
-          <h2 className="text-4xl sm:text-5xl font-black text-[#111111] tracking-tight font-heading leading-tight">
-            From Requirement to the <span className="text-[#F97316]">Right Expertise.</span>
-          </h2>
-          <p className="text-[#4A4A45] text-base sm:text-lg font-normal leading-relaxed">
-            MakeIT is not a generic developer marketplace. We act as your engineering filter, ensuring your requirement is translated into the exact technical capabilities and senior practitioners needed.
-          </p>
-        </div>
-
-        {/* 5-Step Editorial Process Timeline */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
-          {steps.map((step, idx) => (
-            <div 
-              key={step.num}
-              className="bg-white border border-[#E5E0D5] rounded-3xl p-6 space-y-5 hover:border-[#F97316] transition-all flex flex-col justify-between"
-            >
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-3xl font-black text-[#F97316] font-heading">{step.num}</span>
-                  <div className="w-9 h-9 rounded-xl bg-[#FFF0E6] flex items-center justify-center">
-                    {step.icon}
-                  </div>
-                </div>
-
-                <h3 className="text-base font-black text-[#111111] font-heading leading-snug">
-                  {step.title}
-                </h3>
-                
-                <p className="text-xs text-[#4A4A45] leading-relaxed">
-                  {step.desc}
-                </p>
-              </div>
-
-              {idx < steps.length - 1 && (
-                <div className="hidden md:block text-[#E5E0D5] pt-2">
-                  <ArrowRight className="w-4 h-4 text-[#787870]" />
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Signature Quality Assurance Callout */}
-        <div className="p-6 sm:p-8 rounded-3xl bg-white border border-[#E5E0D5] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-          <div className="space-y-1">
-            <div className="text-base font-black text-[#111111] font-heading flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-[#F97316]" />
-              Structured Milestone Execution & Warranty
-            </div>
-            <p className="text-xs text-[#4A4A45]">
-              Every engagement follows structured sprint milestones with source code handoff and post-launch technical warranty.
+        <Reveal direction="up" distance={20}>
+          <div className="max-w-3xl space-y-4">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#F97316] block">
+              THE MAKEIT DIFFERENTIATOR
+            </span>
+            <h2 className="text-4xl sm:text-5xl font-black text-[#111111] tracking-tight font-heading leading-tight">
+              From Requirement to the <span className="text-[#F97316]">Right Expertise.</span>
+            </h2>
+            <p className="text-[#4A4A45] text-base sm:text-lg font-normal leading-relaxed">
+              MakeIT is not a generic developer marketplace. We act as your engineering filter, ensuring your requirement is translated into the exact technical capabilities and senior practitioners needed.
             </p>
           </div>
-          
-          <div className="shrink-0">
-            <span className="px-4 py-2 rounded-full bg-[#FFF0E6] text-[#F97316] text-xs font-bold border border-[#FFD8C2]">
-              100% TRANSPARENT SCOPE
-            </span>
+        </Reveal>
+
+        {/* 5-Step Editorial Process Timeline */}
+        <StaggerContainer className="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
+          {steps.map((step, idx) => (
+            <StaggerItem key={step.num}>
+              <motion.div 
+                whileHover={shouldReduceMotion ? undefined : { y: -4, borderColor: '#F97316' }}
+                transition={{ duration: 0.2, ease: 'easeOut' }}
+                className="bg-white border border-[#E5E0D5] rounded-3xl p-6 space-y-5 transition-all flex flex-col justify-between h-full"
+              >
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-3xl font-black text-[#F97316] font-heading">{step.num}</span>
+                    <div className="w-9 h-9 rounded-xl bg-[#FFF0E6] flex items-center justify-center">
+                      {step.icon}
+                    </div>
+                  </div>
+
+                  <h3 className="text-base font-black text-[#111111] font-heading leading-snug">
+                    {step.title}
+                  </h3>
+                  
+                  <p className="text-xs text-[#4A4A45] leading-relaxed">
+                    {step.desc}
+                  </p>
+                </div>
+
+                {idx < steps.length - 1 && (
+                  <div className="hidden md:block text-[#E5E0D5] pt-2">
+                    <ArrowRight className="w-4 h-4 text-[#787870]" />
+                  </div>
+                )}
+              </motion.div>
+            </StaggerItem>
+          ))}
+        </StaggerContainer>
+
+        {/* Signature Quality Assurance Callout */}
+        <Reveal direction="up" distance={16}>
+          <div className="p-6 sm:p-8 rounded-3xl bg-white border border-[#E5E0D5] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+            <div className="space-y-1">
+              <div className="text-base font-black text-[#111111] font-heading flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-[#F97316]" />
+                Structured Milestone Execution & Warranty
+              </div>
+              <p className="text-xs text-[#4A4A45]">
+                Every engagement follows structured sprint milestones with source code handoff and post-launch technical warranty.
+              </p>
+            </div>
+            
+            <div className="shrink-0">
+              <span className="px-4 py-2 rounded-full bg-[#FFF0E6] text-[#F97316] text-xs font-bold border border-[#FFD8C2]">
+                100% TRANSPARENT SCOPE
+              </span>
+            </div>
           </div>
-        </div>
+        </Reveal>
 
       </div>
     </section>

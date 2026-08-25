@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X, ChevronDown, ArrowRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '../ui/Button';
 import { MegaMenu } from './MegaMenu';
 
@@ -11,6 +12,15 @@ export const Navbar: React.FC = () => {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesMenuOpen, setServicesMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navLinks = [
     { name: 'Services', href: '/services', isMega: true },
@@ -24,7 +34,11 @@ export const Navbar: React.FC = () => {
 
   return (
     <header 
-      className="sticky top-0 z-50 w-full bg-[#F7F3E8] border-b border-[#E5E0D5] font-sans relative"
+      className={`sticky top-0 z-50 w-full transition-all duration-300 font-sans relative ${
+        scrolled 
+          ? 'bg-[#F7F3E8]/95 backdrop-blur-md border-b border-[#E5E0D5] shadow-xs' 
+          : 'bg-[#F7F3E8] border-b border-[#E5E0D5]'
+      }`}
       onMouseLeave={() => setServicesMenuOpen(false)}
     >
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 h-[72px] sm:h-[76px] flex items-center justify-between relative">
@@ -56,7 +70,7 @@ export const Navbar: React.FC = () => {
               return (
                 <div 
                   key={link.name} 
-                  className="flex items-center h-full"
+                  className="flex items-center h-full relative"
                   onMouseEnter={() => setServicesMenuOpen(true)}
                 >
                   <button
@@ -66,22 +80,39 @@ export const Navbar: React.FC = () => {
                     }`}
                   >
                     <span>{link.name}</span>
-                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-150 ${servicesMenuOpen ? 'rotate-180 text-[#F97316]' : ''}`} />
+                    <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${servicesMenuOpen ? 'rotate-180 text-[#F97316]' : ''}`} />
                   </button>
+
+                  {/* Active Indicator Underline */}
+                  {isActive && (
+                    <motion.div 
+                      layoutId="activeNavIndicator"
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#F97316]"
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                    />
+                  )}
                 </div>
               );
             }
 
             return (
-              <Link
-                key={link.name}
-                href={link.href}
-                className={`text-sm font-bold transition-colors ${
-                  isActive ? 'text-[#F97316]' : 'text-[#4A4A45] hover:text-[#111111]'
-                }`}
-              >
-                {link.name}
-              </Link>
+              <div key={link.name} className="flex items-center h-full relative">
+                <Link
+                  href={link.href}
+                  className={`text-sm font-bold transition-colors ${
+                    isActive ? 'text-[#F97316]' : 'text-[#4A4A45] hover:text-[#111111]'
+                  }`}
+                >
+                  {link.name}
+                </Link>
+                {isActive && (
+                  <motion.div 
+                    layoutId="activeNavIndicator"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#F97316]"
+                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                  />
+                )}
+              </div>
             );
           })}
         </nav>
@@ -118,34 +149,51 @@ export const Navbar: React.FC = () => {
       </div>
 
       {/* MegaMenu Dropdown */}
-      {servicesMenuOpen && (
-        <MegaMenu onClose={() => setServicesMenuOpen(false)} />
-      )}
+      <AnimatePresence>
+        {servicesMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.18, ease: 'easeOut' }}
+          >
+            <MegaMenu onClose={() => setServicesMenuOpen(false)} />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Mobile Drawer Navigation */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden border-t border-[#E5E0D5] bg-[#F7F3E8] p-6 space-y-3">
-          <div className="grid gap-1">
-            {navLinks.map((link) => (
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div 
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="lg:hidden border-t border-[#E5E0D5] bg-[#F7F3E8] p-6 space-y-3 overflow-hidden"
+          >
+            <div className="grid gap-1">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-4 py-2.5 rounded-xl text-sm font-bold text-[#111111] hover:bg-white hover:text-[#F97316]"
+                >
+                  {link.name}
+                </Link>
+              ))}
               <Link
-                key={link.name}
-                href={link.href}
+                href="/contact"
                 onClick={() => setMobileMenuOpen(false)}
                 className="px-4 py-2.5 rounded-xl text-sm font-bold text-[#111111] hover:bg-white hover:text-[#F97316]"
               >
-                {link.name}
+                Contact
               </Link>
-            ))}
-            <Link
-              href="/contact"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-4 py-2.5 rounded-xl text-sm font-bold text-[#111111] hover:bg-white hover:text-[#F97316]"
-            >
-              Contact
-            </Link>
-          </div>
-        </div>
-      )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 };

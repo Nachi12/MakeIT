@@ -3,9 +3,13 @@
 import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, Layout, Code2, Compass } from 'lucide-react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Button } from '../ui/Button';
+import { Reveal, StaggerContainer, StaggerItem } from '../ui/Motion';
 
 export const WhatWeBuildSection: React.FC = () => {
+  const shouldReduceMotion = useReducedMotion();
+
   const servicePillars = [
     {
       number: '01',
@@ -38,76 +42,87 @@ export const WhatWeBuildSection: React.FC = () => {
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div className="space-y-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#F97316] block">
-              CORE CAPABILITIES
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#111111] tracking-tight font-heading">
-              What We Build
-            </h2>
-            <p className="text-[#4A4A45] text-base sm:text-lg max-w-xl font-normal leading-relaxed">
-              Structured engineering and design capabilities delivered by senior practitioners.
-            </p>
-          </div>
-
-          <Link href="/services">
-            <Button variant="outline" size="md" icon={<ArrowRight className="w-4 h-4" />}>
-              EXPLORE ALL SERVICES
-            </Button>
-          </Link>
-        </div>
-
-        {/* Editorial Service Rows (No Giant Cards!) */}
-        <div className="divide-y divide-[#E5E0D5] border-t border-b border-[#E5E0D5]">
-          {servicePillars.map((pillar) => (
-            <div 
-              key={pillar.number} 
-              className="py-10 px-2 sm:px-4 flex flex-col lg:flex-row lg:items-center justify-between gap-8 hover:bg-[#FCFAF4] transition-all group rounded-2xl"
-            >
-              {/* Left Number & Title */}
-              <div className="flex items-start gap-6 lg:w-5/12">
-                <span className="text-4xl sm:text-5xl font-black text-[#F97316] font-heading shrink-0">
-                  {pillar.number}
-                </span>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-3">
-                    <h3 className="text-2xl sm:text-3xl font-black text-[#111111] font-heading group-hover:text-[#F97316] transition-colors">
-                      {pillar.title}
-                    </h3>
-                  </div>
-                  <p className="text-sm text-[#4A4A45] leading-relaxed">
-                    {pillar.subtitle}
-                  </p>
-                </div>
-              </div>
-
-              {/* Middle Capabilities List */}
-              <div className="lg:w-5/12 flex flex-wrap gap-2">
-                {pillar.skills.map((skill) => (
-                  <span 
-                    key={skill}
-                    className="px-3 py-1.5 rounded-full bg-white border border-[#E5E0D5] text-xs font-semibold text-[#111111]"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-
-              {/* Right Action */}
-              <div className="lg:w-2/12 flex justify-end">
-                <Link 
-                  href={pillar.href} 
-                  className="inline-flex items-center gap-2 text-xs font-bold text-[#111111] group-hover:text-[#F97316] transition-colors"
-                >
-                  <span>EXPLORE</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </div>
-
+        <Reveal direction="up" distance={20}>
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div className="space-y-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#F97316] block">
+                CORE CAPABILITIES
+              </span>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#111111] tracking-tight font-heading">
+                What We Build
+              </h2>
+              <p className="text-[#4A4A45] text-base sm:text-lg max-w-xl font-normal leading-relaxed">
+                Structured engineering and design capabilities delivered by senior practitioners.
+              </p>
             </div>
+
+            <Link href="/services">
+              <Button variant="outline" size="md" icon={<ArrowRight className="w-4 h-4" />}>
+                EXPLORE ALL SERVICES
+              </Button>
+            </Link>
+          </div>
+        </Reveal>
+
+        {/* Editorial Service Rows */}
+        <StaggerContainer className="divide-y divide-[#E5E0D5] border-t border-b border-[#E5E0D5]">
+          {servicePillars.map((pillar) => (
+            <StaggerItem key={pillar.number}>
+              <motion.div 
+                whileHover={shouldReduceMotion ? undefined : { backgroundColor: '#FCFAF4' }}
+                transition={{ duration: 0.18, ease: 'easeOut' }}
+                className="py-10 px-2 sm:px-4 flex flex-col lg:flex-row lg:items-center justify-between gap-8 group rounded-2xl cursor-pointer"
+              >
+                {/* Left Number & Title */}
+                <div className="flex items-start gap-6 lg:w-5/12">
+                  <span className="text-4xl sm:text-5xl font-black text-[#F97316] font-heading shrink-0">
+                    {pillar.number}
+                  </span>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-3">
+                      <h3 className="text-2xl sm:text-3xl font-black text-[#111111] font-heading group-hover:text-[#F97316] transition-colors">
+                        {pillar.title}
+                      </h3>
+                    </div>
+                    <p className="text-sm text-[#4A4A45] leading-relaxed">
+                      {pillar.subtitle}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Middle Capabilities List */}
+                <div className="lg:w-5/12 flex flex-wrap gap-2">
+                  {pillar.skills.map((skill) => (
+                    <span 
+                      key={skill}
+                      className="px-3 py-1.5 rounded-full bg-white border border-[#E5E0D5] text-xs font-semibold text-[#111111]"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Right Action */}
+                <div className="lg:w-2/12 flex justify-end">
+                  <Link 
+                    href={pillar.href} 
+                    className="inline-flex items-center gap-2 text-xs font-bold text-[#111111] group-hover:text-[#F97316] transition-colors"
+                  >
+                    <span>EXPLORE</span>
+                    <motion.span
+                      className="inline-block"
+                      whileHover={shouldReduceMotion ? undefined : { x: 4 }}
+                      transition={{ duration: 0.15 }}
+                    >
+                      <ArrowRight className="w-4 h-4" />
+                    </motion.span>
+                  </Link>
+                </div>
+
+              </motion.div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
 
       </div>
     </section>
