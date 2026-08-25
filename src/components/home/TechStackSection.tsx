@@ -1,11 +1,9 @@
 'use client';
 
 import React from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
 import { Reveal, StaggerContainer, StaggerItem } from '../ui/Motion';
 
 export const TechStackSection: React.FC = () => {
-  const shouldReduceMotion = useReducedMotion();
 
   const techCategories = [
     { domain: "FRONTEND", items: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'HTML5/CSS3'] },
@@ -37,10 +35,8 @@ export const TechStackSection: React.FC = () => {
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
           {techCategories.map((cat) => (
             <StaggerItem key={cat.domain}>
-              <motion.div 
-                whileHover={shouldReduceMotion ? undefined : { y: -2, borderColor: '#F97316' }}
-                transition={{ duration: 0.18, ease: 'easeOut' }}
-                className="p-6 rounded-3xl bg-white border border-[#E5E0D5] space-y-3 transition-colors h-full"
+              <div 
+                className="p-6 rounded-3xl bg-white border border-[#E5E0D5] space-y-3 hover:border-[#F97316] hover:-translate-y-1 transition-all duration-200 h-full"
               >
                 <span className="text-[10px] font-black uppercase tracking-wider text-[#787870] block">
                   {cat.domain}
@@ -49,13 +45,13 @@ export const TechStackSection: React.FC = () => {
                   {cat.items.map((tech) => (
                     <span 
                       key={tech}
-                      className="px-3 py-1 rounded-full bg-[#F7F3E8] border border-[#E5E0D5] text-xs font-bold text-[#111111]"
+                      className="px-3 py-1 rounded-full bg-[#F7F3E8] border border-[#E5E0D5] text-xs font-bold text-[#111111] hover:border-[#CBD5E1] transition-colors"
                     >
                       {tech}
                     </span>
                   ))}
                 </div>
-              </motion.div>
+              </div>
             </StaggerItem>
           ))}
         </StaggerContainer>

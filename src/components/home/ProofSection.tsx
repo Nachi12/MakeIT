@@ -47,7 +47,7 @@ export const ProofSection: React.FC = () => {
             <StaggerContainer className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {expertiseAreas.map((item) => (
                 <StaggerItem key={item.category}>
-                  <div className="p-3.5 rounded-2xl bg-white border border-[#E5E0D5] space-y-1 hover:border-[#F97316] transition-colors">
+                  <div className="p-3.5 rounded-2xl bg-white border border-[#E5E0D5] space-y-1 hover:border-[#F97316] hover:-translate-y-1 transition-all duration-200 cursor-pointer">
                     <div className="flex items-center gap-2">
                       {item.icon}
                       <span className="text-xs font-bold text-[#111111] font-heading">{item.category}</span>
@@ -71,7 +71,7 @@ export const ProofSection: React.FC = () => {
             <StaggerContainer className="grid grid-cols-3 gap-2">
               {engagementModels.map((eng) => (
                 <StaggerItem key={eng.label}>
-                  <div className="p-3 rounded-2xl bg-white border border-[#E5E0D5] text-center">
+                  <div className="p-3 rounded-2xl bg-white border border-[#E5E0D5] text-center hover:border-[#F97316] hover:-translate-y-1 transition-all duration-200 cursor-pointer">
                     <div className="text-xs font-extrabold text-[#111111]">{eng.label}</div>
                     <div className="text-[10px] text-[#787870] font-medium mt-0.5">{eng.detail}</div>
                   </div>

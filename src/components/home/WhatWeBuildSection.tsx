@@ -3,12 +3,10 @@
 import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, Layout, Code2, Compass } from 'lucide-react';
-import { motion, useReducedMotion } from 'framer-motion';
 import { Button } from '../ui/Button';
 import { Reveal, StaggerContainer, StaggerItem } from '../ui/Motion';
 
 export const WhatWeBuildSection: React.FC = () => {
-  const shouldReduceMotion = useReducedMotion();
 
   const servicePillars = [
     {
@@ -68,19 +66,17 @@ export const WhatWeBuildSection: React.FC = () => {
         <StaggerContainer className="divide-y divide-[#E5E0D5] border-t border-b border-[#E5E0D5]">
           {servicePillars.map((pillar) => (
             <StaggerItem key={pillar.number}>
-              <motion.div 
-                whileHover={shouldReduceMotion ? undefined : { backgroundColor: '#FCFAF4' }}
-                transition={{ duration: 0.18, ease: 'easeOut' }}
-                className="py-10 px-2 sm:px-4 flex flex-col lg:flex-row lg:items-center justify-between gap-8 group rounded-2xl cursor-pointer"
+              <div 
+                className="py-10 px-2 sm:px-4 flex flex-col lg:flex-row lg:items-center justify-between gap-8 group rounded-2xl cursor-pointer hover:bg-[#FCFAF4] transition-all duration-200"
               >
                 {/* Left Number & Title */}
                 <div className="flex items-start gap-6 lg:w-5/12">
-                  <span className="text-4xl sm:text-5xl font-black text-[#F97316] font-heading shrink-0">
+                  <span className="text-4xl sm:text-5xl font-black text-[#F97316] font-heading shrink-0 group-hover:scale-105 transition-transform duration-200">
                     {pillar.number}
                   </span>
                   <div className="space-y-2">
                     <div className="flex items-center gap-3">
-                      <h3 className="text-2xl sm:text-3xl font-black text-[#111111] font-heading group-hover:text-[#F97316] transition-colors">
+                      <h3 className="text-2xl sm:text-3xl font-black text-[#111111] font-heading group-hover:text-[#F97316] group-hover:translate-x-1 transition-all duration-200">
                         {pillar.title}
                       </h3>
                     </div>
@@ -95,7 +91,7 @@ export const WhatWeBuildSection: React.FC = () => {
                   {pillar.skills.map((skill) => (
                     <span 
                       key={skill}
-                      className="px-3 py-1.5 rounded-full bg-white border border-[#E5E0D5] text-xs font-semibold text-[#111111]"
+                      className="px-3 py-1.5 rounded-full bg-white border border-[#E5E0D5] text-xs font-semibold text-[#111111] group-hover:border-[#CBD5E1] transition-colors"
                     >
                       {skill}
                     </span>
@@ -109,17 +105,13 @@ export const WhatWeBuildSection: React.FC = () => {
                     className="inline-flex items-center gap-2 text-xs font-bold text-[#111111] group-hover:text-[#F97316] transition-colors"
                   >
                     <span>EXPLORE</span>
-                    <motion.span
-                      className="inline-block"
-                      whileHover={shouldReduceMotion ? undefined : { x: 4 }}
-                      transition={{ duration: 0.15 }}
-                    >
+                    <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1.5">
                       <ArrowRight className="w-4 h-4" />
-                    </motion.span>
+                    </span>
                   </Link>
                 </div>
 
-              </motion.div>
+              </div>
             </StaggerItem>
           ))}
         </StaggerContainer>

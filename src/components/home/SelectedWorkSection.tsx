@@ -152,7 +152,7 @@ export const SelectedWorkSection: React.FC = () => {
           {secondaryProjects.map((project) => (
             <StaggerItem key={project.id}>
               <div 
-                className="bg-white border border-[#E5E0D5] rounded-3xl p-8 space-y-6 hover:border-[#F97316] transition-colors flex flex-col justify-between group h-full"
+                className="bg-white border border-[#E5E0D5] rounded-3xl p-8 space-y-6 hover:border-[#F97316] hover:-translate-y-1.5 transition-all duration-200 flex flex-col justify-between group h-full cursor-pointer"
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between text-xs font-bold text-[#787870]">
@@ -162,7 +162,7 @@ export const SelectedWorkSection: React.FC = () => {
                     <span>Lead: {project.expertName}</span>
                   </div>
 
-                  <h4 className="text-xl font-black text-[#111111] font-heading leading-snug">
+                  <h4 className="text-xl font-black text-[#111111] font-heading leading-snug group-hover:text-[#F97316] transition-colors">
                     {project.title}
                   </h4>
 
@@ -191,9 +191,11 @@ export const SelectedWorkSection: React.FC = () => {
                 </div>
 
                 <div className="pt-4 border-t border-[#E5E0D5]">
-                  <Link href="/case-studies" className="inline-flex items-center gap-2 text-xs font-bold text-[#111111] hover:text-[#F97316] transition-colors">
+                  <Link href="/case-studies" className="inline-flex items-center gap-2 text-xs font-bold text-[#111111] group-hover:text-[#F97316] transition-colors">
                     <span>Explore Outcome & Tech Stack</span>
-                    <ArrowRight className="w-4 h-4" />
+                    <span className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1.5">
+                      <ArrowRight className="w-4 h-4" />
+                    </span>
                   </Link>
                 </div>
 

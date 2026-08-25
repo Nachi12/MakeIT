@@ -96,42 +96,37 @@ export const HeroSection: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
           
           {/* Left Column (7 cols): Editorial Headline & Central Requirement Input */}
-          <motion.div 
-            className="lg:col-span-7 space-y-9"
-            variants={animate ? containerVariants : undefined}
-            initial={animate ? "hidden" : undefined}
-            animate={animate ? "visible" : undefined}
-          >
+          <div className="lg:col-span-7 space-y-9">
             
             {/* Eyebrow */}
-            <motion.div variants={animate ? itemVariants : undefined}>
+            <div className="animate-hero-eyebrow">
               <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#FFF0E6] border border-[#FFD8C2] text-[#111111] text-xs font-bold tracking-wide">
                 <span className="w-2 h-2 rounded-full bg-[#F97316]"></span>
                 <span>MAKEIT — EXPERT TECHNOLOGY NETWORK</span>
               </div>
-            </motion.div>
+            </div>
 
             {/* Main Editorial Headline — Line-by-line reveal */}
-            <motion.div variants={animate ? itemVariants : undefined} className="space-y-4">
+            <div className="space-y-4">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#111111] tracking-tight leading-[1.08] font-heading">
-                <motion.span className="block" variants={animate ? itemVariants : undefined}>
+                <span className="block animate-hero-h1-1">
                   You Have the Idea.
-                </motion.span>
-                <motion.span className="block text-[#F97316]" variants={animate ? itemVariants : undefined}>
+                </span>
+                <span className="block text-[#F97316] animate-hero-h1-2">
                   We Have the Expertise
-                </motion.span>
-                <motion.span className="block font-serif-editorial font-normal" variants={animate ? itemVariants : undefined}>
+                </span>
+                <span className="block font-serif-editorial font-normal animate-hero-h1-3">
                   to Build It.
-                </motion.span>
+                </span>
               </h1>
 
-              <motion.p variants={animate ? itemVariants : undefined} className="text-base sm:text-lg text-[#4A4A45] leading-relaxed max-w-2xl font-normal">
+              <p className="animate-hero-body text-base sm:text-lg text-[#4A4A45] leading-relaxed max-w-2xl font-normal">
                 MakeIT helps you define your business requirements, maps the technical capabilities needed, and connects you directly with the right senior software specialists to deliver your project.
-              </motion.p>
-            </motion.div>
+              </p>
+            </div>
 
             {/* Hero Requirement Input (Central Product Interaction) */}
-            <motion.div variants={animate ? itemVariants : undefined} className="space-y-4 pt-1">
+            <div className="animate-hero-input space-y-4 pt-1">
               <div className="space-y-2">
                 <label className="text-xs font-bold uppercase tracking-wider text-[#111111] block">
                   What are you trying to build?
@@ -166,12 +161,7 @@ export const HeroSection: React.FC = () => {
 
                   {/* Instant Requirement Preview */}
                   {liveParsed && (
-                    <motion.div 
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      transition={{ duration: 0.2 }}
-                      className="mt-3 pt-3 border-t border-[#E5E0D5] px-3 space-y-2 text-xs overflow-hidden"
-                    >
+                    <div className="mt-3 pt-3 border-t border-[#E5E0D5] px-3 space-y-2 text-xs overflow-hidden animate-[fadeInSmooth_0.2s_ease-out]">
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="text-[#111111] font-bold">Mapped Scope:</span>
                         <span className="px-2.5 py-0.5 rounded-full bg-[#FFF0E6] text-[#F97316] font-bold border border-[#FFD8C2]">
@@ -183,7 +173,7 @@ export const HeroSection: React.FC = () => {
                           </span>
                         ))}
                       </div>
-                    </motion.div>
+                    </div>
                   )}
                 </form>
               </div>
@@ -204,10 +194,10 @@ export const HeroSection: React.FC = () => {
                   ))}
                 </div>
               </div>
-            </motion.div>
+            </div>
 
             {/* Direct Action Links */}
-            <motion.div variants={animate ? itemVariants : undefined} className="flex flex-wrap items-center gap-4 pt-2">
+            <div className="animate-hero-cta flex flex-wrap items-center gap-4 pt-2">
               <Link href="/start-project">
                 <Button variant="primary" size="lg" icon={<ArrowRight className="w-4 h-4" />}>
                   START A PROJECT
@@ -218,20 +208,15 @@ export const HeroSection: React.FC = () => {
                   EXPLORE SERVICES
                 </Button>
               </Link>
-            </motion.div>
+            </div>
 
-          </motion.div>
+          </div>
 
           {/* Right Column (5 cols): Lightweight Visual representing REQUIREMENT -> CAPABILITIES -> EXPERTISE */}
-          <motion.div 
-            className="lg:col-span-5 flex justify-center"
-            initial={animate ? { opacity: 0, scale: 0.97 } : undefined}
-            animate={animate ? { opacity: 1, scale: 1 } : undefined}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as [number, number, number, number], delay: 0.2 }}
-          >
+          <div className="lg:col-span-5 flex justify-center animate-hero-visual">
             <motion.div style={animate ? { y: visualParallaxY } : undefined} className="w-full max-w-md relative space-y-4">
               
-              <div className="p-6 sm:p-8 bg-white border border-[#E5E0D5] rounded-3xl space-y-6 relative overflow-hidden shadow-xs">
+              <div className="p-6 sm:p-8 bg-white border border-[#E5E0D5] rounded-3xl space-y-6 relative overflow-hidden shadow-xs hover:border-[#F97316] transition-colors">
                 <div className="flex items-center justify-between border-b border-[#E5E0D5] pb-4">
                   <span className="text-xs font-bold uppercase tracking-wider text-[#111111]">
                     MakeIT Routing Framework
@@ -298,7 +283,7 @@ export const HeroSection: React.FC = () => {
               </div>
 
             </motion.div>
-          </motion.div>
+          </div>
 
         </div>
 

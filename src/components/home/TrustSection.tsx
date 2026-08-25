@@ -2,12 +2,9 @@
 
 import React from 'react';
 import { ShieldCheck, Clock, Users, FileText } from 'lucide-react';
-import { motion, useReducedMotion } from 'framer-motion';
 import { Reveal, StaggerContainer, StaggerItem } from '../ui/Motion';
 
 export const TrustSection: React.FC = () => {
-  const shouldReduceMotion = useReducedMotion();
-
   const trustPillars = [
     {
       icon: <FileText className="w-5 h-5 text-[#F97316]" />,
@@ -54,10 +51,8 @@ export const TrustSection: React.FC = () => {
         <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {trustPillars.map((item, idx) => (
             <StaggerItem key={idx}>
-              <motion.div 
-                whileHover={shouldReduceMotion ? undefined : { y: -3, borderColor: '#F97316' }}
-                transition={{ duration: 0.18, ease: 'easeOut' }}
-                className="bg-white p-6 rounded-3xl border border-[#E5E0D5] space-y-4 transition-colors h-full"
+              <div 
+                className="bg-white p-6 rounded-3xl border border-[#E5E0D5] space-y-4 hover:border-[#F97316] hover:-translate-y-1 transition-all duration-200 h-full"
               >
                 <div className="w-10 h-10 rounded-2xl bg-[#FFF0E6] flex items-center justify-center">
                   {item.icon}
@@ -66,7 +61,7 @@ export const TrustSection: React.FC = () => {
                   <h3 className="text-base font-black text-[#111111] font-heading">{item.title}</h3>
                   <p className="text-xs text-[#4A4A45] leading-relaxed font-normal">{item.desc}</p>
                 </div>
-              </motion.div>
+              </div>
             </StaggerItem>
           ))}
         </StaggerContainer>
