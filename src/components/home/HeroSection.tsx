@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Search, ArrowRight, CheckCircle2, ArrowDown } from 'lucide-react';
-import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
+import { motion, useScroll, useTransform, useReducedMotion, Variants } from 'framer-motion';
 import { parseRequirementText, rankExpertsForRequirement } from '@/lib/services/matchingEngine';
 import { useAppState } from '@/lib/services/store';
 import { Button } from '../ui/Button';
@@ -60,7 +60,7 @@ export const HeroSection: React.FC = () => {
   const liveParsed = query.trim() ? parseRequirementText(query) : null;
 
   // Staggered entry animation variants
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -71,7 +71,7 @@ export const HeroSection: React.FC = () => {
     },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 16 },
     visible: {
       opacity: 1,
