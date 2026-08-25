@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
@@ -9,6 +9,11 @@ import { Reveal, StaggerContainer, StaggerItem } from '../ui/Motion';
 export const SolutionsSection: React.FC = () => {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(0); // Default first item open
   const shouldReduceMotion = useReducedMotion();
+
+  // Hydration safety: defer animation until after mount
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const animate = mounted && !shouldReduceMotion;
 
   const solutions = [
     {
@@ -126,9 +131,9 @@ export const SolutionsSection: React.FC = () => {
                         {isSelected ? (
                           <motion.div 
                             key="details"
-                            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 6 }}
+                            initial={animate ? { opacity: 0, y: 6 } : { opacity: 1 }}
                             animate={{ opacity: 1, y: 0 }}
-                            exit={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -6 }}
+                            exit={animate ? { opacity: 0, y: -6 } : { opacity: 0 }}
                             transition={{ duration: 0.18, ease: 'easeOut' }}
                             className="space-y-2"
                           >

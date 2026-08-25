@@ -3,13 +3,10 @@
 import React from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { motion, useReducedMotion } from 'framer-motion';
 import { Button } from '../ui/Button';
 import { Reveal } from '../ui/Motion';
 
 export const FinalCTASection: React.FC = () => {
-  const shouldReduceMotion = useReducedMotion();
-
   return (
     <section className="py-20 lg:py-28 bg-[#111827] text-white font-sans overflow-hidden">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -35,14 +32,11 @@ export const FinalCTASection: React.FC = () => {
                 </Button>
               </Link>
               <Link href="/services">
-                <motion.button 
-                  whileHover={shouldReduceMotion ? undefined : { backgroundColor: '#1F2937' }}
-                  whileTap={shouldReduceMotion ? undefined : { scale: 0.98 }}
-                  transition={{ duration: 0.15 }}
-                  className="px-7 py-3.5 text-base font-bold rounded-full bg-transparent text-white border border-[#374151] transition-colors cursor-pointer"
+                <button 
+                  className="px-7 py-3.5 text-base font-bold rounded-full bg-transparent text-white border border-[#374151] hover:bg-[#1F2937] active:scale-[0.98] transition-all duration-150 cursor-pointer"
                 >
                   EXPLORE SERVICES
-                </motion.button>
+                </button>
               </Link>
             </div>
           </div>
