@@ -1,34 +1,21 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, CheckCircle2, User } from 'lucide-react';
-import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import { INITIAL_CASE_STUDIES } from '@/lib/data/mockData';
 import { Button } from '../ui/Button';
-import { Reveal, StaggerContainer, StaggerItem } from '../ui/Motion';
+import { Reveal, StaggerContainer, StaggerItem, useScrollParallax } from '../ui/Motion';
 
 export const SelectedWorkSection: React.FC = () => {
   const featuredProject = INITIAL_CASE_STUDIES[0]; // PayPulse SaaS Rearchitecture
   const secondaryProjects = INITIAL_CASE_STUDIES.slice(1, 3); // Telehealth UX & Legacy PHP
-  const shouldReduceMotion = useReducedMotion();
 
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start']
-  });
-
-  const imgParallaxY = useTransform(scrollYProgress, [0, 1], [-16, 16]);
-  const badgeParallaxY = useTransform(scrollYProgress, [0, 1], [8, -8]);
-
-  const animateParallax = mounted && !shouldReduceMotion;
+  const imgParallax = useScrollParallax(32);
+  const badgeParallax = useScrollParallax(45);
 
   return (
-    <section ref={sectionRef} className="py-20 lg:py-28 bg-[#FCFAF4] border-b border-[#E5E0D5] font-sans overflow-hidden">
+    <section className="py-20 lg:py-28 bg-[#FCFAF4] border-b border-[#E5E0D5] font-sans overflow-hidden">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
         
         {/* Section Header */}
@@ -56,15 +43,14 @@ export const SelectedWorkSection: React.FC = () => {
 
         {/* 1 LARGE FEATURED PROJECT PRESENTATION */}
         <Reveal direction="up" distance={24}>
-          <div className="bg-white border border-[#E5E0D5] rounded-3xl p-8 sm:p-12 space-y-8 hover:border-[#F97316] transition-colors group">
+          <div className="bg-white border border-[#E5E0D5] rounded-3xl p-8 sm:p-12 space-y-8 hover:border-[#F97316] transition-colors group shadow-xs">
             <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#E5E0D5] pb-6">
               <div className="flex items-center gap-3">
-                <motion.span 
-                  style={animateParallax ? { y: badgeParallaxY } : undefined}
-                  className="px-3 py-1 rounded-full bg-[#FFF0E6] text-[#F97316] text-xs font-bold border border-[#FFD8C2]"
-                >
-                  FEATURED CASE STUDY
-                </motion.span>
+                <div ref={badgeParallax.ref} style={badgeParallax.style}>
+                  <span className="px-3 py-1 rounded-full bg-[#FFF0E6] text-[#F97316] text-xs font-bold border border-[#FFD8C2] inline-block">
+                    FEATURED CASE STUDY
+                  </span>
+                </div>
                 <span className="text-xs font-bold text-[#787870]">{featuredProject.clientIndustry}</span>
               </div>
               
@@ -119,21 +105,20 @@ export const SelectedWorkSection: React.FC = () => {
                 </div>
               </div>
 
-              {/* Right: Visual Project Showcase with Image Scale & Parallax */}
+              {/* Right: Visual Project Showcase with Parallax Image Glide */}
               <div className="lg:col-span-5">
                 <div className="relative rounded-2xl overflow-hidden border border-[#E5E0D5]">
-                  <motion.div 
-                    style={animateParallax ? { y: imgParallaxY } : undefined}
-                    className="scale-105"
+                  <div 
+                    ref={imgParallax.ref}
+                    style={imgParallax.style}
+                    className="scale-110"
                   >
-                    <motion.img 
+                    <img 
                       src={featuredProject.image} 
                       alt={featuredProject.title}
-                      whileHover={shouldReduceMotion ? undefined : { scale: 1.03 }}
-                      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                      className="w-full h-72 lg:h-96 object-cover transition-transform" 
+                      className="w-full h-72 lg:h-96 object-cover hover:scale-105 transition-transform duration-500" 
                     />
-                  </motion.div>
+                  </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-6 pointer-events-none">
                     <div className="text-white space-y-1">
                       <div className="text-xs font-bold text-[#FFD8C2]">{featuredProject.clientName}</div>

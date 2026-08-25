@@ -241,17 +241,7 @@ export const StaggerItem: React.FC<{ children: React.ReactNode; className?: stri
   );
 };
 
-interface ParallaxLayerProps {
-  children: React.ReactNode;
-  speed?: number; // e.g., -20 to 20 px
-  className?: string;
-}
-
-export const ParallaxLayer: React.FC<ParallaxLayerProps> = ({
-  children,
-  speed = -20,
-  className = '',
-}) => {
+export function useScrollParallax(speed: number = 25) {
   const ref = useRef<HTMLDivElement>(null);
   const [offsetY, setOffsetY] = useState(0);
   const reducedMotion = useReducedMotionPreference();
@@ -266,9 +256,12 @@ export const ParallaxLayer: React.FC<ParallaxLayerProps> = ({
           if (ref.current) {
             const rect = ref.current.getBoundingClientRect();
             const windowHeight = window.innerHeight;
-            const progress = (windowHeight - rect.top) / (windowHeight + rect.height);
-            const clamped = Math.max(0, Math.min(1, progress));
-            setOffsetY((clamped - 0.5) * speed * 2);
+            // Calculate progress from -1 (below viewport) to 1 (above viewport)
+            const centerY = rect.top + rect.height / 2;
+            const screenCenterY = windowHeight / 2;
+            const distanceFromCenter = (centerY - screenCenterY) / (windowHeight / 2);
+            const clampedDistance = Math.max(-1.5, Math.min(1.5, distanceFromCenter));
+            setOffsetY(clampedDistance * speed * -1);
           }
           ticking = false;
         });
@@ -281,21 +274,33 @@ export const ParallaxLayer: React.FC<ParallaxLayerProps> = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, [speed, reducedMotion]);
 
-  if (reducedMotion) {
-    return <div className={className}>{children}</div>;
-  }
+  return {
+    ref,
+    style: reducedMotion
+      ? {}
+      : {
+          transform: `translate3d(0, ${offsetY}px, 0)`,
+          willChange: 'transform' as const,
+        },
+  };
+}
+
+interface ParallaxLayerProps {
+  children: React.ReactNode;
+  speed?: number; // e.g., -30 to 30 px
+  className?: string;
+}
+
+export const ParallaxLayer: React.FC<ParallaxLayerProps> = ({
+  children,
+  speed = 30,
+  className = '',
+}) => {
+  const { ref, style } = useScrollParallax(speed);
 
   return (
-    <div ref={ref} className={`relative overflow-hidden ${className}`}>
-      <div
-        style={{
-          transform: `translate3d(0, ${offsetY}px, 0)`,
-          transition: 'transform 0.1s ease-out',
-          willChange: 'transform',
-        }}
-      >
-        {children}
-      </div>
+    <div ref={ref} className={className} style={style}>
+      {children}
     </div>
   );
 };

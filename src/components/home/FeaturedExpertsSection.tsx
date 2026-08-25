@@ -1,36 +1,23 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import { useAppState } from '@/lib/services/store';
 import { Button } from '../ui/Button';
-import { Reveal, StaggerContainer, StaggerItem } from '../ui/Motion';
+import { Reveal, StaggerContainer, StaggerItem, ParallaxLayer } from '../ui/Motion';
 
 export const FeaturedExpertsSection: React.FC = () => {
   const { experts } = useAppState();
-  const shouldReduceMotion = useReducedMotion();
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start']
-  });
-
-  const headerParallaxY = useTransform(scrollYProgress, [0, 1], [-8, 8]);
-  const animate = mounted && !shouldReduceMotion;
 
   return (
-    <section ref={sectionRef} className="py-20 lg:py-28 bg-[#FCFAF4] border-b border-[#E5E0D5] font-sans overflow-hidden relative">
+    <section className="py-20 lg:py-28 bg-[#FCFAF4] border-b border-[#E5E0D5] font-sans overflow-hidden relative">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
         
-        {/* Section Header */}
+        {/* Section Header with Multi-layer Parallax Depth */}
         <Reveal direction="up" distance={20}>
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div className="space-y-3">
+            <ParallaxLayer speed={-15} className="space-y-3">
               <span className="text-xs font-bold uppercase tracking-wider text-[#F97316] block">
                 SENIOR PRACTITIONERS
               </span>
@@ -40,13 +27,15 @@ export const FeaturedExpertsSection: React.FC = () => {
               <p className="text-[#4A4A45] text-base sm:text-lg max-w-xl font-normal leading-relaxed">
                 Senior software architects, product designers, and full-stack engineers who turn requirements into working digital products.
               </p>
-            </div>
+            </ParallaxLayer>
 
-            <Link href="/experts">
-              <Button variant="outline" size="md" icon={<ArrowRight className="w-4 h-4" />}>
-                VIEW EXPERT DIRECTORY
-              </Button>
-            </Link>
+            <ParallaxLayer speed={15}>
+              <Link href="/experts">
+                <Button variant="outline" size="md" icon={<ArrowRight className="w-4 h-4" />}>
+                  VIEW EXPERT DIRECTORY
+                </Button>
+              </Link>
+            </ParallaxLayer>
           </div>
         </Reveal>
 

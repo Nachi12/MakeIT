@@ -10,6 +10,7 @@ import { useAppState } from '@/lib/services/store';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';
 import { Modal } from '../ui/Modal';
+import { useScrollParallax } from '../ui/Motion';
 
 export const HeroSection: React.FC = () => {
   const router = useRouter();
@@ -20,17 +21,9 @@ export const HeroSection: React.FC = () => {
   const [activeResult, setActiveResult] = useState<ReturnType<typeof rankExpertsForRequirement> | null>(null);
   const [parsedState, setParsedState] = useState<ReturnType<typeof parseRequirementText> | null>(null);
 
-  const shouldReduceMotion = useReducedMotion();
-
-  // Hydration safety: defer animation props until after mount
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-  const animate = mounted && !shouldReduceMotion;
-
-  // Scroll parallax logic for right side artwork
-  const { scrollY } = useScroll();
-  const visualParallaxY = useTransform(scrollY, [0, 400], [0, -18]);
-  const bgBadgeParallaxY = useTransform(scrollY, [0, 400], [0, -32]);
+  // Vivid multi-layer scroll parallax
+  const cardParallax = useScrollParallax(35);
+  const badgeParallax = useScrollParallax(60);
 
   // Strictly 4 clean example requirements as specified
   const exampleRequirements = [
@@ -214,19 +207,18 @@ export const HeroSection: React.FC = () => {
 
           {/* Right Column (5 cols): Lightweight Visual representing REQUIREMENT -> CAPABILITIES -> EXPERTISE */}
           <div className="lg:col-span-5 flex justify-center animate-hero-visual">
-            <motion.div style={animate ? { y: visualParallaxY } : undefined} className="w-full max-w-md relative space-y-4">
+            <div ref={cardParallax.ref} style={cardParallax.style} className="w-full max-w-md relative space-y-4">
               
               <div className="p-6 sm:p-8 bg-white border border-[#E5E0D5] rounded-3xl space-y-6 relative overflow-hidden shadow-xs hover:border-[#F97316] transition-colors">
                 <div className="flex items-center justify-between border-b border-[#E5E0D5] pb-4">
                   <span className="text-xs font-bold uppercase tracking-wider text-[#111111]">
                     MakeIT Routing Framework
                   </span>
-                  <motion.span 
-                    style={animate ? { y: bgBadgeParallaxY } : undefined}
-                    className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-[#FFF0E6] text-[#F97316]"
-                  >
-                    PRECISION MATCH
-                  </motion.span>
+                  <div ref={badgeParallax.ref} style={badgeParallax.style}>
+                    <span className="text-[10px] font-bold px-2.5 py-1 rounded-full bg-[#FFF0E6] text-[#F97316] inline-block">
+                      PRECISION MATCH
+                    </span>
+                  </div>
                 </div>
 
                 {/* Flow Step 1: REQUIREMENT */}
@@ -282,7 +274,7 @@ export const HeroSection: React.FC = () => {
 
               </div>
 
-            </motion.div>
+            </div>
           </div>
 
         </div>

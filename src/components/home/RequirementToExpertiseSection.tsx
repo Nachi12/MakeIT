@@ -77,27 +77,25 @@ export const RequirementToExpertiseSection: React.FC = () => {
           <div className="hidden md:block absolute top-1/2 left-6 right-6 h-[2px] bg-[#E5E0D5] -translate-y-1/2 z-0">
             <motion.div 
               style={animate ? { scaleX: progressLineScale } : undefined}
-              className="h-full bg-[#F97316]/60 origin-left"
+              className="h-full bg-gradient-to-r from-[#F97316]/40 via-[#F97316] to-[#EA580C] origin-left"
             />
           </div>
 
           <StaggerContainer className="grid grid-cols-1 md:grid-cols-5 gap-4 relative z-10">
           {steps.map((step, idx) => (
             <StaggerItem key={step.num}>
-              <motion.div 
-                whileHover={shouldReduceMotion ? undefined : { y: -4, borderColor: '#F97316' }}
-                transition={{ duration: 0.2, ease: 'easeOut' }}
-                className="bg-white border border-[#E5E0D5] rounded-3xl p-6 space-y-5 transition-all flex flex-col justify-between h-full"
+              <div 
+                className="bg-white border border-[#E5E0D5] rounded-3xl p-6 space-y-5 hover:border-[#F97316] hover:-translate-y-2 transition-all duration-200 shadow-xs flex flex-col justify-between h-full cursor-pointer group"
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-3xl font-black text-[#F97316] font-heading">{step.num}</span>
-                    <div className="w-9 h-9 rounded-xl bg-[#FFF0E6] flex items-center justify-center">
+                    <span className="text-3xl font-black text-[#F97316] font-heading group-hover:scale-105 transition-transform duration-200">{step.num}</span>
+                    <div className="w-9 h-9 rounded-xl bg-[#FFF0E6] flex items-center justify-center group-hover:bg-[#FFD8C2] transition-colors">
                       {step.icon}
                     </div>
                   </div>
 
-                  <h3 className="text-base font-black text-[#111111] font-heading leading-snug">
+                  <h3 className="text-base font-black text-[#111111] font-heading leading-snug group-hover:text-[#F97316] transition-colors">
                     {step.title}
                   </h3>
                   
@@ -108,10 +106,12 @@ export const RequirementToExpertiseSection: React.FC = () => {
 
                 {idx < steps.length - 1 && (
                   <div className="hidden md:block text-[#E5E0D5] pt-2">
-                    <ArrowRight className="w-4 h-4 text-[#787870]" />
+                    <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">
+                      <ArrowRight className="w-4 h-4 text-[#787870] group-hover:text-[#F97316]" />
+                    </span>
                   </div>
                 )}
-              </motion.div>
+              </div>
             </StaggerItem>
           ))}
           </StaggerContainer>
