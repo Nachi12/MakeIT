@@ -1,0 +1,460 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String?
+  name         String
+  role         String   @default("CUSTOMER") // CUSTOMER | EXPERT | ADMIN | SUPER_ADMIN | SALES
+  avatar       String?
+  phone        String?
+  company      String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model ServiceCategory {
+  id               String   @id
+  slug             String   @unique
+  name             String
+  pillar           String   // PRODUCT_DESIGN | SOFTWARE_ENGINEERING | TECHNOLOGY_CONSULTING
+  shortDescription String
+  iconName         String
+  accentColor      String
+  serviceCount     Int      @default(0)
+  featured         Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Service {
+  id               String   @id
+  slug             String   @unique
+  categoryId       String
+  categoryName     String
+  title            String
+  shortDescription String
+  fullDescription  String
+  iconName         String
+  startingPriceINR Int
+  startingPriceUSD Int
+  typicalDelivery  String
+  expertCount      Int      @default(0)
+  skills           String   // JSON string array
+  features         String   // JSON string array
+  deliverables     String   // JSON string array
+  processSteps     String   // JSON string array of objects
+  packages         String   // JSON string array of package objects
+  featured         Boolean  @default(false)
+  seoTitle         String?
+  seoDescription   String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Technology {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  slug        String   @unique
+  category    String
+  description String?
+  iconName    String?
+  popular     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model BusinessSolution {
+  id                    String   @id
+  slug                  String   @unique
+  title                 String
+  shortDescription      String
+  iconName              String
+  targetAudience        String
+  recommendedCategoryId String
+  recommendedServiceId  String
+  exampleTechnologies   String   // JSON string array
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+model Expert {
+  id                 String   @id
+  slug               String   @unique
+  name               String
+  title              String
+  avatar             String
+  categoryId         String
+  categoryName       String
+  primaryExpertise   String
+  yearsOfExperience Int
+  skills             String   // JSON string array
+  servicesOffered    String   // JSON string array of Service IDs
+  hourlyRateINR      Int
+  hourlyRateUSD      Int
+  rating             Float    @default(5.0)
+  reviewCount        Int      @default(0)
+  completedProjects  Int      @default(0)
+  location           String
+  languages          String   // JSON string array
+  shortIntro         String
+  fullBio            String
+  availability       String   // E.g., 'Available Now'
+  certifications     String?  // JSON string array of certification objects
+  portfolio          String?  // JSON string array of portfolio items
+  verified           Boolean  @default(true)
+  featured           Boolean  @default(false)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model Customer {
+  id          String   @id @default(uuid())
+  userId      String?  @unique
+  name        String
+  email       String   @unique
+  phone       String?
+  companyName String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Requirement {
+  id                String   @id
+  rawInput          String
+  projectType       String?
+  detectedCategory  String?
+  detectedServiceId String?
+  detectedSkills    String   // JSON string array
+  budgetRange       String
+  timeline          String
+  preferredContact  String
+  customerName      String
+  customerEmail     String
+  customerPhone     String?
+  companyName       String?
+  details           String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  leads             Lead[]
+}
+
+model Contact {
+  id              String    @id @default(uuid())
+  name            String
+  title           String?
+  companyId       String?
+  companyName     String?
+  email           String?
+  phone           String    @unique
+  altPhone        String?
+  whatsapp        String?
+  location        String?
+  source          String    @default("Website")
+  ownerId         String?
+  ownerName       String?
+  tags            String?   // JSON string array
+  notes           String?
+  status          String    @default("ACTIVE")
+  lastContactedAt DateTime?
+  nextFollowUpAt  DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  leads           Lead[]
+  calls           Call[]
+  followUps       FollowUp[]
+  tasks           CRMTask[]
+  activities      Activity[]
+}
+
+model Company {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  website     String?
+  industry    String?
+  location    String?
+  email       String?
+  phone       String?
+  source      String?
+  ownerId     String?
+  status      String   @default("ACTIVE")
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  leads       Lead[]
+}
+
+model Lead {
+  id                String      @id
+  requirementId     String
+  requirement       Requirement @relation(fields: [requirementId], references: [id], onDelete: Cascade)
+  contactId         String?
+  contact           Contact?    @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  companyId         String?
+  company           Company?    @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  status            String      @default("NEW") // NEW | UNCONTACTED | CONTACTED | FOLLOW_UP | QUALIFIED | PROPOSAL_SENT | NEGOTIATION | WON | LOST | NOT_INTERESTED | DO_NOT_CONTACT
+  priority          String      @default("MEDIUM") // LOW | MEDIUM | HIGH | URGENT
+  source            String      @default("Website") // Website | LinkedIn | Referral | WhatsApp | Phone | Instagram | Manual
+  ownerId           String?
+  ownerName         String?
+  matchedExpertIds  String      // JSON string array
+  assignedExpertId  String?
+  estimatedValueINR Int?
+  notes             String?     // JSON string array
+  lastContactedAt   DateTime?
+  nextFollowUpAt    DateTime?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  calls             Call[]
+  followUps         FollowUp[]
+  tasks             CRMTask[]
+  activities        Activity[]
+}
+
+model Call {
+  id               String    @id @default(uuid())
+  leadId           String?
+  lead             Lead?     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  contactId        String?
+  contact          Contact?  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  agentId          String
+  agentName        String
+  provider         String    @default("mock") // twilio | exotel | mock
+  providerCallId   String?
+  direction        String    @default("OUTBOUND") // OUTBOUND | INBOUND
+  status           String    @default("INITIATING") // INITIATING | RINGING | ANSWERED | IN_PROGRESS | ENDED | MISSED | FAILED | BUSY | NO_ANSWER | CANCELLED
+  startedAt        DateTime  @default(now())
+  answeredAt       DateTime?
+  endedAt          DateTime?
+  durationSeconds  Int       @default(0)
+  outcome          String?
+  notes            String?
+  recordingUrl     String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+}
+
+model FollowUp {
+  id             String    @id @default(uuid())
+  leadId         String
+  lead           Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  contactId      String?
+  contact        Contact?  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  assignedTo     String
+  assignedToName String
+  scheduledAt    DateTime
+  reason         String
+  priority       String    @default("MEDIUM")
+  status         String    @default("PENDING") // PENDING | COMPLETED | CANCELLED | OVERDUE
+  completedAt    DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model CRMTask {
+  id             String    @id @default(uuid())
+  title          String
+  leadId         String?
+  lead           Lead?     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  contactId      String?
+  contact        Contact?  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  assignedTo     String
+  assignedToName String
+  dueDate        DateTime
+  priority       String    @default("MEDIUM")
+  status         String    @default("PENDING") // PENDING | COMPLETED | CANCELLED
+  completedAt    DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Activity {
+  id          String   @id @default(uuid())
+  leadId      String?
+  lead        Lead?    @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  contactId   String?
+  contact     Contact? @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  actorId     String
+  actorName   String
+  actorRole   String
+  type        String   // Lead Created | Lead Updated | Call | Note | Follow-up | Task | Status Change | Assignment | Proposal | Meeting | Project Created
+  title       String
+  description String
+  metadata    String?  // JSON string
+  createdAt   DateTime @default(now())
+}
+
+model Project {
+  id            String             @id
+  title         String
+  customerName  String
+  customerEmail String
+  expertId      String
+  expertName    String
+  expertAvatar  String
+  serviceId     String
+  serviceTitle  String
+  startDate     String
+  deadline      String
+  budgetINR     Int
+  status        String             @default("Planning") // Planning | In Progress | Review | Revision | Completed
+  notes         String?
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  milestones    ProjectMilestone[]
+  members       ProjectMember[]
+}
+
+model ProjectMilestone {
+  id          String   @id @default(uuid())
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  title       String
+  description String
+  dueDate     String
+  amountINR   Int
+  status      String   @default("Pending") // Pending | In Progress | Completed | Paid
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ProjectMember {
+  id           String   @id @default(uuid())
+  projectId    String
+  project      Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  role         String
+  expertId     String
+  expertName   String
+  expertTitle  String
+  expertAvatar String
+  createdAt    DateTime @default(now())
+}
+
+model Proposal {
+  id            String   @id
+  leadId        String?
+  projectId     String?
+  customerName  String
+  customerEmail String
+  title         String
+  services      String   // JSON string array
+  scope         String
+  timeline      String
+  priceINR      Int
+  terms         String?
+  status        String   @default("DRAFT") // DRAFT | SENT | VIEWED | ACCEPTED | REJECTED | EXPIRED
+  validUntil    String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Appointment {
+  id               String   @id
+  expertId         String
+  expertName       String
+  expertTitle      String
+  customerName     String
+  customerEmail    String
+  customerPhone    String
+  date             String
+  timeSlot         String
+  consultationType String
+  topic            String
+  status           String   @default("SCHEDULED") // SCHEDULED | COMPLETED | CANCELLED
+  meetingUrl       String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Message {
+  id           String   @id @default(uuid())
+  projectId    String?
+  leadId       String?
+  senderId     String
+  senderName   String
+  senderRole   String
+  senderAvatar String?
+  recipientId  String
+  content      String
+  attachments  String?  // JSON string array
+  read         Boolean  @default(false)
+  createdAt    DateTime @default(now())
+}
+
+model Review {
+  id                    String   @id
+  expertId              String
+  customerName          String
+  customerRoleCompany   String
+  rating                Float
+  qualityRating         Float    @default(5.0)
+  communicationRating   Float    @default(5.0)
+  professionalismRating Float    @default(5.0)
+  deliveryRating        Float    @default(5.0)
+  comment               String
+  date                  String
+  serviceTitle          String
+  verified              Boolean  @default(true)
+  status                String   @default("APPROVED") // APPROVED | PENDING | REJECTED
+  featured              Boolean  @default(false)
+  createdAt             DateTime @default(now())
+}
+
+model CaseStudy {
+  id                String   @id
+  slug              String   @unique
+  title             String
+  clientName        String
+  clientIndustry    String
+  challenge         String
+  solution          String
+  expertId          String
+  expertName        String
+  serviceTitle      String
+  results           String   // JSON array [{ metric, label }]
+  processSteps      String   // JSON array
+  testimonialQuote  String
+  testimonialAuthor String
+  testimonialTitle  String
+  image             String
+  published         Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Testimonial {
+  id          String   @id
+  quote       String
+  author      String
+  role        String
+  company     String
+  avatar      String
+  rating      Int      @default(5)
+  serviceName String
+  verified    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String
+  userName  String
+  userRole  String
+  action    String
+  entity    String
+  entityId  String
+  details   String?
+  ipAddress String?
+  createdAt DateTime @default(now())
+}

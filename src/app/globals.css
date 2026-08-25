@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* MakeIT Premium Editorial Design Token Set */
+    --bg-cream: #F7F3E8;            /* Primary Warm Ivory / Cream Background */
+    --bg-secondary-cream: #FCFAF4;  /* Alt Cream Surface Background */
+    --surface-white: #FFFFFF;       /* Crisp White Card Surface */
+    --border-subtle: #E5E0D5;       /* Subtle Warm Border */
+    --border-hover: #CBD5E1;        /* Border Hover State */
+    
+    --text-dark: #111111;           /* Deep Charcoal / Black Headlines */
+    --text-secondary: #4A4A45;      /* Warm Charcoal Body Text */
+    --text-muted: #787870;          /* Muted Labels & Metadata */
+    
+    --accent-orange: #F97316;       /* Signature Warm Orange Accent */
+    --accent-orange-dark: #EA580C;  /* Dark Orange Hover State */
+    --accent-orange-soft: #FFF0E6;  /* Soft Warm Orange Background */
+    
+    --dark-section: #111827;        /* Deep Charcoal Dark Section */
+    
+    --status-success: #16A34A;
+    --status-error: #DC2626;
+  }
+
+  body {
+    background-color: var(--bg-cream);
+    color: var(--text-dark);
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Premium Editorial Typography & Component Styles */
+.font-heading {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: -0.03em;
+}
+
+.font-serif-editorial {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.text-orange-accent {
+  color: #F97316;
+}
+
+.bg-orange-accent {
+  background-color: #F97316;
+}
+
+/* Editorial Card Treatment (Minimal, Whitespace-driven) */
+.editorial-card {
+  background-color: #FFFFFF;
+  border: 1px solid #E5E0D5;
+  border-radius: 16px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.editorial-card:hover {
+  border-color: #F97316;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -10px rgba(249, 115, 22, 0.12);
+}
+
+/* Editorial Row Item (Hover Arrow & Accent Highlight) */
+.editorial-row-item {
+  border-bottom: 1px solid #E5E0D5;
+  transition: all 0.2s ease-in-out;
+}
+
+.editorial-row-item:hover {
+  background-color: #FCFAF4;
+  padding-left: 0.5rem;
+}
+
+/* Editorial Search Surface */
+.editorial-input-surface {
+  background-color: #FFFFFF;
+  border: 1.5px solid #E5E0D5;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px -4px rgba(17, 17, 17, 0.04);
+  transition: all 0.2s ease;
+}
+
+.editorial-input-surface:focus-within {
+  border-color: #F97316;
+  box-shadow: 0 6px 25px -4px rgba(249, 115, 22, 0.15);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F7F3E8;
+}
+::-webkit-scrollbar-thumb {
+  background: #D5CFBF;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #A8A295;
+}
