@@ -1,12 +1,23 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { ArrowRight, CheckCircle2, MessageSquare, Compass, Cpu, Users, Rocket } from 'lucide-react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import { Reveal, StaggerContainer, StaggerItem } from '../ui/Motion';
 
 export const RequirementToExpertiseSection: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start']
+  });
+
+  const progressLineScale = useTransform(scrollYProgress, [0.2, 0.7], [0, 1]);
+  const animate = mounted && !shouldReduceMotion;
 
   const steps = [
     {
@@ -42,7 +53,7 @@ export const RequirementToExpertiseSection: React.FC = () => {
   ];
 
   return (
-    <section className="py-20 lg:py-28 bg-[#F7F3E8] border-b border-[#E5E0D5] font-sans">
+    <section ref={sectionRef} className="py-20 lg:py-28 bg-[#F7F3E8] border-b border-[#E5E0D5] font-sans relative overflow-hidden">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         
         {/* Section Header */}
@@ -61,7 +72,16 @@ export const RequirementToExpertiseSection: React.FC = () => {
         </Reveal>
 
         {/* 5-Step Editorial Process Timeline */}
-        <StaggerContainer className="grid grid-cols-1 md:grid-cols-5 gap-4 relative">
+        <div className="relative">
+          {/* Subtle scroll progress line behind cards */}
+          <div className="hidden md:block absolute top-1/2 left-6 right-6 h-[2px] bg-[#E5E0D5] -translate-y-1/2 z-0">
+            <motion.div 
+              style={animate ? { scaleX: progressLineScale } : undefined}
+              className="h-full bg-[#F97316]/60 origin-left"
+            />
+          </div>
+
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-5 gap-4 relative z-10">
           {steps.map((step, idx) => (
             <StaggerItem key={step.num}>
               <motion.div 
@@ -94,7 +114,8 @@ export const RequirementToExpertiseSection: React.FC = () => {
               </motion.div>
             </StaggerItem>
           ))}
-        </StaggerContainer>
+          </StaggerContainer>
+        </div>
 
         {/* Signature Quality Assurance Callout */}
         <Reveal direction="up" distance={16}>

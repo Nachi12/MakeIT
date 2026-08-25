@@ -1,9 +1,9 @@
 'use client';
 
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import { useAppState } from '@/lib/services/store';
 import { Button } from '../ui/Button';
 import { Reveal, StaggerContainer, StaggerItem } from '../ui/Motion';
@@ -11,9 +11,20 @@ import { Reveal, StaggerContainer, StaggerItem } from '../ui/Motion';
 export const FeaturedExpertsSection: React.FC = () => {
   const { experts } = useAppState();
   const shouldReduceMotion = useReducedMotion();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start end', 'end start']
+  });
+
+  const headerParallaxY = useTransform(scrollYProgress, [0, 1], [-8, 8]);
+  const animate = mounted && !shouldReduceMotion;
 
   return (
-    <section className="py-20 lg:py-28 bg-[#FCFAF4] border-b border-[#E5E0D5] font-sans overflow-hidden">
+    <section ref={sectionRef} className="py-20 lg:py-28 bg-[#FCFAF4] border-b border-[#E5E0D5] font-sans overflow-hidden relative">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
         
         {/* Section Header */}
