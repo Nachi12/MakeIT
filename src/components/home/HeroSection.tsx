@@ -111,17 +111,23 @@ export const HeroSection: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* Main Editorial Headline */}
+            {/* Main Editorial Headline — Line-by-line reveal */}
             <motion.div variants={animate ? itemVariants : undefined} className="space-y-4">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#111111] tracking-tight leading-[1.08] font-heading">
-                You Have the Idea.<br />
-                <span className="text-[#F97316]">We Have the Expertise</span><br />
-                <span className="font-serif-editorial font-normal">to Build It.</span>
+                <motion.span className="block" variants={animate ? itemVariants : undefined}>
+                  You Have the Idea.
+                </motion.span>
+                <motion.span className="block text-[#F97316]" variants={animate ? itemVariants : undefined}>
+                  We Have the Expertise
+                </motion.span>
+                <motion.span className="block font-serif-editorial font-normal" variants={animate ? itemVariants : undefined}>
+                  to Build It.
+                </motion.span>
               </h1>
 
-              <p className="text-base sm:text-lg text-[#4A4A45] leading-relaxed max-w-2xl font-normal">
+              <motion.p variants={animate ? itemVariants : undefined} className="text-base sm:text-lg text-[#4A4A45] leading-relaxed max-w-2xl font-normal">
                 MakeIT helps you define your business requirements, maps the technical capabilities needed, and connects you directly with the right senior software specialists to deliver your project.
-              </p>
+              </motion.p>
             </motion.div>
 
             {/* Hero Requirement Input (Central Product Interaction) */}
