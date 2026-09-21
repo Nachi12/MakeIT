@@ -1,0 +1,5 @@
+# Protect admin includes from direct HTTP access
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^includes/ - [F,L]
+</IfModule>

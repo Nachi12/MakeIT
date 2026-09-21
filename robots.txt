@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /config/
+Disallow: /includes/
+Disallow: /database/
+Disallow: /tests/
+
+Sitemap: http://127.0.0.1:8088/sitemap.xml

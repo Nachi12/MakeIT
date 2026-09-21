@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MakeIT Digital Studio — Engineering Digital Precision.</title>
+  <meta name="description" content="MakeIT designs and builds websites, software, AI automation and digital experiences that actually work." />
+
+  <!-- Dynamic SEO & Open Graph / Twitter Cards -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="MakeIT Digital Studio" />
+  <meta property="og:title" content="MakeIT Digital Studio — Engineering Digital Precision." />
+  <meta property="og:description" content="MakeIT designs and builds websites, software, AI automation and digital experiences that actually work." />
+  <meta property="og:url" content="./" />
+  <meta property="og:image" content="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22800%22%20height%3D%22500%22%20viewBox%3D%220%200%20800%20500%22%3E%3Crect%20width%3D%22800%22%20height%3D%22500%22%20fill%3D%22%2312131A%22%2F%3E%3Crect%20x%3D%2240%22%20y%3D%2240%22%20width%3D%22720%22%20height%3D%22420%22%20rx%3D%2212%22%20fill%3D%22%231A1B24%22%20stroke%3D%22%232B2D3C%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%2280%22%20cy%3D%2275%22%20r%3D%227%22%20fill%3D%22%23FF5F56%22%2F%3E%3Ccircle%20cx%3D%22105%22%20cy%3D%2275%22%20r%3D%227%22%20fill%3D%22%23FFBD2E%22%2F%3E%3Ccircle%20cx%3D%22130%22%20cy%3D%2275%22%20r%3D%227%22%20fill%3D%22%2327C93F%22%2F%3E%3Crect%20x%3D%2280%22%20y%3D%22130%22%20width%3D%22140%22%20height%3D%2224%22%20rx%3D%224%22%20fill%3D%22%23B8FF3D%22%20opacity%3D%220.9%22%2F%3E%3Crect%20x%3D%2280%22%20y%3D%22175%22%20width%3D%22480%22%20height%3D%2240%22%20rx%3D%226%22%20fill%3D%22%23FFFFFF%22%20opacity%3D%220.9%22%2F%3E%3Crect%20x%3D%2280%22%20y%3D%22240%22%20width%3D%22640%22%20height%3D%2212%22%20rx%3D%224%22%20fill%3D%22%23525668%22%2F%3E%3Crect%20x%3D%2280%22%20y%3D%22265%22%20width%3D%22540%22%20height%3D%2212%22%20rx%3D%224%22%20fill%3D%22%23525668%22%2F%3E%3Crect%20x%3D%2280%22%20y%3D%22320%22%20width%3D%22180%22%20height%3D%2244%22%20rx%3D%228%22%20fill%3D%22%23B8FF3D%22%2F%3E%3C%2Fsvg%3E" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="MakeIT Digital Studio — Engineering Digital Precision." />
+  <meta name="twitter:description" content="MakeIT designs and builds websites, software, AI automation and digital experiences that actually work." />
+  <meta name="twitter:image" content="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22800%22%20height%3D%22500%22%20viewBox%3D%220%200%20800%20500%22%3E%3Crect%20width%3D%22800%22%20height%3D%22500%22%20fill%3D%22%2312131A%22%2F%3E%3Crect%20x%3D%2240%22%20y%3D%2240%22%20width%3D%22720%22%20height%3D%22420%22%20rx%3D%2212%22%20fill%3D%22%231A1B24%22%20stroke%3D%22%232B2D3C%22%20stroke-width%3D%222%22%2F%3E%3Ccircle%20cx%3D%2280%22%20cy%3D%2275%22%20r%3D%227%22%20fill%3D%22%23FF5F56%22%2F%3E%3Ccircle%20cx%3D%22105%22%20cy%3D%2275%22%20r%3D%227%22%20fill%3D%22%23FFBD2E%22%2F%3E%3Ccircle%20cx%3D%22130%22%20cy%3D%2275%22%20r%3D%227%22%20fill%3D%22%2327C93F%22%2F%3E%3Crect%20x%3D%2280%22%20y%3D%22130%22%20width%3D%22140%22%20height%3D%2224%22%20rx%3D%224%22%20fill%3D%22%23B8FF3D%22%20opacity%3D%220.9%22%2F%3E%3Crect%20x%3D%2280%22%20y%3D%22175%22%20width%3D%22480%22%20height%3D%2240%22%20rx%3D%226%22%20fill%3D%22%23FFFFFF%22%20opacity%3D%220.9%22%2F%3E%3Crect%20x%3D%2280%22%20y%3D%22240%22%20width%3D%22640%22%20height%3D%2212%22%20rx%3D%224%22%20fill%3D%22%23525668%22%2F%3E%3Crect%20x%3D%2280%22%20y%3D%22265%22%20width%3D%22540%22%20height%3D%2212%22%20rx%3D%224%22%20fill%3D%22%23525668%22%2F%3E%3Crect%20x%3D%2280%22%20y%3D%22320%22%20width%3D%22180%22%20height%3D%2244%22%20rx%3D%228%22%20fill%3D%22%23B8FF3D%22%2F%3E%3C%2Fsvg%3E" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
+
+  <!-- Canonical -->
+  <link rel="canonical" href="./" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+  <!-- Accessible Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- =======================================================
+       PRELOADER
+  ======================================================== -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <div class="loader-inner">
+      <div class="loader-logo">
+        <span>M</span><span>a</span><span>k</span><span>e</span><span>IT</span>
+      </div>
+      <div class="loader-line">
+        <span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- =======================================================
+       CUSTOM CURSOR
+  ======================================================== -->
+  <div class="cursor" aria-hidden="true"></div>
+  <div class="cursor-ring" aria-hidden="true"></div>
+
+  <!-- =======================================================
+       STICKY NAVIGATION
+  ======================================================== -->
+  <header class="nav" id="navbar">
+    <div class="nav-inner">
+      <a href="#home" class="logo magnetic" aria-label="MakeIT Home">
+        MakeIT
+        <span class="logo-dot"></span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary Navigation">
+        <a href="#services" class="nav-link magnetic">Services</a>
+        <a href="#work" class="nav-link magnetic">Work</a>
+        <a href="#process" class="nav-link magnetic">Process</a>
+        <a href="#about" class="nav-link magnetic">About</a>
+      </nav>
+
+      <a href="#contact" class="nav-cta magnetic">
+        Let's Talk
+        <span>↗</span>
+      </a>
+
+      <button class="menu" id="menuButton" aria-label="Toggle navigation menu" aria-expanded="false">
+        ☰
+      </button>
+    </div>
+  </header>
+
+  <!-- =======================================================
+       ANIMATED FULL-SCREEN MOBILE MENU
+  ======================================================== -->
+  <div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <a href="#services">Services</a>
+    <a href="#work">Work</a>
+    <a href="#process">Process</a>
+    <a href="#about">About</a>
+    <a href="#contact" class="accent">Let's Talk ↗</a>
+  </div>
+
+  <main id="main-content">
+    <!-- =======================================================
+         HERO SECTION
+    ======================================================== -->
+    <section class="hero" id="home">
+      <div class="hero-grid" aria-hidden="true"></div>
+
+      <div class="container hero-content">
+        <div class="hero-layout">
+          <!-- LEFT ZONE: Editorial Anchor -->
+          <div class="hero-left">
+            <div class="hero-top">
+              <div class="eyebrow">
+                Digital studio / 2026              </div>
+            </div>
+
+            <h1 class="hero-heading">
+                              <div class="hero-line">
+                  <span>
+                                          WE MAKE                                      </span>
+                </div>
+                              <div class="hero-line">
+                  <span>
+                                          DIGITAL                                      </span>
+                </div>
+                              <div class="hero-line">
+                  <span>
+                                          THINGS <span class="hero-accent-word">WORK.</span>                                      </span>
+                </div>
+                          </h1>
+
+            <div class="hero-bottom">
+              <p class="hero-description">
+                From the first sketch to the final launch, MakeIT designs and builds digital products around the way your business actually works.              </p>
+
+              <div class="hero-buttons">
+                <a href="#contact" class="button button-primary magnetic">
+                  Start a Project                  <span class="button-arrow" aria-hidden="true">↗</span>
+                </a>
+
+                <a href="#services" class="button button-secondary magnetic">
+                  Explore Services                  <span class="button-arrow" aria-hidden="true">↓</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT ZONE: Floating Visual Counterweight -->
+          <div class="hero-right">
+            <div class="floating-system" id="floatingSystem" aria-hidden="true">
+              <div class="float-card one">
+                <div class="float-label">MAKEIT / WEBSITE</div>
+                <div class="float-title">Design</div>
+                <div class="float-progress">
+                  <span></span>
+                </div>
+              </div>
+
+              <div class="float-card two">
+                <div class="float-label">AI / 02</div>
+                <div class="float-title">Automate</div>
+              </div>
+
+              <div class="float-card three">
+                <div class="float-label">PRODUCT / 03</div>
+                <div class="float-title">Build ↗</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================
+         MARQUEE TICKER
+    ======================================================== -->
+    <section class="marquee-section" aria-hidden="true">
+      <div class="marquee">
+        <div class="marquee-item">WEB DESIGN <span class="marquee-dot"></span></div>
+        <div class="marquee-item">DEVELOPMENT <span class="marquee-dot"></span></div>
+        <div class="marquee-item">AI AUTOMATION <span class="marquee-dot"></span></div>
+        <div class="marquee-item">CUSTOM SOFTWARE <span class="marquee-dot"></span></div>
+        <div class="marquee-item">UI / UX <span class="marquee-dot"></span></div>
+        <div class="marquee-item">PERFORMANCE <span class="marquee-dot"></span></div>
+        <!-- Loop duplication for seamless scroll -->
+        <div class="marquee-item">WEB DESIGN <span class="marquee-dot"></span></div>
+        <div class="marquee-item">DEVELOPMENT <span class="marquee-dot"></span></div>
+        <div class="marquee-item">AI AUTOMATION <span class="marquee-dot"></span></div>
+        <div class="marquee-item">CUSTOM SOFTWARE <span class="marquee-dot"></span></div>
+        <div class="marquee-item">UI / UX <span class="marquee-dot"></span></div>
+        <div class="marquee-item">PERFORMANCE <span class="marquee-dot"></span></div>
+      </div>
+    </section>
+
+    <!-- =======================================================
+         SERVICES SECTION
+    ======================================================== -->
+    <section class="services" id="services">
+      <div class="container">
+        <div class="services-heading reveal">
+          <div>
+            <div class="eyebrow">What we make</div>
+            <h2 class="section-title" style="margin-top: 35px;">
+              DIGITAL<br>
+              <span class="outline">SOLUTIONS.</span>
+            </h2>
+          </div>
+
+          <p class="services-description">
+            No unnecessary complexity. Just thoughtful design, clean technology and digital systems engineered around your operational goals.
+          </p>
+        </div>
+
+        <div class="services-list">
+                                  <a href="#contact" class="service reveal" aria-label="Websites">
+              <div class="service-number">
+                01              </div>
+
+              <div class="service-content">
+                <h3 class="service-title">
+                  Websites                </h3>
+
+                <p class="service-text">
+                  High-performing websites and landing pages designed to make your business stand out.                </p>
+              </div>
+
+              <div class="service-arrow" aria-hidden="true">
+                ↗
+              </div>
+            </a>
+                                  <a href="#contact" class="service reveal" aria-label="Software">
+              <div class="service-number">
+                02              </div>
+
+              <div class="service-content">
+                <h3 class="service-title">
+                  Software                </h3>
+
+                <p class="service-text">
+                  Custom dashboards, SaaS products and business applications built around your workflow.                </p>
+              </div>
+
+              <div class="service-arrow" aria-hidden="true">
+                ↗
+              </div>
+            </a>
+                                  <a href="#contact" class="service reveal" aria-label="AI + Automation">
+              <div class="service-number">
+                03              </div>
+
+              <div class="service-content">
+                <h3 class="service-title">
+                  AI + Automation                </h3>
+
+                <p class="service-text">
+                  Smarter workflows, AI assistants and automation that save your team time.                </p>
+              </div>
+
+              <div class="service-arrow" aria-hidden="true">
+                ↗
+              </div>
+            </a>
+                                  <a href="#contact" class="service reveal" aria-label="Cloud DevOps &amp; Architecture">
+              <div class="service-number">
+                04              </div>
+
+              <div class="service-content">
+                <h3 class="service-title">
+                  Cloud DevOps &amp; Architecture                </h3>
+
+                <p class="service-text">
+                  Resilient AWS and GCP infrastructure scaling.                </p>
+              </div>
+
+              <div class="service-arrow" aria-hidden="true">
+                ↗
+              </div>
+            </a>
+                                  <a href="#contact" class="service reveal" aria-label="Cloud DevOps &amp; Architecture">
+              <div class="service-number">
+                05              </div>
+
+              <div class="service-content">
+                <h3 class="service-title">
+                  Cloud DevOps &amp; Architecture                </h3>
+
+                <p class="service-text">
+                  Resilient AWS and GCP infrastructure scaling.                </p>
+              </div>
+
+              <div class="service-arrow" aria-hidden="true">
+                ↗
+              </div>
+            </a>
+                                  <a href="#contact" class="service reveal" aria-label="Cloud DevOps &amp; Architecture">
+              <div class="service-number">
+                06              </div>
+
+              <div class="service-content">
+                <h3 class="service-title">
+                  Cloud DevOps &amp; Architecture                </h3>
+
+                <p class="service-text">
+                  Resilient AWS and GCP infrastructure scaling.                </p>
+              </div>
+
+              <div class="service-arrow" aria-hidden="true">
+                ↗
+              </div>
+            </a>
+                  </div>
+      </div>
+    </section>
+
+    <!-- =======================================================
+         STATEMENT (DARK SECTION)
+    ======================================================== -->
+    <section class="statement" id="about">
+      <div class="container">
+        <div class="eyebrow">Our approach</div>
+
+        <div class="statement-title">
+          <div>
+            <span>YOUR IDEA</span>
+          </div>
+          <div>
+            <span>SHOULDN'T</span>
+          </div>
+          <div>
+            <span>STAY AN <strong class="lime">IDEA.</strong></span>
+          </div>
+        </div>
+
+        <p class="statement-copy">
+          We take ideas from rough thought to real product. Strategy, UX, architecture, engineering, and deployment — handled as one connected, frictionless process.
+        </p>
+      </div>
+    </section>
+
+    <!-- =======================================================
+         WORK (STICKY STACKED CARDS)
+    ======================================================== -->
+    <section class="work" id="work">
+      <div class="container">
+        <div class="work-header reveal">
+          <div>
+            <div class="eyebrow">Selected work</div>
+            <h2 class="section-title" style="margin-top: 35px;">
+              BUILT<br>
+              <span class="outline">WITH MAKEIT.</span>
+            </h2>
+          </div>
+
+          <p class="work-note">
+            A selection of production-grade websites, custom software engines, and automated business platforms.
+          </p>
+        </div>
+
+        <div class="projects">
+                                  <article class="project" style="z-index: 5;">
+              <div class="project-top">
+                <div class="project-number">
+                  01 / 04                </div>
+
+                <div class="project-type">
+                  Website                </div>
+              </div>
+
+              <!-- Interactive Visual Showcase -->
+              <div class="project-visual" aria-hidden="true">
+                <div class="browser">
+                  <div class="browser-top">
+                    <div class="browser-dot"></div>
+                    <div class="browser-dot"></div>
+                    <div class="browser-dot"></div>
+                  </div>
+                  <div class="browser-content">
+                    <div class="mock-label">WEBSITE / SYSTEM</div>
+                    <div class="mock-heading">Apex Logistics Portal</div>
+                    <div class="mock-bar"></div>
+                    <div class="mock-button"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="project-bottom">
+                <div>
+                  <h3 class="project-title">
+                    Apex Logistics Portal                  </h3>
+                  <p style="color: var(--muted); font-size: 14px; margin-top: 8px; max-width: 540px;">
+                    A real-time dispatch and fleet management dashboard handling thousands of daily freight consignments with sub-second response times.                  </p>
+                </div>
+
+                <a href="https://example.com/apex" class="project-link magnetic" aria-label="Explore Apex Logistics Portal" target="_blank" rel="noopener noreferrer">
+                  ↗
+                </a>
+              </div>
+            </article>
+                                  <article class="project" style="z-index: 6;">
+              <div class="project-top">
+                <div class="project-number">
+                  02 / 04                </div>
+
+                <div class="project-type">
+                  Software                </div>
+              </div>
+
+              <!-- Interactive Visual Showcase -->
+              <div class="project-visual" aria-hidden="true">
+                <div class="browser">
+                  <div class="browser-top">
+                    <div class="browser-dot"></div>
+                    <div class="browser-dot"></div>
+                    <div class="browser-dot"></div>
+                  </div>
+                  <div class="browser-content">
+                    <div class="mock-label">SOFTWARE / SYSTEM</div>
+                    <div class="mock-heading">Kroma Design Studio</div>
+                    <div class="mock-bar"></div>
+                    <div class="mock-button"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="project-bottom">
+                <div>
+                  <h3 class="project-title">
+                    Kroma Design Studio                  </h3>
+                  <p style="color: var(--muted); font-size: 14px; margin-top: 8px; max-width: 540px;">
+                    An immersive, award-winning agency portfolio showcasing typography excellence, dynamic dark-mode interactions, and smooth transitions.                  </p>
+                </div>
+
+                <a href="https://example.com/kroma" class="project-link magnetic" aria-label="Explore Kroma Design Studio" target="_blank" rel="noopener noreferrer">
+                  ↗
+                </a>
+              </div>
+            </article>
+                                  <article class="project" style="z-index: 7;">
+              <div class="project-top">
+                <div class="project-number">
+                  03 / 04                </div>
+
+                <div class="project-type">
+                  AI + Automation                </div>
+              </div>
+
+              <!-- Interactive Visual Showcase -->
+              <div class="project-visual" aria-hidden="true">
+                <div class="browser">
+                  <div class="browser-top">
+                    <div class="browser-dot"></div>
+                    <div class="browser-dot"></div>
+                    <div class="browser-dot"></div>
+                  </div>
+                  <div class="browser-content">
+                    <div class="mock-label">AI + AUTOMATION / SYSTEM</div>
+                    <div class="mock-heading">Veloce E-Commerce Engine</div>
+                    <div class="mock-bar"></div>
+                    <div class="mock-button"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="project-bottom">
+                <div>
+                  <h3 class="project-title">
+                    Veloce E-Commerce Engine                  </h3>
+                  <p style="color: var(--muted); font-size: 14px; margin-top: 8px; max-width: 540px;">
+                    Custom lightweight e-commerce storefront with instantaneous product filtering, zero framework bloat, and frictionless checkout.                  </p>
+                </div>
+
+                <a href="https://example.com/veloce" class="project-link magnetic" aria-label="Explore Veloce E-Commerce Engine" target="_blank" rel="noopener noreferrer">
+                  ↗
+                </a>
+              </div>
+            </article>
+                                  <article class="project" style="z-index: 8;">
+              <div class="project-top">
+                <div class="project-number">
+                  04 / 04                </div>
+
+                <div class="project-type">
+                  Digital System                </div>
+              </div>
+
+              <!-- Interactive Visual Showcase -->
+              <div class="project-visual" aria-hidden="true">
+                <div class="browser">
+                  <div class="browser-top">
+                    <div class="browser-dot"></div>
+                    <div class="browser-dot"></div>
+                    <div class="browser-dot"></div>
+                  </div>
+                  <div class="browser-content">
+                    <div class="mock-label">DIGITAL SYSTEM / SYSTEM</div>
+                    <div class="mock-heading">OmniFlow Workflow Automation</div>
+                    <div class="mock-bar"></div>
+                    <div class="mock-button"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="project-bottom">
+                <div>
+                  <h3 class="project-title">
+                    OmniFlow Workflow Automation                  </h3>
+                  <p style="color: var(--muted); font-size: 14px; margin-top: 8px; max-width: 540px;">
+                    Internal operational engine synchronizing CRM data, automated invoicing, and multi-tier employee approval pipelines.                  </p>
+                </div>
+
+                <a href="https://example.com/omniflow" class="project-link magnetic" aria-label="Explore OmniFlow Workflow Automation" target="_blank" rel="noopener noreferrer">
+                  ↗
+                </a>
+              </div>
+            </article>
+                  </div>
+      </div>
+    </section>
+
+    <!-- =======================================================
+         WHY MAKEIT (PRINCIPLES)
+    ======================================================== -->
+    <section class="principles">
+      <div class="container">
+        <div class="principles-heading reveal">
+          <div class="eyebrow">Why MakeIT</div>
+          <h2 class="section-title" style="margin-top: 35px;">
+            NO BIG WORDS.<br>
+            <span class="outline">JUST GOOD WORK.</span>
+          </h2>
+        </div>
+
+        <div class="principles-grid">
+                      <div class="principle reveal">
+              <div class="principle-number">
+                01 / COMMUNICATION              </div>
+              <h3>
+                Clear communication.              </h3>
+              <p>
+                No disappearing acts. You always know what&#039;s happening, what&#039;s next and why.              </p>
+            </div>
+                      <div class="principle reveal">
+              <div class="principle-number">
+                02 / DESIGN              </div>
+              <h3>
+                Design first.              </h3>
+              <p>
+                We solve the experience before jumping into the code.              </p>
+            </div>
+                      <div class="principle reveal">
+              <div class="principle-number">
+                03 / TECHNOLOGY              </div>
+              <h3>
+                Built to scale.              </h3>
+              <p>
+                Clean architecture and practical technology that can grow with your business.              </p>
+            </div>
+                      <div class="principle reveal">
+              <div class="principle-number">
+                04 / AI              </div>
+              <h3>
+                AI where it helps.              </h3>
+              <p>
+                We use AI when it creates real value — not just because it&#039;s trending.              </p>
+            </div>
+                  </div>
+      </div>
+    </section>
+
+    <!-- =======================================================
+         PROCESS (WITH SCROLL PROGRESS LINE)
+    ======================================================== -->
+    <section class="process" id="process">
+      <div class="container">
+        <div class="process-header reveal">
+          <div>
+            <div class="eyebrow">How it works</div>
+            <h2 class="section-title" style="margin-top: 35px;">
+              FROM IDEA<br>
+              <span class="outline">TO LIVE.</span>
+            </h2>
+          </div>
+
+          <p class="process-copy">
+            A transparent, agile workflow designed for speed, accountability, and zero fluff.
+          </p>
+        </div>
+
+        <div class="process-track">
+          <div class="process-line" aria-hidden="true"></div>
+          <div class="process-progress" id="processProgress" aria-hidden="true"></div>
+
+                      <div class="process-step">
+              <div class="process-dot">
+                01              </div>
+              <h3>
+                Tell us.              </h3>
+              <p>
+                Tell us what you&#039;re trying to build, fix or improve.              </p>
+            </div>
+                      <div class="process-step">
+              <div class="process-dot">
+                02              </div>
+              <h3>
+                We plan.              </h3>
+              <p>
+                We define the experience, technology and scope.              </p>
+            </div>
+                      <div class="process-step">
+              <div class="process-dot">
+                03              </div>
+              <h3>
+                We build.              </h3>
+              <p>
+                Design, development and testing happen together.              </p>
+            </div>
+                      <div class="process-step">
+              <div class="process-dot">
+                04              </div>
+              <h3>
+                You launch.              </h3>
+              <p>
+                Your product goes live and starts doing its job.              </p>
+            </div>
+                  </div>
+      </div>
+    </section>
+
+    <!-- =======================================================
+         TESTIMONIALS SECTION (DATABASE-DRIVEN CMS)
+    ======================================================== -->
+    <section class="testimonials" id="testimonials">
+      <div class="container">
+        <div class="testimonials-header reveal">
+          <div>
+            <div class="eyebrow">Client Feedback</div>
+            <h2 class="section-title" style="margin-top: 35px;">
+              WHAT FOUNDERS<br>
+              <span class="outline">SAY ABOUT US.</span>
+            </h2>
+          </div>
+
+          <p style="color: var(--muted); max-width: 440px; font-size: 15px; line-height: 1.6;">
+            Direct testimonials from founders, CTOs, and product leaders who rely on MakeIT systems.
+          </p>
+        </div>
+
+        <div class="testimonials-grid">
+                      <div class="testimonial-card reveal">
+              <div>
+                <div class="testimonial-rating" aria-label="Rating: 5 of 5 stars">
+                  ★★★★★                </div>
+                <p class="testimonial-quote">
+                  MakeIT transformed our dispatch platform from a sluggish legacy headache into a blisteringly fast powerhouse. The speed and clarity of their engineering is unparalleled.                </p>
+              </div>
+
+              <div class="testimonial-meta">
+                <img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%22%20height%3D%22100%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22%23181922%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2240%22%20r%3D%2220%22%20fill%3D%22%239699A8%22%2F%3E%3Cpath%20d%3D%22M20%2C85%20C20%2C68%2035%2C65%2050%2C65%20C65%2C65%2080%2C68%2080%2C85%20Z%22%20fill%3D%22%239699A8%22%2F%3E%3C%2Fsvg%3E" alt="Marcus Vance" class="testimonial-avatar" loading="lazy" />
+                <div>
+                  <div class="testimonial-author-name">Marcus Vance</div>
+                  <div class="testimonial-author-sub">
+                    Chief Technology Officer, Apex Global Logistics                  </div>
+                </div>
+              </div>
+            </div>
+                      <div class="testimonial-card reveal">
+              <div>
+                <div class="testimonial-rating" aria-label="Rating: 5 of 5 stars">
+                  ★★★★★                </div>
+                <p class="testimonial-quote">
+                  Working with MakeIT was seamless. They understood both the delicate aesthetic nuances of our brand and the strict architectural requirements under the hood.                </p>
+              </div>
+
+              <div class="testimonial-meta">
+                <img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%22%20height%3D%22100%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22%23181922%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2240%22%20r%3D%2220%22%20fill%3D%22%239699A8%22%2F%3E%3Cpath%20d%3D%22M20%2C85%20C20%2C68%2035%2C65%2050%2C65%20C65%2C65%2080%2C68%2080%2C85%20Z%22%20fill%3D%22%239699A8%22%2F%3E%3C%2Fsvg%3E" alt="Elena Rostova" class="testimonial-avatar" loading="lazy" />
+                <div>
+                  <div class="testimonial-author-name">Elena Rostova</div>
+                  <div class="testimonial-author-sub">
+                    Founder &amp; Creative Director, Kroma Creative Agency                  </div>
+                </div>
+              </div>
+            </div>
+                      <div class="testimonial-card reveal">
+              <div>
+                <div class="testimonial-rating" aria-label="Rating: 5 of 5 stars">
+                  ★★★★★                </div>
+                <p class="testimonial-quote">
+                  Our online store conversion jumped by 34% within the first month after MakeIT rebuilt our checkout flow. Zero framework bloat, lightning speed, and total reliability.                </p>
+              </div>
+
+              <div class="testimonial-meta">
+                <img src="data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%22%20height%3D%22100%22%20viewBox%3D%220%200%20100%20100%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20fill%3D%22%23181922%22%2F%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2240%22%20r%3D%2220%22%20fill%3D%22%239699A8%22%2F%3E%3Cpath%20d%3D%22M20%2C85%20C20%2C68%2035%2C65%2050%2C65%20C65%2C65%2080%2C68%2080%2C85%20Z%22%20fill%3D%22%239699A8%22%2F%3E%3C%2Fsvg%3E" alt="Julian Bennett" class="testimonial-avatar" loading="lazy" />
+                <div>
+                  <div class="testimonial-author-name">Julian Bennett</div>
+                  <div class="testimonial-author-sub">
+                    Managing Director, Veloce Luxury Group                  </div>
+                </div>
+              </div>
+            </div>
+                  </div>
+      </div>
+    </section>
+
+    <!-- =======================================================
+         AUDIENCE
+    ======================================================== -->
+    <section class="audience">
+      <div class="container reveal">
+        <div class="eyebrow">Built for</div>
+        <div class="audience-text">
+          <span>Startups</span>
+          <span>Founders</span>
+          <span>Small Businesses</span>
+          <span>Product Teams</span>
+          <span>Creators</span>
+          <span>Growing Companies</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- =======================================================
+         CTA & COMPLETE CONTACT FORM
+    ======================================================== -->
+    <section class="cta" id="contact">
+      <div class="container cta-grid">
+        <div class="cta-inner reveal">
+          <div class="cta-eyebrow">GOT AN IDEA?</div>
+          <h2 class="cta-title">
+            LET'S<br>
+            MAKE IT.
+          </h2>
+
+          <p class="cta-subtitle">
+            Tell us about your next project, challenge, or digital vision. We'll examine the technical architecture and provide actionable recommendations.
+          </p>
+
+          <div class="cta-contact-info">
+                          <a href="mailto:contact@makeit.digital">
+                <span>Email:</span> contact@makeit.digital ↗
+              </a>
+                                      <a href="tel:9035344513">
+                <span>Call:</span> 9035344513 ↗
+              </a>
+                        <span>Location: Bangalore-560010, karnataka. India</span>
+          </div>
+        </div>
+
+        <!-- Contact Form Card -->
+        <div class="contact-form-card reveal">
+          <h3 class="contact-form-title">Start a Project</h3>
+          <p class="contact-form-desc">Fill out the form below to receive a response within 24 hours.</p>
+
+          <div id="formFeedback"></div>
+
+          <form id="contactForm" method="POST" action="#contact" novalidate>
+            <!-- Anti-Bot Spam Honeypot Field -->
+            <div class="hp-field" aria-hidden="true">
+              <label for="website_url">Leave this field blank</label>
+              <input type="text" id="website_url" name="website_url" autocomplete="off" tabindex="-1">
+            </div>
+
+            <div class="form-grid">
+              <!-- Name -->
+              <div class="form-group">
+                <label for="name" class="form-label">Name *</label>
+                <input type="text" id="name" name="name" class="form-control" placeholder="Rahul Sharma" required minlength="2" maxlength="100">
+              </div>
+
+              <!-- Email -->
+              <div class="form-group">
+                <label for="email" class="form-label">Email Address *</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="rahul@company.com" required maxlength="150">
+              </div>
+
+              <!-- Phone -->
+              <div class="form-group">
+                <label for="phone" class="form-label">Phone</label>
+                <input type="tel" id="phone" name="phone" class="form-control" placeholder="9035344513" maxlength="50">
+              </div>
+
+              <!-- Company -->
+              <div class="form-group">
+                <label for="company" class="form-label">Company</label>
+                <input type="text" id="company" name="company" class="form-control" placeholder="ABC Technologies" maxlength="100">
+              </div>
+
+              <!-- Service -->
+              <div class="form-group">
+                <label for="service" class="form-label">Service</label>
+                <select id="service" name="service" class="form-control">
+                                                                                <option value="Websites">Websites</option>
+                                          <option value="Software">Software</option>
+                                          <option value="AI + Automation">AI + Automation</option>
+                                          <option value="Cloud DevOps &amp; Architecture">Cloud DevOps &amp; Architecture</option>
+                                        <option value="Consulting / Other">Consulting / Other</option>
+                                  </select>
+              </div>
+
+              <!-- Budget -->
+              <div class="form-group">
+                <label for="budget" class="form-label">Estimated Budget</label>
+                <select id="budget" name="budget" class="form-control">
+                  <option value="< ₹1,00,000">&lt; ₹1,00,000</option>
+                  <option value="₹1,00,000 - ₹3,00,000" selected>₹1,00,000 – ₹3,00,000</option>
+                  <option value="₹3,00,000 - ₹5,00,000">₹3,00,000 – ₹5,00,000</option>
+                  <option value="₹5,00,000+">₹5,00,000+</option>
+                </select>
+              </div>
+
+              <!-- Message -->
+              <div class="form-group full">
+                <label for="message" class="form-label">Project Details *</label>
+                <textarea id="message" name="message" class="form-control" rows="4" placeholder="Briefly describe what you're looking to build or solve..." required minlength="5" maxlength="5000"></textarea>
+              </div>
+            </div>
+
+            <button type="submit" class="btn-form-submit magnetic">
+              <span>Send Message</span>
+              <span aria-hidden="true">↗</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =======================================================
+       FOOTER
+  ======================================================== -->
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-logo">
+          MakeIT Digital Studio        </div>
+
+        <div class="footer-links">
+          <div class="footer-col">
+            <div class="footer-col-title">Navigate</div>
+            <a href="#home">Home</a>
+            <a href="#services">Services</a>
+            <a href="#work">Work</a>
+            <a href="#process">Process</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+          </div>
+
+          <div class="footer-col">
+            <div class="footer-col-title">Connect</div>
+                          <a href="mailto:contact@makeit.digital">contact@makeit.digital</a>
+                                      <a href="tel:9035344513">9035344513</a>
+                                      <a href="https://linkedin.com/company/makeit" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+                                      <a href="https://github.com/makeit" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+                                      <a href="https://x.com/makeitdigital" target="_blank" rel="noopener noreferrer">Twitter / X ↗</a>
+                                      <a href="https://instagram.com/makeit" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+                                      <a href="https://facebook.com/makeit" target="_blank" rel="noopener noreferrer">Facebook ↗</a>
+                                  </div>
+
+                      <div class="footer-col">
+              <div class="footer-col-title">Office</div>
+                              <p style="font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 12px;">
+                  Bangalore-560010, karnataka. India                </p>
+                                        </div>
+                  </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>
+          &copy; 2026 MAKEIT DIGITAL STUDIO        </span>
+        <span>
+          ENGINEERING DIGITAL PRECISION.        </span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Frontend Configuration & Vanilla Motion Engine -->
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>

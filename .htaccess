@@ -1,0 +1,79 @@
+# ==============================================================================
+# MakeIT - Root Apache Configuration (.htaccess)
+# Designed for production shared hosting (Hostinger, cPanel, Apache 2.4+)
+# ==============================================================================
+
+# Disable directory browsing
+Options -Indexes
+
+# Follow symbolic links
+Options +FollowSymLinks
+
+# Set default character set
+AddDefaultCharset UTF-8
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Block access to hidden files and directories (e.g. .git, .env)
+    RewriteRule (^|/)\.(?!well-known) - [F]
+
+    # Block direct access to sensitive file extensions
+    <FilesMatch "\.(sql|sqlite|sqlite3|db|log|ini|conf|bak|dist|sh|example)$">
+        <IfModule mod_authz_core.c>
+            Require all denied
+        </IfModule>
+        <IfModule !mod_authz_core.c>
+            Order deny,allow
+            Deny from all
+        </IfModule>
+    </FilesMatch>
+
+    # Protect database and bin directories
+    RewriteRule ^database/ - [F,L]
+    RewriteRule ^bin/ - [F,L]
+</IfModule>
+
+# Custom User-Facing Error Documents
+ErrorDocument 404 /404.php
+ErrorDocument 500 /500.php
+
+# Prevent viewing of sensitive files directly
+<Files "error.log">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</Files>
+
+<Files "makeit.sql">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</Files>
+
+<Files "makeit.sqlite">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</Files>
+
+# Defensive HTTP Response Headers (if mod_headers is available)
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>

@@ -1,0 +1,28 @@
+# MakeIT — Netlify Static Website Configuration
+# Pure HTML / CSS / JavaScript Static Build
+
+[build]
+  # When deploying the `netlify/` directory directly, publish is current folder
+  publish = "."
+
+# Security & Performance HTTP Headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# Caching policy for static assets (CSS, JS, SVGs)
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Ensure HTML index is always fresh
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
