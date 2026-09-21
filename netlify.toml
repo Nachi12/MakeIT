@@ -2,8 +2,8 @@
 # Pure HTML / CSS / JavaScript Static Build
 
 [build]
-  # When deploying the `netlify/` directory directly, publish is current folder
-  publish = "."
+  # Publish the netlify static directory
+  publish = "netlify"
 
 # Security & Performance HTTP Headers
 [[headers]]
