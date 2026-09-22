@@ -1,48 +1,25 @@
-/**
- * MakeIT — Centralized 60fps Motion Engine
- * Pure Vanilla JavaScript (No Frameworks, No Libraries)
- */
-
-console.log("[MAKEIT] main.js loaded");
-
 document.addEventListener("DOMContentLoaded", () => {
   "use strict";
-  console.log("[MAKEIT] DOMContentLoaded");
 
   /* =========================================================
      0. MOTION PREFERENCES & SETUP
   ========================================================= */
   document.documentElement.classList.add("force-motion");
-  console.log("[MAKEIT] motion initialization started");
 
   /* =========================================================
-     1. PRELOADER & HERO ENTRANCE COORDINATION (PHASE 2)
+     1. PRELOADER DISMISSAL
   ========================================================= */
   const loader = document.getElementById("loader");
-  let isPageReady = false;
-
-  function triggerPageReady() {
-    if (isPageReady) return;
-    isPageReady = true;
-    document.body.classList.add("page-ready");
-    document.body.classList.add("js-loaded");
-
-    // Once hero entrance sequence finishes settling (~1400ms),
-    // mark settled so mouse parallax on floating cards runs without CSS transition delay
-    setTimeout(() => {
-      document.body.classList.add("hero-settled");
-    }, 1400);
-  }
-
   if (loader) {
-    // Elegant entrance: dismiss preloader after 280ms so hero sequence reveals smoothly
     setTimeout(() => {
       loader.classList.add("hide");
-      setTimeout(triggerPageReady, 100);
     }, 280);
-  } else {
-    triggerPageReady();
   }
+
+  // Mark hero settled to trigger mouse parallax accurately (matches CSS hero entrance duration)
+  setTimeout(() => {
+    document.body.classList.add("hero-settled");
+  }, 1400);
 
   /* =========================================================
      2. GLOBAL MOTION STATE VARIABLES (CENTRALIZED ARCHITECTURE)
@@ -290,7 +267,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   requestAnimationFrame(animationLoop);
-  console.log("[MAKEIT] motion initialization complete");
 
   /* =========================================================
      6. SCROLL REVEAL (INTERSECTION OBSERVER - PHASE 5 & 6)
@@ -304,8 +280,8 @@ document.addEventListener("DOMContentLoaded", () => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            console.log("[MAKEIT] reveal observer fired", entry.target);
             entry.target.classList.add("visible");
+            entry.target.classList.remove("js-hidden");
             observer.unobserve(entry.target);
           }
         });
@@ -316,7 +292,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     );
 
-    revealElements.forEach((el) => observer.observe(el));
+    revealElements.forEach((el) => {
+      el.classList.add("js-hidden");
+      observer.observe(el);
+    });
   } else {
     revealElements.forEach((el) => el.classList.add("visible"));
   }

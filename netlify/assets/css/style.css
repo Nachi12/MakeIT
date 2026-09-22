@@ -480,11 +480,16 @@ section {
 }
 
 .reveal {
-  opacity: 0;
-  transform: translate3d(0, 30px, 0);
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
   transition:
     opacity 800ms cubic-bezier(0.22, 1, 0.36, 1),
     transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.js-hidden {
+  opacity: 0;
+  transform: translate3d(0, 30px, 0);
 }
 
 .reveal.visible {
@@ -493,11 +498,16 @@ section {
 }
 
 .reveal-stagger > * {
-  opacity: 0;
-  transform: translate3d(0, 30px, 0);
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
   transition:
     opacity 0.8s var(--ease-main),
     transform 0.8s var(--ease-main);
+}
+
+.reveal-stagger.js-hidden > * {
+  opacity: 0;
+  transform: translate3d(0, 30px, 0);
 }
 
 .reveal-stagger.visible > *:nth-child(1) { opacity: 1; transform: translate3d(0, 0, 0); transition-delay: 0ms; }
@@ -602,16 +612,7 @@ section {
   justify-content: flex-start;
   gap: 16px;
   margin-bottom: 18px; /* Closer to headline for tighter vertical rhythm */
-  opacity: 0;
-  transform: translate3d(0, 10px, 0);
-  transition:
-    opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1) 120ms,
-    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1) 120ms;
-}
-
-.page-ready .hero-top {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
+  animation: heroEntrance 0.75s cubic-bezier(0.16, 1, 0.3, 1) 120ms both;
 }
 
 .eyebrow {
@@ -670,37 +671,14 @@ section {
 
 .hero-line > span {
   display: inline-block;
-  opacity: 0;
-  transform: translate3d(0, 102%, 0);
-  transition:
-    transform 850ms cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 650ms ease;
+  animation: heroLineReveal 850ms cubic-bezier(0.16, 1, 0.3, 1) both;
   will-change: transform, opacity;
 }
 
-.page-ready .hero-line:nth-child(1) > span {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
-  transition-delay: 180ms;
-}
-
-.page-ready .hero-line:nth-child(2) > span {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
-  transition-delay: 280ms;
-}
-
-.page-ready .hero-line:nth-child(3) > span {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
-  transition-delay: 380ms;
-}
-
-.page-ready .hero-line:nth-child(n+4) > span {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
-  transition-delay: 480ms;
-}
+.hero-line:nth-child(1) > span { animation-delay: 180ms; }
+.hero-line:nth-child(2) > span { animation-delay: 280ms; }
+.hero-line:nth-child(3) > span { animation-delay: 380ms; }
+.hero-line:nth-child(n+4) > span { animation-delay: 480ms; }
 
 /* Refined Typographic Green Accent on "SCALE." (Integrated Studio Highlight) */
 .hero-accent,
@@ -722,7 +700,7 @@ section {
   z-index: -1;
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1) 540ms;
+  animation: heroAccentScale 0.75s cubic-bezier(0.16, 1, 0.3, 1) 540ms both;
 }
 
 /* Precision baseline grounding bar */
@@ -738,18 +716,8 @@ section {
   border-radius: 2px;
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1) 660ms;
+  animation: heroAccentScale 0.65s cubic-bezier(0.16, 1, 0.3, 1) 660ms both;
   z-index: 0;
-}
-
-.page-ready .hero-accent::before,
-.page-ready .hero-accent-word::before {
-  transform: scaleX(1);
-}
-
-.page-ready .hero-accent::after,
-.page-ready .hero-accent-word::after {
-  transform: scaleX(1);
 }
 
 .hero-bottom {
@@ -766,16 +734,7 @@ section {
   color: #4c4c46;
   letter-spacing: -0.012em;
   margin: 0;
-  opacity: 0;
-  transform: translate3d(0, 14px, 0);
-  transition:
-    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 580ms,
-    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 580ms;
-}
-
-.page-ready .hero-description {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
+  animation: heroEntranceFar 0.8s cubic-bezier(0.16, 1, 0.3, 1) 580ms both;
 }
 
 .hero-buttons {
@@ -784,16 +743,24 @@ section {
   gap: 14px;
   flex-wrap: wrap;
   margin: 0;
-  opacity: 0;
-  transform: translate3d(0, 14px, 0);
-  transition:
-    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 680ms,
-    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 680ms;
+  animation: heroEntranceFar 0.8s cubic-bezier(0.16, 1, 0.3, 1) 680ms both;
 }
 
-.page-ready .hero-buttons {
-  opacity: 1;
-  transform: translate3d(0, 0, 0);
+@keyframes heroEntrance {
+  from { opacity: 0; transform: translate3d(0, 10px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes heroEntranceFar {
+  from { opacity: 0; transform: translate3d(0, 14px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes heroLineReveal {
+  from { opacity: 0; transform: translate3d(0, 102%, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes heroAccentScale {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
 }
 
 .button {
@@ -878,17 +845,13 @@ section {
   height: 310px;
   z-index: 10;
   pointer-events: none;
-  opacity: 0;
-  transform: translate3d(0, 14px, 0) scale(0.98);
-  transition:
-    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1) 750ms,
-    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) 750ms;
+  animation: floatingSystemEntrance 0.9s cubic-bezier(0.16, 1, 0.3, 1) 750ms both;
   will-change: transform, opacity;
 }
 
-.page-ready .floating-system {
-  opacity: 1;
-  transform: translate3d(0, 0, 0) scale(1);
+@keyframes floatingSystemEntrance {
+  from { opacity: 0; transform: translate3d(0, 14px, 0) scale(0.98); }
+  to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
 }
 
 /* Once hero entrance settles, remove transition for instantaneous mouse parallax */
@@ -925,8 +888,8 @@ section {
   top: 38px;
   left: 0px;
   z-index: 2;
-  animation: studioFloatOne 9.5s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
-  transform: translate3d(calc(var(--tilt-x, 0px) * 0.75), calc(var(--tilt-y, 0px) * 0.75), 0) rotate(-1deg);
+  animation: studioFloatOne 9.5s ease-in-out infinite;
+  transform: rotate(-1deg);
 }
 
 .float-card.one .float-title {
@@ -940,8 +903,8 @@ section {
   top: 0px;
   right: 8px;
   z-index: 3;
-  animation: studioFloatTwo 11s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite 1.2s;
-  transform: translate3d(calc(var(--tilt-x, 0px) * 1.15), calc(var(--tilt-y, 0px) * 1.15), 0) rotate(1.8deg);
+  animation: studioFloatTwo 11s ease-in-out infinite 1.2s;
+  transform: rotate(1.8deg);
 }
 
 .float-card.two .float-title {
@@ -955,8 +918,8 @@ section {
   top: 156px;
   left: 72px;
   z-index: 4;
-  animation: studioFloatThree 8.2s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite 2.4s;
-  transform: translate3d(calc(var(--tilt-x, 0px) * 0.9), calc(var(--tilt-y, 0px) * 0.9), 0) rotate(-0.6deg);
+  animation: studioFloatThree 8.2s ease-in-out infinite 2.4s;
+  transform: rotate(-0.6deg);
 }
 
 .float-card.three .float-title {
@@ -966,28 +929,28 @@ section {
 /* Continuous Subtle Floating Animations (Unsynchronized, Long-Duration, No Bouncing) */
 @keyframes studioFloatOne {
   0%, 100% {
-    transform: translate3d(calc(var(--tilt-x, 0px) * 0.75), calc(var(--tilt-y, 0px) * 0.75), 0) rotate(-1deg);
+    transform: translate3d(0, 0, 0) rotate(-1deg);
   }
   50% {
-    transform: translate3d(calc(var(--tilt-x, 0px) * 0.75), calc(-6px + var(--tilt-y, 0px) * 0.75), 0) rotate(-1deg);
+    transform: translate3d(0, -6px, 0) rotate(-1deg);
   }
 }
 
 @keyframes studioFloatTwo {
   0%, 100% {
-    transform: translate3d(calc(var(--tilt-x, 0px) * 1.15), calc(var(--tilt-y, 0px) * 1.15), 0) rotate(1.8deg);
+    transform: translate3d(0, 0, 0) rotate(1.8deg);
   }
   50% {
-    transform: translate3d(calc(var(--tilt-x, 0px) * 1.15), calc(5px + var(--tilt-y, 0px) * 1.15), 0) rotate(1.8deg);
+    transform: translate3d(0, 5px, 0) rotate(1.8deg);
   }
 }
 
 @keyframes studioFloatThree {
   0%, 100% {
-    transform: translate3d(calc(var(--tilt-x, 0px) * 0.9), calc(var(--tilt-y, 0px) * 0.9), 0) rotate(-0.6deg);
+    transform: translate3d(0, 0, 0) rotate(-0.6deg);
   }
   50% {
-    transform: translate3d(calc(var(--tilt-x, 0px) * 0.9), calc(-5px + var(--tilt-y, 0px) * 0.9), 0) rotate(-0.6deg);
+    transform: translate3d(0, -5px, 0) rotate(-0.6deg);
   }
 }
 
@@ -1221,9 +1184,13 @@ section {
 
 .statement-title span {
   display: block;
-  transform: translateY(105%);
+  transform: translateY(0);
   transition: transform 0.85s var(--ease-spring);
   will-change: transform;
+}
+
+.statement.js-hidden .statement-title span {
+  transform: translateY(105%);
 }
 
 .statement-title div:nth-child(1) span {
@@ -1252,12 +1219,17 @@ section {
   color: #aaa9a3;
   font-size: 15px;
   line-height: 1.8;
-  opacity: 0;
-  transform: translateY(20px);
+  opacity: 1;
+  transform: translateY(0);
   transition:
     opacity 0.8s var(--ease-spring) 0.35s,
     transform 0.8s var(--ease-spring) 0.35s;
   will-change: opacity, transform;
+}
+
+.statement.js-hidden .statement-copy {
+  opacity: 0;
+  transform: translateY(20px);
 }
 
 .statement.visible .statement-copy {
@@ -2814,3 +2786,15 @@ footer.visible .footer-bottom {
   }
 }
 
+
+/* =========================================================
+   REDUCED MOTION FALLBACK
+========================================================= */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
