@@ -3,15 +3,17 @@
  * Pure Vanilla JavaScript (No Frameworks, No Libraries)
  */
 
-console.log("[MakeIT Motion] main.js loaded");
+console.log("[MAKEIT] main.js loaded");
 
 document.addEventListener("DOMContentLoaded", () => {
   "use strict";
+  console.log("[MAKEIT] DOMContentLoaded");
 
   /* =========================================================
      0. MOTION PREFERENCES & SETUP
   ========================================================= */
   document.documentElement.classList.add("force-motion");
+  console.log("[MAKEIT] motion initialization started");
 
   /* =========================================================
      1. PRELOADER & HERO ENTRANCE COORDINATION (PHASE 2)
@@ -288,7 +290,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   requestAnimationFrame(animationLoop);
-  console.log("[MakeIT Motion] initialized");
+  console.log("[MAKEIT] motion initialization complete");
 
   /* =========================================================
      6. SCROLL REVEAL (INTERSECTION OBSERVER - PHASE 5 & 6)
@@ -302,6 +304,7 @@ document.addEventListener("DOMContentLoaded", () => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
+            console.log("[MAKEIT] reveal observer fired", entry.target);
             entry.target.classList.add("visible");
             observer.unobserve(entry.target);
           }
