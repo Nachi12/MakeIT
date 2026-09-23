@@ -2108,7 +2108,7 @@ footer.visible .footer-bottom {
   z-index: 990;
   background: var(--black);
   color: white;
-  display: none !important;
+  display: none;
   flex-direction: column;
   justify-content: center;
   padding: calc(48px + var(--sat)) calc(32px + var(--sar)) calc(48px + var(--sab)) calc(32px + var(--sal));
@@ -2122,21 +2122,16 @@ footer.visible .footer-bottom {
 }
 
 @media (max-width: 900px) {
+  .mobile-menu {
+    display: flex;
+  }
+
   .mobile-menu.active {
     display: flex !important;
-    transform: translateY(0);
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-  }
-}
-
-@media (min-width: 901px) {
-  .mobile-menu,
-  .mobile-menu.active {
-    display: none !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
   }
 }
 
@@ -2247,6 +2242,20 @@ footer.visible .footer-bottom {
   .process-header,
   .testimonials-header {
     gap: 30px;
+/* Guaranteed Desktop Safety Overrides (901px+) */
+@media (min-width: 901px) {
+  .mobile-menu,
+  .mobile-menu.active {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transform: translateY(-100%) !important;
+  }
+
+  .menu,
+  .mobile-menu-toggle {
+    display: none !important;
   }
 }
 
