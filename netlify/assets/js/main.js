@@ -233,7 +233,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // 5. UPDATE PROJECT STACKING (Desktop + Mobile Responsive Stacking)
+    // 5. UPDATE PROJECT STACKING (Desktop + Mobile Responsive Touch & Mouse Stacking)
     if (projectCards.length > 0) {
       const isMobile = window.innerWidth <= 767;
       const baseTop = isMobile ? 75 : 90;
@@ -242,12 +242,23 @@ document.addEventListener("DOMContentLoaded", () => {
       const maxScaleDrop = isMobile ? 0.025 : 0.03;
       const maxTranslateY = isMobile ? 6 : 10;
 
+      const projectsContainer = document.querySelector(".projects");
+      const scrollY = window.scrollY || window.pageYOffset || 0;
+      const containerDocTop = projectsContainer
+        ? projectsContainer.getBoundingClientRect().top + scrollY
+        : 0;
+
       const len = projectCards.length;
       for (let i = 0; i < len; i++) {
         const card = projectCards[i];
-        const rect = card.getBoundingClientRect();
         const topThreshold = baseTop + i * step;
-        const distance = Math.max(0, topThreshold - rect.top);
+        const cardDocTop = projectsContainer
+          ? containerDocTop + card.offsetTop
+          : (card.getBoundingClientRect().top + scrollY);
+
+        // Distance scrolled past the point where the card reaches its sticky position
+        const distance = Math.max(0, (scrollY + topThreshold) - cardDocTop);
+
         if (distance > 0) {
           const progress = Math.min(1, distance / range);
           const scale = 1 - (progress * maxScaleDrop);
