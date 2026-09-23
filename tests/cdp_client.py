@@ -17,7 +17,9 @@ class SimpleCDP:
         url = f"http://127.0.0.1:{self.port}/json"
         req = urllib.request.urlopen(url)
         tabs = json.loads(req.read().decode())
-        page_tab = next(t for t in tabs if t.get("type") == "page")
+        page_tab = next((t for t in tabs if t.get("type") == "page" and "localhost" in t.get("url", "")), None)
+        if not page_tab:
+            page_tab = next(t for t in tabs if t.get("type") == "page")
         ws_url = page_tab["webSocketDebuggerUrl"]
         # parse ws://127.0.0.1:port/devtools/page/...
         path = ws_url.split(f":{self.port}")[1]
