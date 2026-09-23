@@ -443,6 +443,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputBudget = document.getElementById("qnInputBudget");
     const businessInput = document.getElementById("qnBusinessInput");
 
+    // Guarantee clean initial step state (only Step 1 active)
+    qnWrapper.querySelectorAll(".qn-step").forEach((el) => {
+      el.classList.toggle("active", el.getAttribute("data-step") === "1");
+    });
+
     function goToStep(targetStep) {
       if (targetStep < 1 || targetStep > totalSteps) return;
 

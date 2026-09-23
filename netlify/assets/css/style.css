@@ -2242,6 +2242,9 @@ footer.visible .footer-bottom {
   .process-header,
   .testimonials-header {
     gap: 30px;
+  }
+}
+
 /* Guaranteed Desktop Safety Overrides (901px+) */
 @media (min-width: 901px) {
   .mobile-menu,
@@ -3330,14 +3333,14 @@ footer.visible .footer-bottom {
 }
 
 .qn-step {
-  display: none;
+  display: none !important;
   opacity: 0;
   transform: translateX(20px);
   transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1), transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .qn-step.active {
-  display: block;
+  display: block !important;
   opacity: 1;
   transform: translateX(0);
 }
