@@ -1,3 +1,10 @@
+/**
+ * MakeIT — Centralized 60fps Motion Engine
+ * Pure Vanilla JavaScript (No Frameworks, No Libraries)
+ */
+
+console.log("[MakeIT Motion] main.js loaded");
+
 document.addEventListener("DOMContentLoaded", () => {
   "use strict";
 
@@ -7,19 +14,33 @@ document.addEventListener("DOMContentLoaded", () => {
   document.documentElement.classList.add("force-motion");
 
   /* =========================================================
-     1. PRELOADER DISMISSAL
+     1. PRELOADER & HERO ENTRANCE COORDINATION (PHASE 2)
   ========================================================= */
   const loader = document.getElementById("loader");
-  if (loader) {
+  let isPageReady = false;
+
+  function triggerPageReady() {
+    if (isPageReady) return;
+    isPageReady = true;
+    document.body.classList.add("page-ready");
+    document.body.classList.add("js-loaded");
+
+    // Once hero entrance sequence finishes settling (~1400ms),
+    // mark settled so mouse parallax on floating cards runs without CSS transition delay
     setTimeout(() => {
-      loader.classList.add("hide");
-    }, 280);
+      document.body.classList.add("hero-settled");
+    }, 1400);
   }
 
-  // Mark hero settled to trigger mouse parallax accurately (matches CSS hero entrance duration)
-  setTimeout(() => {
-    document.body.classList.add("hero-settled");
-  }, 1400);
+  if (loader) {
+    // Elegant entrance: dismiss preloader after 280ms so hero sequence reveals smoothly
+    setTimeout(() => {
+      loader.classList.add("hide");
+      setTimeout(triggerPageReady, 100);
+    }, 280);
+  } else {
+    triggerPageReady();
+  }
 
   /* =========================================================
      2. GLOBAL MOTION STATE VARIABLES (CENTRALIZED ARCHITECTURE)
@@ -212,18 +233,25 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // 5. UPDATE PROJECT STACKING (Step 15: smooth, visible stacking)
-    if (projectCards.length > 0 && window.innerWidth > 900) {
+    // 5. UPDATE PROJECT STACKING (Desktop + Mobile Responsive Stacking)
+    if (projectCards.length > 0) {
+      const isMobile = window.innerWidth <= 767;
+      const baseTop = isMobile ? 75 : 90;
+      const step = isMobile ? 12 : 16;
+      const range = isMobile ? 320 : 420;
+      const maxScaleDrop = isMobile ? 0.025 : 0.03;
+      const maxTranslateY = isMobile ? 6 : 10;
+
       const len = projectCards.length;
       for (let i = 0; i < len; i++) {
         const card = projectCards[i];
         const rect = card.getBoundingClientRect();
-        const topThreshold = 90 + i * 16;
+        const topThreshold = baseTop + i * step;
         const distance = Math.max(0, topThreshold - rect.top);
         if (distance > 0) {
-          const progress = Math.min(1, distance / 420);
-          const scale = 1 - (progress * 0.03); // 1.0 -> 0.97
-          const translateY = -(progress * 10);
+          const progress = Math.min(1, distance / range);
+          const scale = 1 - (progress * maxScaleDrop);
+          const translateY = -(progress * maxTranslateY);
           card.style.transform = `scale(${scale.toFixed(4)}) translateY(${translateY.toFixed(1)}px)`;
         } else {
           card.style.transform = "scale(1) translateY(0px)";
@@ -267,6 +295,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   requestAnimationFrame(animationLoop);
+  console.log("[MakeIT Motion] initialized");
 
   /* =========================================================
      6. SCROLL REVEAL (INTERSECTION OBSERVER - PHASE 5 & 6)
@@ -281,7 +310,6 @@ document.addEventListener("DOMContentLoaded", () => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("visible");
-            entry.target.classList.remove("js-hidden");
             observer.unobserve(entry.target);
           }
         });
@@ -292,10 +320,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     );
 
-    revealElements.forEach((el) => {
-      el.classList.add("js-hidden");
-      observer.observe(el);
-    });
+    revealElements.forEach((el) => observer.observe(el));
   } else {
     revealElements.forEach((el) => el.classList.add("visible"));
   }
@@ -321,6 +346,15 @@ document.addEventListener("DOMContentLoaded", () => {
         menuButton.setAttribute("aria-expanded", "false");
         document.body.style.overflow = "";
       });
+    });
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 900 && mobileMenu.classList.contains("active")) {
+        mobileMenu.classList.remove("active");
+        menuButton.textContent = "☰";
+        menuButton.setAttribute("aria-expanded", "false");
+        document.body.style.overflow = "";
+      }
     });
   }
 
@@ -370,38 +404,22 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       const formData = new FormData(contactForm);
-      const baseUrl = (window.MAKEIT_CONFIG && typeof window.MAKEIT_CONFIG.API_BASE_URL === "string")
-        ? window.MAKEIT_CONFIG.API_BASE_URL.replace(/\/+$/, "")
-        : "";
-      const endpoint = baseUrl ? `${baseUrl}/api/leads/create.php` : "api/leads/create.php";
 
       try {
-        const response = await fetch(endpoint, {
+        const response = await fetch("api/contact.php", {
           method: "POST",
           body: formData,
           headers: { "X-Requested-With": "XMLHttpRequest" }
         });
-
-        const contentType = response.headers.get("content-type") || "";
-        let result = null;
-        if (contentType.includes("application/json")) {
-          result = await response.json();
-        }
-
-        if (response.ok && result && result.success) {
+        const result = await response.json();
+        if (result.success) {
           formFeedback.innerHTML = `<div class="form-alert form-alert-success"><strong>Success!</strong> ${result.message || "Thanks! Your enquiry has been received. We'll get back to you shortly."}</div>`;
           contactForm.reset();
         } else {
-          const errMsg = (result && result.error) ? result.error : "An error occurred while submitting your inquiry.";
-          formFeedback.innerHTML = `<div class="form-alert form-alert-error"><strong>Notice:</strong> ${errMsg}</div>`;
+          formFeedback.innerHTML = `<div class="form-alert form-alert-error"><strong>Notice:</strong> ${result.error || "An error occurred."}</div>`;
         }
       } catch (err) {
-        console.error("[MakeIT API Error]", err);
-        if (!baseUrl) {
-          formFeedback.innerHTML = '<div class="form-alert form-alert-error"><strong>Configuration Notice:</strong> The PHP API backend is not configured yet. Set <code>API_BASE_URL</code> in <code>assets/js/config.js</code> to point to your live MakeIT PHP server.</div>';
-        } else {
-          formFeedback.innerHTML = '<div class="form-alert form-alert-error"><strong>Connection Notice:</strong> Unable to connect to the PHP API backend at this time. Please check your network or try again shortly.</div>';
-        }
+        contactForm.submit();
       } finally {
         if (submitBtn) {
           submitBtn.disabled = false;
