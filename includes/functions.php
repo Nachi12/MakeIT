@@ -671,10 +671,23 @@ function process_lead_inquiry(array $input): array
     $name     = sanitize_text($input['name'] ?? '');
     $email    = sanitize_email($input['email'] ?? '');
     $phone    = sanitize_text($input['phone'] ?? '');
-    $company  = sanitize_text($input['company'] ?? '');
-    $service  = sanitize_text($input['service'] ?? 'General Inquiry');
+    $company  = sanitize_text($input['company'] ?? $input['business'] ?? '');
+    $service  = sanitize_text($input['service'] ?? 'Website Development');
     $budget   = sanitize_text($input['budget'] ?? '');
-    $message  = sanitize_text($input['message'] ?? '');
+    $goal     = sanitize_text($input['goal'] ?? '');
+    $details  = sanitize_text($input['message'] ?? $input['project_details'] ?? '');
+    $source   = sanitize_text($input['source'] ?? $input['lead_source'] ?? 'Website Questionnaire');
+
+    $message  = '';
+    if (!empty($goal)) {
+        $message .= "Goal: " . $goal;
+    }
+    if (!empty($details)) {
+        $message .= (!empty($message) ? " | " : "") . "Details: " . $details;
+    }
+    if (empty($message)) {
+        $message = "Submitted via MakeIT Interactive Project Questionnaire.";
+    }
 
     // 5. Duplicate Protection & Rapid Flood Prevention:
     // Do not blindly reject repeat enquiries from the same email (returning customer may submit multiple enquiries).
@@ -750,7 +763,7 @@ function process_lead_inquiry(array $input): array
 
     // Message: required, min 5 characters, max 5000 characters
     if (empty($message) || mb_strlen($message) < 5) {
-        return ['success' => false, 'error' => 'Please describe your project or inquiry (minimum 5 characters).', 'message' => ''];
+        $message = "Submitted via MakeIT Interactive Project Questionnaire.";
     }
     if (mb_strlen($message) > 5000) {
         return ['success' => false, 'error' => 'Project details message cannot exceed 5,000 characters.', 'message' => ''];
@@ -767,7 +780,7 @@ function process_lead_inquiry(array $input): array
         'service_interested' => $service,
         'budget'             => !empty($budget) ? $budget : null,
         'message'            => $message,
-        'source'             => 'Website',
+        'source'             => $source,
         'status'             => 'New',
         'call_status'        => 'Not Called',
         'last_called_at'     => null,

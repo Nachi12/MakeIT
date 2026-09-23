@@ -370,73 +370,216 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* =========================================================
-     8. SMOOTH ANCHOR LINK NAVIGATION
+     8. SMOOTH ANCHOR LINK NAVIGATION & CTA TRIGGER WIRING
   ========================================================= */
-  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-    anchor.addEventListener("click", function (e) {
-      const targetId = this.getAttribute("href");
-      if (targetId === "#") return;
+  const modal = document.getElementById("questionnaireModal");
+  const modalClose = document.getElementById("qnModalClose");
+  const modalBackdrop = document.getElementById("qnModalBackdrop");
+  const modalContainer = document.getElementById("qnModalContainer");
+  const mainQuestionnaire = document.getElementById("projectQuestionnaire");
 
-      const targetEl = document.querySelector(targetId);
-      if (targetEl) {
-        e.preventDefault();
-        targetEl.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
-      }
+  function openQuestionnaireModal() {
+    if (!modal) return;
+    if (mainQuestionnaire && modalContainer && !modalContainer.contains(mainQuestionnaire)) {
+      modalContainer.appendChild(mainQuestionnaire);
+    }
+    modal.classList.add("active");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+  }
+
+  function closeQuestionnaireModal() {
+    if (!modal) return;
+    modal.classList.remove("active");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+  }
+
+  if (modalClose) modalClose.addEventListener("click", closeQuestionnaireModal);
+  if (modalBackdrop) modalBackdrop.addEventListener("click", closeQuestionnaireModal);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal && modal.classList.contains("active")) {
+      closeQuestionnaireModal();
+    }
+  });
+
+  // Intercept all CTAs ("Let's Talk", "Start a Project", "Get in Touch")
+  document.querySelectorAll('a[href="#contact"], .nav-cta, .hero-buttons a[href="#contact"]').forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.preventDefault();
+      openQuestionnaireModal();
     });
   });
 
   /* =========================================================
-     9. AJAX CONTACT FORM
+     9. INTERACTIVE PROJECT QUESTIONNAIRE CONTROLLER
   ========================================================= */
-  const contactForm = document.getElementById("contactForm");
-  const formFeedback = document.getElementById("formFeedback");
+  const qnWrapper = document.getElementById("projectQuestionnaire");
+  if (qnWrapper) {
+    let currentStep = 1;
+    const totalSteps = 5;
 
-  if (contactForm && formFeedback) {
-    contactForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const submitBtn = contactForm.querySelector('button[type="submit"]');
-      const originalBtnText = submitBtn ? submitBtn.innerHTML : "Send Message";
+    const stepBadge = document.getElementById("qnStepBadge");
+    const backBtn = document.getElementById("qnBackBtn");
+    const progressBar = document.getElementById("qnProgressBar");
+    const form = document.getElementById("contactForm") || document.getElementById("questionnaireForm");
+    const feedbackMsg = document.getElementById("qnFeedback");
+    const successScreen = document.getElementById("qnSuccessScreen");
+    const resetBtn = document.getElementById("qnResetBtn");
 
-      const nameInput = contactForm.querySelector('[name="name"]');
-      const emailInput = contactForm.querySelector('[name="email"]');
-      const messageInput = contactForm.querySelector('[name="message"]');
+    const inputService = document.getElementById("qnInputService");
+    const inputCompany = document.getElementById("qnInputCompany");
+    const inputGoal = document.getElementById("qnInputGoal");
+    const inputBudget = document.getElementById("qnInputBudget");
+    const businessInput = document.getElementById("qnBusinessInput");
 
-      if (!nameInput || !nameInput.value.trim() || !emailInput || !emailInput.value.trim() || !messageInput || !messageInput.value.trim()) {
-        formFeedback.innerHTML = '<div class="form-alert form-alert-error">Please fill in all required fields.</div>';
-        return;
-      }
+    function goToStep(targetStep) {
+      if (targetStep < 1 || targetStep > totalSteps) return;
 
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span>Sending...</span> <span style="display:inline-block; animation: spin 1s linear infinite;">↻</span>';
-      }
+      const currentStepEl = qnWrapper.querySelector(`.qn-step[data-step="${currentStep}"]`);
+      const nextStepEl = qnWrapper.querySelector(`.qn-step[data-step="${targetStep}"]`);
 
-      const formData = new FormData(contactForm);
+      if (currentStepEl && nextStepEl && currentStep !== targetStep) {
+        currentStepEl.classList.remove("active");
+        nextStepEl.classList.add("active");
+        currentStep = targetStep;
 
-      try {
-        const response = await fetch("api/contact.php", {
-          method: "POST",
-          body: formData,
-          headers: { "X-Requested-With": "XMLHttpRequest" }
-        });
-        const result = await response.json();
-        if (result.success) {
-          formFeedback.innerHTML = `<div class="form-alert form-alert-success"><strong>Success!</strong> ${result.message || "Thanks! Your enquiry has been received. We'll get back to you shortly."}</div>`;
-          contactForm.reset();
-        } else {
-          formFeedback.innerHTML = `<div class="form-alert form-alert-error"><strong>Notice:</strong> ${result.error || "An error occurred."}</div>`;
-        }
-      } catch (err) {
-        contactForm.submit();
-      } finally {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = originalBtnText;
+        if (stepBadge) stepBadge.textContent = `STEP ${currentStep} OF ${totalSteps}`;
+        if (progressBar) progressBar.style.width = `${(currentStep / totalSteps) * 100}%`;
+        if (backBtn) backBtn.style.display = currentStep > 1 ? "inline-block" : "none";
+
+        const firstInput = nextStepEl.querySelector("input, textarea, button.qn-option-card");
+        if (firstInput) {
+          setTimeout(() => firstInput.focus(), 150);
         }
       }
+    }
+
+    // Option Cards (Step 1, 3, 4)
+    qnWrapper.querySelectorAll(".qn-option-card").forEach((card) => {
+      card.addEventListener("click", () => {
+        const stepEl = card.closest(".qn-step");
+        const stepNum = parseInt(stepEl.getAttribute("data-step"), 10);
+        const val = card.getAttribute("data-value");
+
+        stepEl.querySelectorAll(".qn-option-card").forEach((c) => c.classList.remove("selected"));
+        card.classList.add("selected");
+
+        if (stepNum === 1 && inputService) inputService.value = val;
+        if (stepNum === 3 && inputGoal) inputGoal.value = val;
+        if (stepNum === 4 && inputBudget) inputBudget.value = val;
+
+        setTimeout(() => {
+          if (currentStep < totalSteps) {
+            goToStep(currentStep + 1);
+          }
+        }, 220);
+      });
     });
+
+    // Next Buttons
+    qnWrapper.querySelectorAll(".qn-next-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const nextNum = parseInt(btn.getAttribute("data-next"), 10);
+        if (currentStep === 2 && businessInput && inputCompany) {
+          inputCompany.value = businessInput.value.trim();
+        }
+        goToStep(nextNum);
+      });
+    });
+
+    // Back Button
+    if (backBtn) {
+      backBtn.addEventListener("click", () => {
+        if (currentStep > 1) {
+          goToStep(currentStep - 1);
+        }
+      });
+    }
+
+    // Enter Key on Business Input
+    if (businessInput) {
+      businessInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          if (inputCompany) inputCompany.value = businessInput.value.trim();
+          goToStep(3);
+        }
+      });
+    }
+
+    // Form Submission
+    if (form) {
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (feedbackMsg) {
+          feedbackMsg.style.display = "none";
+          feedbackMsg.className = "qn-feedback-msg";
+        }
+
+        if (businessInput && inputCompany) {
+          inputCompany.value = businessInput.value.trim();
+        }
+
+        const submitBtn = document.getElementById("qnSubmitBtn");
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = "<span>SENDING... ↗</span>";
+        }
+
+        const formData = new FormData(form);
+
+        try {
+          const response = await fetch("api/contact.php", {
+            method: "POST",
+            headers: {
+              "X-Requested-With": "XMLHttpRequest"
+            },
+            body: formData
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            if (form) form.style.display = "none";
+            if (successScreen) successScreen.style.display = "block";
+          } else {
+            if (feedbackMsg) {
+              feedbackMsg.textContent = data.error || "Submission failed. Please check your fields and try again.";
+              feedbackMsg.classList.add("error");
+              feedbackMsg.style.display = "block";
+            }
+          }
+        } catch (err) {
+          if (feedbackMsg) {
+            feedbackMsg.textContent = "Network connection notice. Please try again.";
+            feedbackMsg.classList.add("error");
+            feedbackMsg.style.display = "block";
+          }
+        } finally {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = "<span>START THE CONVERSATION ↗</span>";
+          }
+        }
+      });
+    }
+
+    // Reset Button
+    if (resetBtn) {
+      resetBtn.addEventListener("click", () => {
+        if (form) {
+          form.reset();
+          form.style.display = "block";
+        }
+        if (successScreen) successScreen.style.display = "none";
+        goToStep(1);
+
+        if (modal && modal.classList.contains("active")) {
+          closeQuestionnaireModal();
+        }
+      });
+    }
   }
 });

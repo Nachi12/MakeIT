@@ -540,103 +540,231 @@ require_once __DIR__ . '/includes/header.php';
           </div>
         </div>
 
-        <!-- Contact Form Card -->
-        <div class="contact-form-card reveal">
-          <h3 class="contact-form-title">Start a Project</h3>
-          <p class="contact-form-desc">Fill out the form below to receive a response within 24 hours.</p>
+        <!-- Interactive 5-Step Project Questionnaire Container -->
+        <div class="questionnaire-card reveal">
+          <div class="questionnaire-wrapper" id="projectQuestionnaire">
+            <!-- Progress Header -->
+            <div class="qn-header">
+              <div class="qn-header-top">
+                <div class="qn-step-badge" id="qnStepBadge">STEP 1 OF 5</div>
+                <button type="button" class="qn-back-btn" id="qnBackBtn" aria-label="Go to previous question" style="display: none;">
+                  ← BACK
+                </button>
+              </div>
+              <div class="qn-progress-bar-wrap" aria-hidden="true">
+                <div class="qn-progress-bar" id="qnProgressBar" style="width: 20%;"></div>
+              </div>
+            </div>
 
-          <div id="formFeedback">
-            <?php if ($contactSuccess): ?>
-              <div class="form-alert form-alert-success">
-                <strong>Success!</strong> <?= e($contactSuccess) ?>
+            <form id="contactForm" method="POST" action="api/contact.php" novalidate>
+              <?= csrf_field() ?>
+              <input type="hidden" name="action" value="contact">
+              <input type="hidden" name="source" value="Website Questionnaire">
+
+              <!-- Anti-Bot Spam Honeypot Field -->
+              <div class="hp-field" aria-hidden="true">
+                <label for="website_url">Leave this field blank</label>
+                <input type="text" id="website_url" name="website_url" autocomplete="off" tabindex="-1">
               </div>
-            <?php endif; ?>
-            <?php if ($contactError): ?>
-              <div class="form-alert form-alert-error">
-                <strong>Notice:</strong> <?= e($contactError) ?>
+
+              <!-- Hidden Storage Inputs for Questionnaire Selections -->
+              <input type="hidden" name="service" id="qnInputService" value="Website Development">
+              <input type="hidden" name="company" id="qnInputCompany" value="">
+              <input type="hidden" name="goal" id="qnInputGoal" value="">
+              <input type="hidden" name="budget" id="qnInputBudget" value="Not sure yet">
+
+              <div class="qn-steps-container">
+                <!-- STEP 1: SERVICE SELECTION -->
+                <div class="qn-step active" data-step="1">
+                  <h3 class="qn-question-title">WHAT ARE YOU<br><span class="lime-text">LOOKING TO BUILD?</span></h3>
+                  <p class="qn-question-sub">Tell us what you need and we'll help shape the right solution.</p>
+
+                  <div class="qn-options-grid">
+                    <button type="button" class="qn-option-card selected" data-value="Website Development">
+                      <span class="qn-option-num">01</span>
+                      <span class="qn-option-text">Website Development</span>
+                      <span class="qn-option-arrow">↗</span>
+                    </button>
+                    <button type="button" class="qn-option-card" data-value="Website Refinement">
+                      <span class="qn-option-num">02</span>
+                      <span class="qn-option-text">Website Refinement</span>
+                      <span class="qn-option-arrow">↗</span>
+                    </button>
+                    <button type="button" class="qn-option-card" data-value="WhatsApp Automation">
+                      <span class="qn-option-num">03</span>
+                      <span class="qn-option-text">WhatsApp Automation</span>
+                      <span class="qn-option-arrow">↗</span>
+                    </button>
+                    <button type="button" class="qn-option-card" data-value="Website + WhatsApp Automation">
+                      <span class="qn-option-num">04</span>
+                      <span class="qn-option-text">Website + WhatsApp Automation</span>
+                      <span class="qn-option-arrow">↗</span>
+                    </button>
+                    <button type="button" class="qn-option-card" data-value="Not Sure Yet">
+                      <span class="qn-option-num">05</span>
+                      <span class="qn-option-text">Not Sure Yet</span>
+                      <span class="qn-option-arrow">↗</span>
+                    </button>
+                  </div>
+
+                  <div class="qn-actions">
+                    <button type="button" class="qn-next-btn magnetic" data-next="2">
+                      <span>NEXT ↗</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- STEP 2: BUSINESS / BRAND -->
+                <div class="qn-step" data-step="2">
+                  <h3 class="qn-question-title">TELL US A LITTLE<br><span class="lime-text">ABOUT YOUR BUSINESS.</span></h3>
+                  <p class="qn-question-sub">What does your business or brand do?</p>
+
+                  <div class="qn-input-group">
+                    <label for="qnBusinessInput" class="qn-field-label">Business / Brand Name</label>
+                    <input type="text" id="qnBusinessInput" class="qn-text-input" placeholder="e.g. ABC Technologies" maxlength="100" autocomplete="organization">
+                  </div>
+
+                  <div class="qn-actions">
+                    <button type="button" class="qn-next-btn magnetic" data-next="3">
+                      <span>NEXT ↗</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- STEP 3: GOAL -->
+                <div class="qn-step" data-step="3">
+                  <h3 class="qn-question-title">WHAT DO YOU<br><span class="lime-text">WANT TO ACHIEVE?</span></h3>
+                  <p class="qn-question-sub">What's the primary goal for this project?</p>
+
+                  <div class="qn-options-grid">
+                    <button type="button" class="qn-option-card goal-card" data-value="Get more customers">
+                      <span class="qn-option-text">Get more customers</span>
+                      <span class="qn-option-arrow">↗</span>
+                    </button>
+                    <button type="button" class="qn-option-card goal-card" data-value="Build a professional online presence">
+                      <span class="qn-option-text">Build a professional online presence</span>
+                      <span class="qn-option-arrow">↗</span>
+                    </button>
+                    <button type="button" class="qn-option-card goal-card" data-value="Automate repetitive work">
+                      <span class="qn-option-text">Automate repetitive work</span>
+                      <span class="qn-option-arrow">↗</span>
+                    </button>
+                    <button type="button" class="qn-option-card goal-card" data-value="Improve my existing website">
+                      <span class="qn-option-text">Improve my existing website</span>
+                      <span class="qn-option-arrow">↗</span>
+                    </button>
+                    <button type="button" class="qn-option-card goal-card" data-value="Generate more leads">
+                      <span class="qn-option-text">Generate more leads</span>
+                      <span class="qn-option-arrow">↗</span>
+                    </button>
+                    <button type="button" class="qn-option-card goal-card" data-value="Something else">
+                      <span class="qn-option-text">Something else</span>
+                      <span class="qn-option-arrow">↗</span>
+                    </button>
+                  </div>
+
+                  <div class="qn-actions">
+                    <button type="button" class="qn-next-btn magnetic" data-next="4">
+                      <span>NEXT ↗</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- STEP 4: BUDGET -->
+                <div class="qn-step" data-step="4">
+                  <h3 class="qn-question-title">WHAT'S YOUR<br><span class="lime-text">APPROXIMATE BUDGET?</span></h3>
+                  <p class="qn-question-sub">Select an estimated budget range for this engagement.</p>
+
+                  <div class="qn-options-grid">
+                    <button type="button" class="qn-option-card budget-card" data-value="₹10,000 – ₹25,000">
+                      <span class="qn-option-text">₹10,000 – ₹25,000</span>
+                      <span class="qn-option-arrow">↗</span>
+                    </button>
+                    <button type="button" class="qn-option-card budget-card" data-value="₹25,000 – ₹50,000">
+                      <span class="qn-option-text">₹25,000 – ₹50,000</span>
+                      <span class="qn-option-arrow">↗</span>
+                    </button>
+                    <button type="button" class="qn-option-card budget-card" data-value="₹50,000 – ₹1,00,000">
+                      <span class="qn-option-text">₹50,000 – ₹1,00,000</span>
+                      <span class="qn-option-arrow">↗</span>
+                    </button>
+                    <button type="button" class="qn-option-card budget-card" data-value="₹1,00,000+">
+                      <span class="qn-option-text">₹1,00,000+</span>
+                      <span class="qn-option-arrow">↗</span>
+                    </button>
+                    <button type="button" class="qn-option-card budget-card selected" data-value="Not sure yet">
+                      <span class="qn-option-text">Not sure yet</span>
+                      <span class="qn-option-arrow">↗</span>
+                    </button>
+                  </div>
+
+                  <div class="qn-actions">
+                    <button type="button" class="qn-next-btn magnetic" data-next="5">
+                      <span>NEXT ↗</span>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- STEP 5: CONTACT DETAILS & FINAL SUBMISSION -->
+                <div class="qn-step" data-step="5">
+                  <h3 class="qn-question-title">HOW SHOULD WE<br><span class="lime-text">CONTACT YOU?</span></h3>
+                  <p class="qn-question-sub">Enter your details so our team can respond within 24 hours.</p>
+
+                  <div class="qn-contact-form-grid">
+                    <div class="qn-input-group">
+                      <label for="qnNameInput" class="qn-field-label">Name *</label>
+                      <input type="text" id="qnNameInput" name="name" class="qn-text-input" placeholder="Rahul Sharma" required minlength="2" maxlength="100" autocomplete="name">
+                    </div>
+
+                    <div class="qn-input-group">
+                      <label for="qnPhoneInput" class="qn-field-label">Phone / WhatsApp *</label>
+                      <input type="tel" id="qnPhoneInput" name="phone" class="qn-text-input" placeholder="9035344513" required maxlength="50" autocomplete="tel">
+                    </div>
+
+                    <div class="qn-input-group full">
+                      <label for="qnEmailInput" class="qn-field-label">Email Address *</label>
+                      <input type="email" id="qnEmailInput" name="email" class="qn-text-input" placeholder="rahul@company.com" required maxlength="150" autocomplete="email">
+                    </div>
+
+                    <div class="qn-input-group full">
+                      <label for="qnDetailsInput" class="qn-field-label">Project Details (Optional)</label>
+                      <textarea id="qnDetailsInput" name="project_details" class="qn-textarea" rows="3" placeholder="Any specific requirements or timeline preferences..." maxlength="5000"></textarea>
+                    </div>
+                  </div>
+
+                  <div id="qnFeedback" class="qn-feedback-msg" style="display: none;"></div>
+
+                  <div class="qn-actions">
+                    <button type="submit" class="qn-submit-btn magnetic" id="qnSubmitBtn">
+                      <span>START THE CONVERSATION ↗</span>
+                    </button>
+                  </div>
+                </div>
               </div>
-            <?php endif; ?>
+            </form>
+
+            <!-- SUCCESS SCREEN (DYNAMICALLY REVEALED AFTER SUBMISSION) -->
+            <div class="qn-success-screen" id="qnSuccessScreen" style="display: none;">
+              <div class="qn-success-badge">✓ ENQUIRY RECEIVED</div>
+              <h2 class="qn-success-title">THANK YOU.<br><span class="lime-text">WE'VE GOT YOUR DETAILS.</span></h2>
+              <p class="qn-success-desc">Our engineering team will review your project requirements and get back to you shortly within 24 hours.</p>
+              <button type="button" class="button button-primary magnetic qn-reset-btn" id="qnResetBtn">
+                Back to Website ↗
+              </button>
+            </div>
           </div>
-
-          <form id="contactForm" method="POST" action="index.php#contact" novalidate>
-            <?= csrf_field() ?>
-            <input type="hidden" name="action" value="contact">
-
-            <!-- Anti-Bot Spam Honeypot Field -->
-            <div class="hp-field" aria-hidden="true">
-              <label for="website_url">Leave this field blank</label>
-              <input type="text" id="website_url" name="website_url" autocomplete="off" tabindex="-1">
-            </div>
-
-            <div class="form-grid">
-              <!-- Name -->
-              <div class="form-group">
-                <label for="name" class="form-label">Name *</label>
-                <input type="text" id="name" name="name" class="form-control" placeholder="Rahul Sharma" required minlength="2" maxlength="100" value="<?= e($_POST['name'] ?? '') ?>">
-              </div>
-
-              <!-- Email -->
-              <div class="form-group">
-                <label for="email" class="form-label">Email Address *</label>
-                <input type="email" id="email" name="email" class="form-control" placeholder="rahul@company.com" required maxlength="150" value="<?= e($_POST['email'] ?? '') ?>">
-              </div>
-
-              <!-- Phone -->
-              <div class="form-group">
-                <label for="phone" class="form-label">Phone</label>
-                <input type="tel" id="phone" name="phone" class="form-control" placeholder="9035344513" maxlength="50" value="<?= e($_POST['phone'] ?? '') ?>">
-              </div>
-
-              <!-- Company -->
-              <div class="form-group">
-                <label for="company" class="form-label">Company</label>
-                <input type="text" id="company" name="company" class="form-control" placeholder="ABC Technologies" maxlength="100" value="<?= e($_POST['company'] ?? '') ?>">
-              </div>
-
-              <!-- Service -->
-              <div class="form-group">
-                <label for="service" class="form-label">Service</label>
-                <select id="service" name="service" class="form-control">
-                  <?php if (!empty($services)): ?>
-                    <?php foreach ($services as $srv): ?>
-                      <option value="<?= e($srv['title']) ?>" <?= (($_POST['service'] ?? '') === $srv['title']) ? 'selected' : '' ?>><?= e($srv['title']) ?></option>
-                    <?php endforeach; ?>
-                    <option value="Consulting / Other" <?= (($_POST['service'] ?? '') === 'Consulting / Other') ? 'selected' : '' ?>>Consulting / Other</option>
-                  <?php else: ?>
-                    <option value="Websites">Websites</option>
-                    <option value="Software">Software</option>
-                    <option value="AI + Automation">AI + Automation</option>
-                    <option value="Consulting / Other">Consulting / Other</option>
-                  <?php endif; ?>
-                </select>
-              </div>
-
-              <!-- Budget -->
-              <div class="form-group">
-                <label for="budget" class="form-label">Estimated Budget</label>
-                <select id="budget" name="budget" class="form-control">
-                  <option value="< ₹1,00,000" <?= (($_POST['budget'] ?? '') === '< ₹1,00,000') ? 'selected' : '' ?>>&lt; ₹1,00,000</option>
-                  <option value="₹1,00,000 - ₹3,00,000" <?= (($_POST['budget'] ?? '') === '₹1,00,000 - ₹3,00,000' || empty($_POST['budget'])) ? 'selected' : '' ?>>₹1,00,000 – ₹3,00,000</option>
-                  <option value="₹3,00,000 - ₹5,00,000" <?= (($_POST['budget'] ?? '') === '₹3,00,000 - ₹5,00,000') ? 'selected' : '' ?>>₹3,00,000 – ₹5,00,000</option>
-                  <option value="₹5,00,000+" <?= (($_POST['budget'] ?? '') === '₹5,00,000+') ? 'selected' : '' ?>>₹5,00,000+</option>
-                </select>
-              </div>
-
-              <!-- Message -->
-              <div class="form-group full">
-                <label for="message" class="form-label">Project Details *</label>
-                <textarea id="message" name="message" class="form-control" rows="4" placeholder="Briefly describe what you're looking to build or solve..." required minlength="5" maxlength="5000"><?= e($_POST['message'] ?? '') ?></textarea>
-              </div>
-            </div>
-
-            <button type="submit" class="btn-form-submit magnetic">
-              <span>Send Message</span>
-              <span aria-hidden="true">↗</span>
-            </button>
-          </form>
         </div>
       </div>
     </section>
+
+    <!-- Modal Wrapper for Interactive Project Questionnaire -->
+    <div class="questionnaire-modal" id="questionnaireModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="MakeIT Project Questionnaire">
+      <div class="qn-modal-backdrop" id="qnModalBackdrop"></div>
+      <div class="qn-modal-content">
+        <button type="button" class="qn-modal-close" id="qnModalClose" aria-label="Close Questionnaire">✕</button>
+        <div id="qnModalContainer"></div>
+      </div>
+    </div>
   </main>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

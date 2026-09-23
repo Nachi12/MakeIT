@@ -69,8 +69,8 @@ $processedHtml = str_replace('./#', '#', $processedHtml);
 
 // B. Convert form action from PHP endpoint to static Netlify form handler
 $processedHtml = str_replace(
-    '<form id="contactForm" method="POST" action="index.php#contact" novalidate>',
-    '<form id="contactForm" method="POST" action="#contact" data-netlify="true" name="contact" novalidate>',
+    'action="api/contact.php"',
+    'action="#contact" data-netlify="true" name="contact"',
     $processedHtml
 );
 
