@@ -3339,10 +3339,22 @@ footer.visible .footer-bottom {
   transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1), transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+@keyframes stepEnter {
+  from {
+    opacity: 0;
+    transform: translateX(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 .qn-step.active {
   display: block !important;
   opacity: 1;
   transform: translateX(0);
+  animation: stepEnter 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .qn-question-title {
