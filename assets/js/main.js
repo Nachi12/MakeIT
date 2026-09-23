@@ -233,22 +233,29 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // 5. UPDATE PROJECT STACKING (Step 15: smooth, visible stacking)
-    if (projectCards.length > 0 && window.innerWidth > 900) {
-      const len = projectCards.length;
-      for (let i = 0; i < len; i++) {
-        const card = projectCards[i];
-        const rect = card.getBoundingClientRect();
-        const topThreshold = 90 + i * 16;
-        const distance = Math.max(0, topThreshold - rect.top);
-        if (distance > 0) {
-          const progress = Math.min(1, distance / 420);
-          const scale = 1 - (progress * 0.03); // 1.0 -> 0.97
-          const translateY = -(progress * 10);
-          card.style.transform = `scale(${scale.toFixed(4)}) translateY(${translateY.toFixed(1)}px)`;
-        } else {
-          card.style.transform = "scale(1) translateY(0px)";
+    // 5. UPDATE PROJECT STACKING (Desktop only: smooth stacking)
+    if (projectCards.length > 0) {
+      if (window.innerWidth > 767) {
+        const len = projectCards.length;
+        for (let i = 0; i < len; i++) {
+          const card = projectCards[i];
+          const rect = card.getBoundingClientRect();
+          const topThreshold = 90 + i * 16;
+          const distance = Math.max(0, topThreshold - rect.top);
+          if (distance > 0) {
+            const progress = Math.min(1, distance / 420);
+            const scale = 1 - (progress * 0.03); // 1.0 -> 0.97
+            const translateY = -(progress * 10);
+            card.style.transform = `scale(${scale.toFixed(4)}) translateY(${translateY.toFixed(1)}px)`;
+          } else {
+            card.style.transform = "scale(1) translateY(0px)";
+          }
         }
+      } else {
+        // Mobile: ensure no inline transform styles interfere with vertical flow
+        projectCards.forEach((card) => {
+          card.style.transform = "";
+        });
       }
     }
 
