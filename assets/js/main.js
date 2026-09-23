@@ -233,29 +233,29 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // 5. UPDATE PROJECT STACKING (Desktop only: smooth stacking)
+    // 5. UPDATE PROJECT STACKING (Desktop + Mobile Responsive Stacking)
     if (projectCards.length > 0) {
-      if (window.innerWidth > 767) {
-        const len = projectCards.length;
-        for (let i = 0; i < len; i++) {
-          const card = projectCards[i];
-          const rect = card.getBoundingClientRect();
-          const topThreshold = 90 + i * 16;
-          const distance = Math.max(0, topThreshold - rect.top);
-          if (distance > 0) {
-            const progress = Math.min(1, distance / 420);
-            const scale = 1 - (progress * 0.03); // 1.0 -> 0.97
-            const translateY = -(progress * 10);
-            card.style.transform = `scale(${scale.toFixed(4)}) translateY(${translateY.toFixed(1)}px)`;
-          } else {
-            card.style.transform = "scale(1) translateY(0px)";
-          }
+      const isMobile = window.innerWidth <= 767;
+      const baseTop = isMobile ? 75 : 90;
+      const step = isMobile ? 12 : 16;
+      const range = isMobile ? 320 : 420;
+      const maxScaleDrop = isMobile ? 0.025 : 0.03;
+      const maxTranslateY = isMobile ? 6 : 10;
+
+      const len = projectCards.length;
+      for (let i = 0; i < len; i++) {
+        const card = projectCards[i];
+        const rect = card.getBoundingClientRect();
+        const topThreshold = baseTop + i * step;
+        const distance = Math.max(0, topThreshold - rect.top);
+        if (distance > 0) {
+          const progress = Math.min(1, distance / range);
+          const scale = 1 - (progress * maxScaleDrop);
+          const translateY = -(progress * maxTranslateY);
+          card.style.transform = `scale(${scale.toFixed(4)}) translateY(${translateY.toFixed(1)}px)`;
+        } else {
+          card.style.transform = "scale(1) translateY(0px)";
         }
-      } else {
-        // Mobile: ensure no inline transform styles interfere with vertical flow
-        projectCards.forEach((card) => {
-          card.style.transform = "";
-        });
       }
     }
 

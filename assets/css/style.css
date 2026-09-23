@@ -2430,40 +2430,32 @@ footer.visible .footer-bottom {
   .projects {
     display: flex !important;
     flex-direction: column !important;
-    gap: 28px !important;
-    position: static !important;
-    transform: none !important;
-    perspective: none !important;
-    height: auto !important;
-    min-height: auto !important;
+    gap: 32px !important;
+    position: relative !important;
+    margin-bottom: 40px !important;
   }
 
   .project,
-  .projects .project,
-  .project:nth-child(1),
-  .project:nth-child(2),
-  .project:nth-child(3),
-  .project:nth-child(4),
-  .project:nth-child(5),
-  .project:nth-child(6) {
-    position: relative !important;
-    top: auto !important;
-    bottom: auto !important;
-    left: auto !important;
-    right: auto !important;
-    inset: auto !important;
+  .projects .project {
+    position: sticky !important;
     min-height: auto !important;
     height: auto !important;
-    transform: none !important;
-    scale: none !important;
-    z-index: auto !important;
-    margin: 0 !important;
-    padding: 20px 18px 22px !important;
+    padding: 22px 18px 24px !important;
     border-radius: 18px !important;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.04) !important;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08) !important;
+    margin: 0 0 24px 0 !important;
     width: 100% !important;
     box-sizing: border-box !important;
+    transform-origin: center top !important;
+    will-change: transform !important;
   }
+
+  .project:nth-child(1) { top: 75px !important; }
+  .project:nth-child(2) { top: 87px !important; }
+  .project:nth-child(3) { top: 99px !important; }
+  .project:nth-child(4) { top: 111px !important; }
+  .project:nth-child(5) { top: 123px !important; }
+  .project:nth-child(6) { top: 135px !important; }
 
   .project-top {
     display: flex !important;
