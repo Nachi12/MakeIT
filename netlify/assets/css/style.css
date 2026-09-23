@@ -15,12 +15,15 @@ html {
   background: #f4f3ee;
   color: #111111;
   -webkit-text-size-adjust: 100%;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
 }
 
 *,
 *::before,
 *::after {
-  box-sizing: inherit;
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
@@ -49,11 +52,20 @@ body {
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background: #f4f3ee;
   color: #111111;
-  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  overflow-x: clip;
   cursor: auto;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+@supports not (overflow-x: clip) {
+  body {
+    overflow-x: hidden;
+  }
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -2240,6 +2252,21 @@ footer.visible .footer-bottom {
 
 /* Small Tablets & Large Phones Landscape (900px) */
 @media (max-width: 900px) {
+  html,
+  body {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    overflow-x: clip !important;
+  }
+
+  @supports not (overflow-x: clip) {
+    html,
+    body {
+      overflow-x: hidden !important;
+    }
+  }
+
   body {
     cursor: auto !important;
   }
@@ -2258,15 +2285,27 @@ footer.visible .footer-bottom {
 
   .container {
     width: min(calc(100% - 36px), var(--container));
+    max-width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
   }
 
   .nav {
     padding: 14px 12px;
+    width: 100% !important;
+    max-width: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+    box-sizing: border-box !important;
   }
 
   .nav-inner {
     height: 58px;
     padding: 0 14px;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .nav-links,
@@ -2339,7 +2378,10 @@ footer.visible .footer-bottom {
     min-height: auto;
     justify-content: center;
     width: 100%;
+    max-width: 100%;
+    overflow: hidden;
     margin-top: 12px;
+    box-sizing: border-box;
   }
 
   .floating-system {
@@ -2352,6 +2394,8 @@ footer.visible .footer-bottom {
     transform-origin: top center;
     margin: 0 auto;
     opacity: 1;
+    overflow: hidden;
+    box-sizing: border-box;
   }
 
   .services,
@@ -2361,6 +2405,9 @@ footer.visible .footer-bottom {
   .audience,
   .testimonials {
     padding: 90px 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .services-heading,
@@ -2387,17 +2434,25 @@ footer.visible .footer-bottom {
     padding: 22px 0;
     /* CRITICAL: Reset desktop negative margin to prevent mobile side-scroll */
     margin: 0 !important;
-    width: 100%;
-    max-width: 100%;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+  }
+
+  .service:hover .service-content {
+    transform: none !important;
   }
 
   .service-content {
     display: block;
+    max-width: 100%;
   }
 
   .service-title {
     overflow-wrap: break-word;
     word-break: break-word;
+    max-width: 100%;
   }
 
   .service-text {
@@ -2412,17 +2467,27 @@ footer.visible .footer-bottom {
 
   .statement {
     padding: 75px 0;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
   }
 
   .statement-grid {
     grid-template-columns: 1fr;
     gap: 28px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .statement-title {
     font-size: clamp(2.4rem, 9.5vw, 4.2rem);
     line-height: 0.88;
     letter-spacing: -0.05em;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    max-width: 100%;
   }
 
   .statement-copy {
@@ -2437,6 +2502,9 @@ footer.visible .footer-bottom {
     position: relative !important;
     margin-bottom: 40px !important;
     touch-action: pan-y !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .project,
@@ -2449,7 +2517,9 @@ footer.visible .footer-bottom {
     box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08) !important;
     margin: 0 0 24px 0 !important;
     width: 100% !important;
+    max-width: 100% !important;
     box-sizing: border-box !important;
+    overflow: hidden !important;
     transform-origin: center top !important;
     will-change: transform !important;
     touch-action: pan-y !important;
