@@ -196,7 +196,7 @@ require_once __DIR__ . '/includes/header.php';
           </div>
 
           <p class="services-description">
-            No unnecessary complexity. Just thoughtful design, clean technology and digital systems engineered around your operational goals.
+            Websites, website refinements and WhatsApp automation built around how your business actually works.
           </p>
         </div>
 
@@ -241,23 +241,25 @@ require_once __DIR__ . '/includes/header.php';
     ======================================================== -->
     <section class="statement" id="about">
       <div class="container">
-        <div class="eyebrow">Our approach</div>
-
-        <div class="statement-title">
-          <div>
-            <span>YOUR IDEA</span>
-          </div>
-          <div>
-            <span>SHOULDN'T</span>
-          </div>
-          <div>
-            <span>STAY AN <strong class="lime">IDEA.</strong></span>
+        <div class="statement-top reveal">
+          <div class="eyebrow statement-eyebrow">
+            <span class="pulse-dot" aria-hidden="true"></span> OUR APPROACH
           </div>
         </div>
 
-        <p class="statement-copy">
-          We take ideas from rough thought to real product. Strategy, UX, architecture, engineering, and deployment — handled as one connected, frictionless process.
-        </p>
+        <div class="statement-grid">
+          <h2 class="statement-title">
+            <div><span>YOUR BUSINESS</span></div>
+            <div><span>SHOULDN'T</span></div>
+            <div><span>STAY IN <strong class="lime">IDLE.</strong></span></div>
+          </h2>
+
+          <div class="statement-side">
+            <p class="statement-copy">
+              We take ideas from rough thought to real product. Strategy, UX, architecture, engineering, and deployment — handled as one connected, frictionless process.
+            </p>
+          </div>
+        </div>
       </div>
     </section>
 

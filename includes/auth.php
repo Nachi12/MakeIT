@@ -155,8 +155,8 @@ function attempt_admin_login(string $usernameOrEmail, string $password): array
         $admin = $db->fetch(
             "SELECT id, username, email, password_hash, full_name, role, is_active 
              FROM admins 
-             WHERE (username = :u OR email = :u)",
-            [':u' => $usernameOrEmail]
+             WHERE (username = :u1 OR email = :u2)",
+            [':u1' => $usernameOrEmail, ':u2' => $usernameOrEmail]
         );
 
         // Timing-attack safe dummy check if user not found

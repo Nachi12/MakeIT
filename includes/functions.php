@@ -271,31 +271,31 @@ function get_services(): array
     $defaults = [
         [
             'id' => 1,
-            'title' => 'Websites',
-            'slug' => 'websites',
-            'short_description' => 'High-performing websites and landing pages designed to make your business stand out.',
-            'long_description' => 'We construct scalable web platforms with clean, semantic markup, bespoke styling, and resilient server-side architecture.',
+            'title' => 'Website Development',
+            'slug' => 'website-development',
+            'short_description' => 'High-performing business websites and landing pages designed to look professional, load fast and turn visitors into customers.',
+            'long_description' => 'High-performing business websites and landing pages designed to look professional, load fast and turn visitors into customers.',
             'icon' => 'code',
             'display_order' => 1,
             'status' => 'published'
         ],
         [
             'id' => 2,
-            'title' => 'Software',
-            'slug' => 'software',
-            'short_description' => 'Custom dashboards, SaaS products and business applications built around your workflow.',
-            'long_description' => 'Custom dashboards, ERPs, CRM connectors, and automated data pipelines designed specifically around your operational needs.',
-            'icon' => 'cpu',
+            'title' => 'Website Refinement',
+            'slug' => 'website-refinement',
+            'short_description' => 'Already have a website? We refine its design, UX, responsiveness and performance to make it cleaner, faster and easier to use.',
+            'long_description' => 'Already have a website? We refine its design, UX, responsiveness and performance to make it cleaner, faster and easier to use.',
+            'icon' => 'layout',
             'display_order' => 2,
             'status' => 'published'
         ],
         [
             'id' => 3,
-            'title' => 'AI + Automation',
-            'slug' => 'ai-automation',
-            'short_description' => 'Smarter workflows, AI assistants and automation that save your team time.',
-            'long_description' => 'Eliminate manual data entry and disjointed workflows with real-time AI and webhook integrations.',
-            'icon' => 'zap',
+            'title' => 'WhatsApp Automation',
+            'slug' => 'whatsapp-automation',
+            'short_description' => 'Automate enquiries, follow-ups, notifications and repetitive customer workflows through WhatsApp.',
+            'long_description' => 'Automate enquiries, follow-ups, notifications and repetitive customer workflows through WhatsApp.',
+            'icon' => 'message-square',
             'display_order' => 3,
             'status' => 'published'
         ]

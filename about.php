@@ -28,13 +28,13 @@ require_once __DIR__ . '/includes/header.php';
 
         <h1 class="statement-title" style="margin-top: 40px;">
           <div>
-            <span>YOUR IDEA</span>
+            <span>YOUR BUISINESS</span>
           </div>
           <div>
             <span>SHOULDN'T</span>
           </div>
           <div>
-            <span>STAY AN <strong class="lime">IDEA.</strong></span>
+            <span>STAY IN <strong class="lime">IDLE.</strong></span>
           </div>
         </h1>
 

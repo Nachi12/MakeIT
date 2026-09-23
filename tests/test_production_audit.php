@@ -176,21 +176,29 @@ assert_test(
 echo "\nTest Group 4: Complete End-to-End Workflow\n";
 
 // Step 4.1: Public Website (Home)
-$homeHtml = @file_get_contents('http://127.0.0.1:8088/');
+$testBaseUrl = 'http://localhost:8000';
+if (!@file_get_contents($testBaseUrl . '/')) {
+    if (@file_get_contents('http://localhost:8080/')) {
+        $testBaseUrl = 'http://localhost:8080';
+    } elseif (@file_get_contents('http://127.0.0.1:8088/')) {
+        $testBaseUrl = 'http://127.0.0.1:8088';
+    }
+}
+$homeHtml = @file_get_contents($testBaseUrl . '/');
 assert_test(
     "Public Website (Home) loads with HTTP 200 and renders main landmark",
     is_string($homeHtml) && str_contains($homeHtml, 'id="main-content"') && str_contains($homeHtml, 'class="skip-link"')
 );
 
 // Step 4.2: Services Page
-$servicesHtml = @file_get_contents('http://127.0.0.1:8088/services.php');
+$servicesHtml = @file_get_contents($testBaseUrl . '/services.php');
 assert_test(
     "Services page loads with semantic h1 and main landmark",
     is_string($servicesHtml) && str_contains($servicesHtml, 'id="main-content"') && str_contains($servicesHtml, 'ENGINEERED')
 );
 
 // Step 4.3: Projects Page
-$workHtml = @file_get_contents('http://127.0.0.1:8088/work.php');
+$workHtml = @file_get_contents($testBaseUrl . '/work.php');
 assert_test(
     "Projects page loads with semantic h1 and main landmark",
     is_string($workHtml) && str_contains($workHtml, 'id="main-content"') && str_contains($workHtml, 'SELECTED')
@@ -342,14 +350,14 @@ assert_test("Admin logs out cleanly and session is terminated", !is_admin_logged
 echo "\nTest Group 5: Error Handling & HTTP Status Verification\n";
 
 $ctx = stream_context_create(['http' => ['ignore_errors' => true]]);
-$err404 = @file_get_contents('http://127.0.0.1:8088/404.php', false, $ctx);
+$err404 = @file_get_contents($testBaseUrl . '/404.php', false, $ctx);
 $status404 = $http_response_header[0] ?? '';
 assert_test(
     "404 error page returns HTTP 404 Not Found",
     str_contains($status404, '404') && str_contains((string)$err404, 'PAGE NOT FOUND')
 );
 
-$err500 = @file_get_contents('http://127.0.0.1:8088/500.php', false, $ctx);
+$err500 = @file_get_contents($testBaseUrl . '/500.php', false, $ctx);
 $status500 = $http_response_header[0] ?? '';
 assert_test(
     "500 error page returns HTTP 500 Internal Server Error without leaking traces",

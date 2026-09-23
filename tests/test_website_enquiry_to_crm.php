@@ -30,7 +30,7 @@ if (session_status() === PHP_SESSION_ACTIVE) {
     session_write_close();
 }
 
-$baseUrl = 'http://127.0.0.1:8088';
+$baseUrl = 'http://localhost:8000';
 $cookieFileAdmin = sys_get_temp_dir() . '/makeit_adm_' . uniqid() . '.txt';
 $cookieFilePublic = sys_get_temp_dir() . '/makeit_pub_' . uniqid() . '.txt';
 if (file_exists($cookieFileAdmin)) unlink($cookieFileAdmin);

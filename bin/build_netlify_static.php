@@ -254,7 +254,7 @@ ob_start();
           </div>
 
           <p class="services-description">
-            No unnecessary complexity. Just thoughtful design, clean technology and digital systems engineered around your operational goals.
+            Websites, website refinements and WhatsApp automation built around how your business actually works.
           </p>
         </div>
 

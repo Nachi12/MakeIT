@@ -128,9 +128,9 @@ require_once __DIR__ . '/includes/header.php';
                     <?php endforeach; ?>
                     <option value="Consulting / Other" <?= ($preselectedService === 'Consulting / Other' || ($_POST['service'] ?? '') === 'Consulting / Other') ? 'selected' : '' ?>>Consulting / Other</option>
                   <?php else: ?>
-                    <option value="Websites" <?= ($preselectedService === 'Websites' || ($_POST['service'] ?? '') === 'Websites') ? 'selected' : '' ?>>Websites</option>
-                    <option value="Software" <?= ($preselectedService === 'Software' || ($_POST['service'] ?? '') === 'Software') ? 'selected' : '' ?>>Software</option>
-                    <option value="AI + Automation" <?= ($preselectedService === 'AI + Automation' || ($_POST['service'] ?? '') === 'AI + Automation') ? 'selected' : '' ?>>AI + Automation</option>
+                    <option value="Website Development" <?= ($preselectedService === 'Website Development' || ($_POST['service'] ?? '') === 'Website Development') ? 'selected' : '' ?>>Website Development</option>
+                    <option value="Website Refinement" <?= ($preselectedService === 'Website Refinement' || ($_POST['service'] ?? '') === 'Website Refinement') ? 'selected' : '' ?>>Website Refinement</option>
+                    <option value="WhatsApp Automation" <?= ($preselectedService === 'WhatsApp Automation' || ($_POST['service'] ?? '') === 'WhatsApp Automation') ? 'selected' : '' ?>>WhatsApp Automation</option>
                     <option value="Consulting / Other" <?= ($preselectedService === 'Consulting / Other' || ($_POST['service'] ?? '') === 'Consulting / Other') ? 'selected' : '' ?>>Consulting / Other</option>
                   <?php endif; ?>
                 </select>
