@@ -892,3 +892,145 @@ function format_date(?string $date, string $format = 'M j, Y'): string
         return $date;
     }
 }
+
+/**
+ * Normalize phone number for Exotel Click-to-Call API
+ * Handles 10-digit Indian numbers, +91 prefixes, and international numbers
+ *
+ * @param string $phone
+ * @return string
+ */
+function normalize_phone_number(string $phone): string
+{
+    $clean = preg_replace('/[^\d+]/', '', $phone);
+    if (empty($clean)) {
+        return '';
+    }
+
+    // If starts with + (international format), return clean version
+    if (str_starts_with($clean, '+')) {
+        return $clean;
+    }
+
+    // 10-digit Indian number: prepend 0 for Exotel standard (e.g. 9035344513 -> 09035344513)
+    if (strlen($clean) === 10 && preg_match('/^[6-9]\d{9}$/', $clean)) {
+        return '0' . $clean;
+    }
+
+    // 11-digit starting with 0: valid Indian number
+    if (strlen($clean) === 11 && str_starts_with($clean, '0')) {
+        return $clean;
+    }
+
+    // 12-digit starting with 91: convert to 0 format
+    if (strlen($clean) === 12 && str_starts_with($clean, '91')) {
+        return '0' . substr($clean, 2);
+    }
+
+    return $clean;
+}
+
+/**
+ * Initiate Exotel Click-to-Call (Two-leg call: Agent -> Client)
+ *
+ * @param string $agentPhone
+ * @param string $clientPhone
+ * @param string|null $callbackUrl
+ * @return array{success: bool, call_sid: ?string, status: string, error: ?string, message: string}
+ */
+function exotel_click_to_call(string $agentPhone, string $clientPhone, ?string $callbackUrl = null): array
+{
+    $accountSid = defined('EXOTEL_ACCOUNT_SID') ? EXOTEL_ACCOUNT_SID : (getenv('EXOTEL_ACCOUNT_SID') ?: '');
+    $apiKey     = defined('EXOTEL_API_KEY') ? EXOTEL_API_KEY : (getenv('EXOTEL_API_KEY') ?: '');
+    $apiToken   = defined('EXOTEL_API_TOKEN') ? EXOTEL_API_TOKEN : (getenv('EXOTEL_API_TOKEN') ?: '');
+    $subdomain  = defined('EXOTEL_SUBDOMAIN') ? EXOTEL_SUBDOMAIN : (getenv('EXOTEL_SUBDOMAIN') ?: 'api.exotel.com');
+    $callerId   = defined('EXOTEL_VIRTUAL_NUMBER') ? EXOTEL_VIRTUAL_NUMBER : (getenv('EXOTEL_VIRTUAL_NUMBER') ?: '08045678900');
+
+    $agentNorm = normalize_phone_number($agentPhone);
+    $clientNorm = normalize_phone_number($clientPhone);
+
+    if (empty($agentNorm)) {
+        return ['success' => false, 'call_sid' => null, 'status' => 'failed', 'error' => 'Invalid agent phone configuration.', 'message' => ''];
+    }
+    if (empty($clientNorm)) {
+        return ['success' => false, 'call_sid' => null, 'status' => 'failed', 'error' => 'Invalid client phone number.', 'message' => ''];
+    }
+
+    // Mock/Development mode if API key is not configured or in local testing
+    if (empty($apiKey) || empty($apiToken) || $apiKey === 'your_exotel_api_key') {
+        $mockSid = 'EXO-MOCK-' . time() . '-' . rand(1000, 9999);
+        error_log("[Exotel Telephony Notice] Mock Click-to-Call initiated. Agent: {$agentNorm} -> Client: {$clientNorm} | SID: {$mockSid}");
+        return [
+            'success'  => true,
+            'call_sid' => $mockSid,
+            'status'   => 'initiated',
+            'error'    => null,
+            'message'  => 'Calling your phone...'
+        ];
+    }
+
+    // Official Exotel Connect API endpoint:
+    // POST https://<api_key>:<api_token>@<subdomain>/v1/Accounts/<account_sid>/Calls/connect.json
+    $endpoint = sprintf('https://%s/v1/Accounts/%s/Calls/connect.json', $subdomain, $accountSid);
+
+    $postData = [
+        'From'     => $agentNorm,
+        'To'       => $clientNorm,
+        'CallerId' => $callerId,
+        'CallType' => 'trans',
+    ];
+
+    if (!empty($callbackUrl)) {
+        $postData['StatusCallback'] = $callbackUrl;
+    }
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $endpoint);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData));
+    curl_setopt($ch, CURLOPT_USERPWD, $apiKey . ':' . $apiToken);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curlError = curl_error($ch);
+    curl_close($ch);
+
+    if ($response === false) {
+        error_log("[Exotel Error] cURL error: " . $curlError);
+        return [
+            'success'  => false,
+            'call_sid' => null,
+            'status'   => 'failed',
+            'error'    => 'Unable to reach telephony service. Please try again.',
+            'message'  => ''
+        ];
+    }
+
+    $json = json_decode($response, true);
+    $callObj = $json['Call'] ?? $json['RestException'] ?? [];
+    $callSid = $callObj['Sid'] ?? null;
+
+    if ($httpCode >= 200 && $httpCode < 300 && !empty($callSid)) {
+        return [
+            'success'  => true,
+            'call_sid' => $callSid,
+            'status'   => strtolower((string)($callObj['Status'] ?? 'initiated')),
+            'error'    => null,
+            'message'  => 'Calling your phone...'
+        ];
+    }
+
+    $errMsg = $callObj['Message'] ?? ($json['RestException']['Message'] ?? 'Call request failed.');
+    error_log("[Exotel Error] HTTP {$httpCode}: {$errMsg}");
+
+    return [
+        'success'  => false,
+        'call_sid' => null,
+        'status'   => 'failed',
+        'error'    => 'Unable to start the call. Please try again.',
+        'message'  => ''
+    ];
+}

@@ -142,6 +142,41 @@ final class Database
                 if (!in_array('next_followup_at', $callCols, true)) {
                     $this->pdo->exec("ALTER TABLE calls ADD COLUMN next_followup_at DATETIME NULL DEFAULT NULL AFTER outcome");
                 }
+
+                // crm_call_logs table
+                $this->pdo->exec("
+                    CREATE TABLE IF NOT EXISTS crm_call_logs (
+                        id INT AUTO_INCREMENT PRIMARY KEY,
+                        lead_id BIGINT UNSIGNED NULL DEFAULT NULL,
+                        agent_phone VARCHAR(50) NOT NULL,
+                        client_phone VARCHAR(50) NOT NULL,
+                        provider VARCHAR(50) NOT NULL DEFAULT 'exotel',
+                        call_sid VARCHAR(100) NULL DEFAULT NULL,
+                        status VARCHAR(50) NOT NULL DEFAULT 'initiated',
+                        duration INT NOT NULL DEFAULT 0,
+                        recording_url VARCHAR(255) NULL DEFAULT NULL,
+                        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                        INDEX idx_ccl_lead (lead_id),
+                        INDEX idx_ccl_sid (call_sid)
+                    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+                ");
+            } else if ($driver === 'sqlite') {
+                $this->pdo->exec("
+                    CREATE TABLE IF NOT EXISTS crm_call_logs (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        lead_id INTEGER NULL,
+                        agent_phone TEXT NOT NULL,
+                        client_phone TEXT NOT NULL,
+                        provider TEXT NOT NULL DEFAULT 'exotel',
+                        call_sid TEXT NULL,
+                        status TEXT NOT NULL DEFAULT 'initiated',
+                        duration INTEGER NOT NULL DEFAULT 0,
+                        recording_url TEXT NULL,
+                        created_at TEXT NOT NULL,
+                        updated_at TEXT NOT NULL
+                    );
+                ");
             }
         } catch (\Throwable $ex) {
             error_log("Schema auto-migration notice: " . $ex->getMessage());

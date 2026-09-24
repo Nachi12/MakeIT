@@ -84,3 +84,13 @@ define('ALLOWED_UPLOAD_MIMES', [
 define('APP_NAME', 'MakeIT');
 define('APP_TAGLINE', 'We Make Digital Things Work.');
 define('APP_VERSION', '1.0.0');
+
+// -----------------------------------------------------------------------------
+// TELEPHONY / EXOTEL CLICK-TO-CALL CONFIGURATION
+// -----------------------------------------------------------------------------
+define('MAKEIT_AGENT_PHONE', getenv('MAKEIT_AGENT_PHONE') ?: '9035344513');
+define('EXOTEL_ACCOUNT_SID', getenv('EXOTEL_ACCOUNT_SID') ?: 'makeit1');
+define('EXOTEL_API_KEY', getenv('EXOTEL_API_KEY') ?: '');
+define('EXOTEL_API_TOKEN', getenv('EXOTEL_API_TOKEN') ?: '');
+define('EXOTEL_SUBDOMAIN', getenv('EXOTEL_SUBDOMAIN') ?: 'api.exotel.com');
+define('EXOTEL_VIRTUAL_NUMBER', getenv('EXOTEL_VIRTUAL_NUMBER') ?: '08045678900');

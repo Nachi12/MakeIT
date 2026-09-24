@@ -818,7 +818,7 @@ require_once dirname(__DIR__) . '/includes/admin_header.php';
                   </td>
 
                   <!-- 7. Last Called -->
-                  <td style="font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-muted);">
+                  <td class="col-last-called" style="font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-muted);">
                     <?= !empty($lead['last_called_at']) ? e(format_date($lead['last_called_at'], 'M j, H:i')) : '—' ?>
                   </td>
 
@@ -841,12 +841,12 @@ require_once dirname(__DIR__) . '/includes/admin_header.php';
                     <!-- CALL Button -->
                     <button type="button"
                             class="btn-call-action"
-                            onclick="openCallModal(<?= (int)$lead['id'] ?>, '<?= e(addslashes($lead['name'])) ?>', '<?= e(addslashes($lead['company'] ?? '')) ?>', '<?= e(addslashes($lead['phone'] ?? '')) ?>')"
-                            title="Log Call with prospect">
+                            onclick="triggerClickToCall(<?= (int)$lead['id'] ?>, this)"
+                            title="Click-to-Call prospect via Exotel">
                       <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                       </svg>
-                      CALL
+                      <span class="btn-call-text">CALL</span>
                     </button>
 
                     <!-- History Button -->
@@ -1033,11 +1033,12 @@ require_once dirname(__DIR__) . '/includes/admin_header.php';
                   <td style="text-align: right;">
                     <button type="button"
                             class="btn-call-action"
-                            onclick="openCallModal(<?= (int)$lead['id'] ?>, '<?= e(addslashes($lead['name'])) ?>', '<?= e(addslashes($lead['company'] ?? '')) ?>', '<?= e(addslashes($lead['phone'] ?? '')) ?>')">
+                            onclick="triggerClickToCall(<?= (int)$lead['id'] ?>, this)"
+                            title="Click-to-Call prospect via Exotel">
                       <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                       </svg>
-                      CALL
+                      <span class="btn-call-text">CALL</span>
                     </button>
                   </td>
                 </tr>
@@ -2084,6 +2085,107 @@ require_once dirname(__DIR__) . '/includes/admin_header.php';
     const modal = document.getElementById('callModal');
     modal.classList.remove('active');
     modal.setAttribute('aria-hidden', 'true');
+  }
+
+  function triggerClickToCall(leadId, btnElement) {
+    if (!leadId) return;
+
+    if (btnElement && btnElement.disabled) return;
+
+    const btnText = btnElement ? (btnElement.querySelector('.btn-call-text') || btnElement) : null;
+    const originalHtml = btnElement ? btnElement.innerHTML : '';
+
+    if (btnElement) {
+      btnElement.disabled = true;
+      btnElement.style.opacity = '0.75';
+      if (btnText) btnText.textContent = 'CALLING...';
+    }
+
+    fetch('api/call-lead.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: JSON.stringify({ lead_id: leadId })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        if (btnText) btnText.textContent = 'CALLING YOUR PHONE...';
+        showCrmCallNotification('Connecting call: Your phone (9035344513) will ring shortly!', 'success');
+
+        if (btnElement) {
+          const row = btnElement.closest('tr');
+          if (row) {
+            const lastCalledCell = row.querySelector('.col-last-called');
+            if (lastCalledCell) {
+              lastCalledCell.innerHTML = '<div style="font-family: \'DM Mono\', monospace; font-size: 11px; color: var(--text-dark); font-weight: 500;">Just now</div>';
+            }
+            const callStatusBadge = row.querySelector('.badge-call-status');
+            if (callStatusBadge) {
+              callStatusBadge.className = 'badge-call-status badge-called';
+              callStatusBadge.innerHTML = '<span class="dot"></span>Called';
+            }
+          }
+        }
+
+        setTimeout(() => {
+          if (btnElement) {
+            btnElement.disabled = false;
+            btnElement.style.opacity = '1';
+            btnElement.innerHTML = originalHtml;
+          }
+        }, 4000);
+      } else {
+        showCrmCallNotification(data.error || 'Unable to start the call. Please try again.', 'error');
+        if (btnElement) {
+          btnElement.disabled = false;
+          btnElement.style.opacity = '1';
+          btnElement.innerHTML = originalHtml;
+        }
+      }
+    })
+    .catch(err => {
+      showCrmCallNotification('Unable to start the call. Please check network connection.', 'error');
+      if (btnElement) {
+        btnElement.disabled = false;
+        btnElement.style.opacity = '1';
+        btnElement.innerHTML = originalHtml;
+      }
+    });
+  }
+
+  function showCrmCallNotification(message, type) {
+    let alertContainer = document.getElementById('crmCallBanner');
+    if (!alertContainer) {
+      alertContainer = document.createElement('div');
+      alertContainer.id = 'crmCallBanner';
+      alertContainer.style.position = 'fixed';
+      alertContainer.style.bottom = '24px';
+      alertContainer.style.right = '24px';
+      alertContainer.style.zIndex = '9999';
+      alertContainer.style.maxWidth = '380px';
+      document.body.appendChild(alertContainer);
+    }
+    const bg = type === 'success' ? '#059669' : '#dc2626';
+    const item = document.createElement('div');
+    item.style.background = bg;
+    item.style.color = '#ffffff';
+    item.style.padding = '12px 18px';
+    item.style.borderRadius = '10px';
+    item.style.boxShadow = '0 10px 30px rgba(0,0,0,0.25)';
+    item.style.fontSize = '13px';
+    item.style.lineHeight = '1.4';
+    item.style.fontFamily = "system-ui, -apple-system, sans-serif";
+    item.style.marginTop = '8px';
+    item.style.transition = 'all 0.3s ease';
+    item.innerHTML = `<strong>${type === 'success' ? '📞 Click-to-Call' : '⚠️ Telephony Notice'}</strong><br>${message}`;
+    alertContainer.appendChild(item);
+    setTimeout(() => {
+      item.style.opacity = '0';
+      setTimeout(() => item.remove(), 400);
+    }, 6000);
   }
 
   function openEditLeadModal(lead) {
