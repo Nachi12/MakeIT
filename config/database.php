@@ -56,6 +56,7 @@ final class Database
         try {
             $this->pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
             $this->pdo->exec("SET NAMES " . DB_CHARSET . " COLLATE utf8mb4_unicode_ci");
+            $this->ensureSchema();
         } catch (PDOException $e) {
             $this->connectionError = $e->getMessage();
             // Fallback to SQLite for local development / testing if MySQL daemon is not active
@@ -73,6 +74,77 @@ final class Database
                 $this->pdo = null;
             }
             error_log("MySQL Connection Notice: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Ensure database tables possess all required columns across MySQL & SQLite
+     */
+    private function ensureSchema(): void
+    {
+        if ($this->pdo === null) return;
+        try {
+            $driver = $this->pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
+            if ($driver === 'mysql') {
+                // Invoices table
+                $invCols = $this->pdo->query("SHOW COLUMNS FROM invoices")->fetchAll(PDO::FETCH_COLUMN);
+                if (!in_array('client_id', $invCols, true)) {
+                    $this->pdo->exec("ALTER TABLE invoices ADD COLUMN client_id INT UNSIGNED NULL DEFAULT NULL AFTER invoice_number");
+                }
+                if (!in_array('service', $invCols, true)) {
+                    $this->pdo->exec("ALTER TABLE invoices ADD COLUMN service VARCHAR(100) NULL AFTER client_name");
+                }
+                if (!in_array('notes', $invCols, true)) {
+                    $this->pdo->exec("ALTER TABLE invoices ADD COLUMN notes TEXT NULL AFTER paid_at");
+                }
+                if (!in_array('updated_at', $invCols, true)) {
+                    $this->pdo->exec("ALTER TABLE invoices ADD COLUMN updated_at DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP AFTER created_at");
+                }
+
+                // Revenue table
+                $revCols = $this->pdo->query("SHOW COLUMNS FROM revenue")->fetchAll(PDO::FETCH_COLUMN);
+                if (!in_array('client_name', $revCols, true)) {
+                    $this->pdo->exec("ALTER TABLE revenue ADD COLUMN client_name VARCHAR(150) NULL DEFAULT NULL AFTER client_id");
+                }
+
+                // Leads table
+                $leadCols = $this->pdo->query("SHOW COLUMNS FROM leads")->fetchAll(PDO::FETCH_COLUMN);
+                if (!in_array('client_id', $leadCols, true)) {
+                    $this->pdo->exec("ALTER TABLE leads ADD COLUMN client_id INT UNSIGNED NULL DEFAULT NULL AFTER id");
+                }
+                if (!in_array('service', $leadCols, true)) {
+                    $this->pdo->exec("ALTER TABLE leads ADD COLUMN service VARCHAR(100) NULL DEFAULT NULL AFTER company");
+                }
+                if (!in_array('source', $leadCols, true)) {
+                    $this->pdo->exec("ALTER TABLE leads ADD COLUMN source VARCHAR(50) NULL DEFAULT 'Website Form' AFTER message");
+                }
+                if (!in_array('call_status', $leadCols, true)) {
+                    $this->pdo->exec("ALTER TABLE leads ADD COLUMN call_status VARCHAR(50) NOT NULL DEFAULT 'Not Called' AFTER status");
+                }
+                if (!in_array('last_called_at', $leadCols, true)) {
+                    $this->pdo->exec("ALTER TABLE leads ADD COLUMN last_called_at DATETIME NULL DEFAULT NULL AFTER call_status");
+                }
+                if (!in_array('next_followup_at', $leadCols, true)) {
+                    $this->pdo->exec("ALTER TABLE leads ADD COLUMN next_followup_at DATETIME NULL DEFAULT NULL AFTER last_called_at");
+                }
+
+                // Calls table
+                $callCols = $this->pdo->query("SHOW COLUMNS FROM calls")->fetchAll(PDO::FETCH_COLUMN);
+                if (!in_array('lead_id', $callCols, true)) {
+                    $this->pdo->exec("ALTER TABLE calls ADD COLUMN lead_id BIGINT UNSIGNED NULL DEFAULT NULL AFTER id");
+                }
+                if (!in_array('client_id', $callCols, true)) {
+                    $this->pdo->exec("ALTER TABLE calls ADD COLUMN client_id INT UNSIGNED NULL DEFAULT NULL AFTER lead_id");
+                }
+                if (!in_array('call_datetime', $callCols, true)) {
+                    $this->pdo->exec("ALTER TABLE calls ADD COLUMN call_datetime DATETIME NULL DEFAULT NULL AFTER phone");
+                }
+                if (!in_array('next_followup_at', $callCols, true)) {
+                    $this->pdo->exec("ALTER TABLE calls ADD COLUMN next_followup_at DATETIME NULL DEFAULT NULL AFTER outcome");
+                }
+            }
+        } catch (\Throwable $ex) {
+            error_log("Schema auto-migration notice: " . $ex->getMessage());
         }
     }
 

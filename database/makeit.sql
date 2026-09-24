@@ -313,12 +313,17 @@ CREATE TABLE IF NOT EXISTS `calls` (
 CREATE TABLE IF NOT EXISTS `invoices` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `invoice_number` VARCHAR(50) NOT NULL UNIQUE,
+  `client_id` INT UNSIGNED NULL DEFAULT NULL,
   `client_name` VARCHAR(150) NOT NULL,
+  `service` VARCHAR(100) NULL,
   `amount` DECIMAL(10,2) NOT NULL DEFAULT 0.00,
   `status` VARCHAR(50) NOT NULL DEFAULT 'paid',
   `due_date` DATE NOT NULL,
   `paid_at` DATETIME NULL,
-  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `notes` TEXT NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX `idx_invoices_client` (`client_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -327,6 +332,7 @@ CREATE TABLE IF NOT EXISTS `invoices` (
 CREATE TABLE IF NOT EXISTS `revenue` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `client_id` INT UNSIGNED NULL DEFAULT NULL,
+  `client_name` VARCHAR(150) NULL DEFAULT NULL,
   `lead_id` BIGINT UNSIGNED NULL DEFAULT NULL,
   `invoice_id` INT NULL DEFAULT NULL,
   `amount` DECIMAL(12,2) NOT NULL DEFAULT 0.00,
