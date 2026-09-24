@@ -3063,3 +3063,351 @@ tr.row-selected {
   border-color: rgba(255, 255, 255, 0.3);
 }
 
+/* ==============================================================================
+   PHASE 2 — MOBILE DASHBOARD STYLES
+   ============================================================================== */
+
+/* Display toggles for Mobile Cards vs Desktop Tables */
+.mobile-only-block {
+  display: none !important;
+}
+
+.desktop-only-table {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .mobile-only-block {
+    display: flex !important;
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .desktop-only-table {
+    display: none !important;
+  }
+}
+
+/* 1. Mobile KPI Cards (2 per row) */
+@media (max-width: 768px) {
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .kpi-card {
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+  }
+
+  .kpi-top {
+    margin-bottom: 4px;
+  }
+
+  .kpi-label {
+    font-size: 9px;
+    letter-spacing: 0.04em;
+  }
+
+  .kpi-icon-wrap {
+    width: 28px;
+    height: 28px;
+    padding: 4px;
+  }
+
+  .kpi-value {
+    font-size: 20px;
+    margin: 6px 0;
+    line-height: 1.2;
+  }
+
+  .kpi-footer {
+    font-size: 10px;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+}
+
+/* 2. Mobile Charts (Revenue Overview & Call Activity) */
+@media (max-width: 768px) {
+  .dashboard-charts-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .chart-card {
+    padding: 14px;
+    border-radius: var(--radius-sm);
+  }
+
+  .chart-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .period-tab-group {
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 3px;
+    gap: 4px;
+    background: var(--main-bg);
+    border-radius: 8px;
+  }
+
+  .period-tab-btn {
+    min-height: 44px;
+    padding: 8px 14px;
+    font-size: 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .svg-chart-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    height: 190px;
+    min-height: 190px;
+  }
+
+  .svg-chart-container svg {
+    min-width: 520px;
+    height: 190px;
+  }
+
+  #callsChartContainer {
+    min-height: 200px;
+  }
+
+  .call-bar-chart {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
+  }
+
+  .chart-legend {
+    gap: 10px;
+    justify-content: flex-start;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
+/* 3. Mobile Lead Pipeline (Compact list layout) */
+@media (max-width: 768px) {
+  .pipeline-grid {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  .pipeline-stage-card {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 10px 14px;
+    gap: 12px;
+  }
+
+  .pipeline-stage-card > div:first-child {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .stage-card-top {
+    margin-bottom: 0;
+    gap: 8px;
+  }
+
+  .stage-count {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  .pipeline-stage-card > div:last-child {
+    flex: 1;
+    max-width: 160px;
+  }
+
+  .stage-meta {
+    margin-top: 0;
+    margin-bottom: 4px;
+  }
+}
+
+/* 4. Mobile Recent Leads Cards */
+.mobile-lead-card {
+  background: var(--main-bg);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mobile-lead-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.mobile-lead-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-dark);
+  text-decoration: none;
+}
+
+.mobile-lead-company {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.mobile-lead-details {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.mobile-lead-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* 5. Mobile Recent Activity Cards */
+.mobile-activity-card {
+  background: var(--main-bg);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mobile-activity-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.mobile-activity-card-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dark);
+  text-decoration: none;
+}
+
+.mobile-activity-card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* 6. Mobile Follow-up Cards */
+.mobile-followup-card {
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.mobile-followup-card.overdue {
+  border-left: 4px solid #ef4444;
+  background: #fff9f9;
+}
+
+.mobile-followup-card.upcoming {
+  border-left: 4px solid #10b981;
+}
+
+.mobile-followup-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.mobile-followup-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-dark);
+  text-decoration: none;
+}
+
+.mobile-followup-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.mobile-followup-time {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: "DM Mono", monospace;
+  font-size: 12px;
+  color: var(--text-dark);
+  background: rgba(0, 0, 0, 0.03);
+  padding: 6px 10px;
+  border-radius: 6px;
+}
+
+.mobile-followup-card.overdue .mobile-followup-time {
+  color: #dc2626;
+  background: #fef2f2;
+}
+
+.mobile-followup-notes {
+  font-size: 12px;
+  color: var(--text-body);
+  line-height: 1.4;
+  background: rgba(0, 0, 0, 0.02);
+  padding: 8px 10px;
+  border-radius: 6px;
+}
+
+.mobile-followup-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.mobile-followup-actions .btn-call-action,
+.mobile-followup-actions .btn-history-action {
+  flex: 1;
+  min-height: 44px;
+  justify-content: center;
+  font-size: 13px;
+}
+
+.btn-touch-44 {
+  min-height: 44px !important;
+  min-width: 44px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+

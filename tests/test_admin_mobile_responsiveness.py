@@ -117,7 +117,7 @@ def run_tests():
         except Exception as e:
             log_test(f"Page Load: {label} ({page})", False, str(e))
 
-    # CSS Verification
+    # CSS & Phase 2 Mobile Dashboard Verification
     css_url = "http://127.0.0.1:8080/assets/css/admin.css"
     total_count += 1
     try:
@@ -128,14 +128,35 @@ def run_tests():
         has_drawer_media = "@media (max-width: 992px)" in css and "transform: translateX(-100%)" in css
         has_100vw_guard = "max-width: 100vw" in css
         has_table_scroll = ".table-responsive" in css and "overflow-x: auto" in css
+        has_2col_kpi = "grid-template-columns: repeat(2, 1fr)" in css
+        has_mobile_card_rules = ".mobile-lead-card" in css and ".mobile-activity-card" in css and ".mobile-followup-card" in css
         
-        if has_touch_targets and has_drawer_media and has_100vw_guard and has_table_scroll:
-            log_test("Admin CSS Responsive Touch Targets & Mobile Drawer Rules", True)
+        if has_touch_targets and has_drawer_media and has_100vw_guard and has_table_scroll and has_2col_kpi and has_mobile_card_rules:
+            log_test("Admin CSS Mobile Dashboard & Touch Target Rules", True)
             passed_count += 1
         else:
-            log_test("Admin CSS Responsive Touch Targets & Mobile Drawer Rules", False, "Missing required mobile CSS rules")
+            log_test("Admin CSS Mobile Dashboard & Touch Target Rules", False, "Missing required mobile CSS rules")
     except Exception as e:
         log_test("Admin CSS Verification", False, str(e))
+
+    # Check Mobile Card Blocks in Dashboard HTML
+    total_count += 1
+    try:
+        dash_url = f"{BASE_URL}/index.php"
+        resp = opener.open(dash_url)
+        html = resp.read().decode('utf-8')
+        
+        has_mobile_leads = "mobile-leads-cards-list" in html
+        has_mobile_activity = "mobile-activity-cards-list" in html
+        has_mobile_followups = "mobile-followup-cards-list" in html
+        
+        if has_mobile_leads and has_mobile_activity and has_mobile_followups:
+            log_test("Mobile Dashboard Card HTML Elements (Leads, Activity, Follow-ups)", True)
+            passed_count += 1
+        else:
+            log_test("Mobile Dashboard Card HTML Elements", False, "Missing mobile card HTML containers in index.php")
+    except Exception as e:
+        log_test("Dashboard Card Check", False, str(e))
 
     print("\n====================================================")
     print(f"Results: {passed_count}/{total_count} Passed")

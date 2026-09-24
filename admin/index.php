@@ -807,7 +807,7 @@ require_once __DIR__ . '/includes/admin_header.php';
       <a href="leads.php" class="btn-action">View All Leads &rarr;</a>
     </div>
 
-    <div class="table-responsive">
+    <div class="table-responsive desktop-only-table">
       <?php if (empty($recentLeadsList)): ?>
         <div class="empty-state-banner">
           <div class="empty-state-icon">📋</div>
@@ -892,6 +892,62 @@ require_once __DIR__ . '/includes/admin_header.php';
         </table>
       <?php endif; ?>
     </div>
+
+    <!-- Mobile Leads Cards View -->
+    <div class="mobile-leads-cards-list mobile-only-block">
+      <?php if (empty($recentLeadsList)): ?>
+        <div class="empty-state-banner">
+          <div class="empty-state-icon">📋</div>
+          <div class="empty-state-title">No enquiries recorded yet.</div>
+          <p>Website inquiries submitted via the contact form will appear here automatically.</p>
+        </div>
+      <?php else: ?>
+        <?php foreach ($recentLeadsList as $rLead): ?>
+          <?php
+            $leadCallStatus = !empty($rLead['call_status']) ? $rLead['call_status'] : 'Not Called';
+            $callNorm = strtolower(trim($leadCallStatus));
+            $callBadgeClass = match ($callNorm) {
+                'called'         => 'badge-called',
+                'call back'      => 'badge-callback',
+                'no answer'      => 'badge-no-answer',
+                'not interested' => 'badge-not-interested',
+                default          => 'badge-not-called'
+            };
+            $leadService = !empty($rLead['service']) ? $rLead['service'] : (!empty($rLead['service_interested']) ? $rLead['service_interested'] : 'Website');
+          ?>
+          <div class="mobile-lead-card">
+            <div class="mobile-lead-card-header">
+              <div>
+                <a href="leads.php?search=<?= urlencode($rLead['name']) ?>" class="mobile-lead-name">
+                  <?= e($rLead['name']) ?>
+                </a>
+                <div class="mobile-lead-company"><?= e($rLead['company'] ?: 'Individual / Prospect') ?></div>
+              </div>
+              <span class="status-pill status-<?= strtolower(str_replace(' ', '-', (string)$rLead['status'])) ?>">
+                <?= e($rLead['status'] ?: 'New') ?>
+              </span>
+            </div>
+            <div class="mobile-lead-details">
+              <span class="badge-call-status <?= $callBadgeClass ?>">
+                <span class="dot"></span>
+                <?= e($leadCallStatus) ?>
+              </span>
+              <span style="font-family: 'DM Mono', monospace; font-size: 11px; background: var(--main-bg); padding: 3px 8px; border-radius: 4px;">
+                <?= e($leadService) ?>
+              </span>
+            </div>
+            <div class="mobile-lead-footer">
+              <span style="font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-muted);">
+                <?= e(date('j M Y', strtotime($rLead['created_at']))) ?>
+              </span>
+              <a href="leads.php?search=<?= urlencode($rLead['name']) ?>" class="btn-action btn-touch-44" style="padding: 6px 12px; background: #ffffff;">
+                Manage &rarr;
+              </a>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      <?php endif; ?>
+    </div>
   </div>
 
   <!-- =========================================================
@@ -953,7 +1009,7 @@ require_once __DIR__ . '/includes/admin_header.php';
         </span>
       </div>
 
-      <div class="table-responsive">
+      <div class="table-responsive desktop-only-table">
         <?php if (empty($recentActivity)): ?>
           <div class="empty-state-banner">
             <div class="empty-state-title">No activity recorded yet.</div>
@@ -1016,6 +1072,47 @@ require_once __DIR__ . '/includes/admin_header.php';
           </table>
         <?php endif; ?>
       </div>
+
+      <!-- Mobile Activity Cards View -->
+      <div class="mobile-activity-cards-list mobile-only-block">
+        <?php if (empty($recentActivity)): ?>
+          <div class="empty-state-banner">
+            <div class="empty-state-title">No activity recorded yet.</div>
+            <p>Inquiries, calls, and payments will stream here automatically.</p>
+          </div>
+        <?php else: ?>
+          <?php foreach ($recentActivity as $act): ?>
+            <?php
+              $typeClass = 'activity-type-lead';
+              if ($act['type'] === 'Call') {
+                  $typeClass = 'activity-type-call';
+              } elseif ($act['type'] === 'Payment') {
+                  $typeClass = 'activity-type-payment';
+              }
+              $actUrl = match($act['type']) {
+                  'Lead'    => 'leads.php?search=' . urlencode($act['name']),
+                  'Call'    => 'calls.php?search=' . urlencode($act['name']),
+                  'Payment' => 'revenue.php?search=' . urlencode($act['name']),
+                  default   => '#'
+              };
+            ?>
+            <div class="mobile-activity-card">
+              <div class="mobile-activity-card-top">
+                <a href="<?= e($actUrl) ?>" class="mobile-activity-card-name">
+                  <?= e($act['name']) ?>
+                </a>
+                <span class="activity-type-pill <?= $typeClass ?>">
+                  <?= e($act['type']) ?>
+                </span>
+              </div>
+              <div class="mobile-activity-card-bottom">
+                <span><?= e(format_date($act['date'], 'M j, H:i')) ?></span>
+                <span class="status-pill"><?= e($act['status']) ?></span>
+              </div>
+            </div>
+          <?php endforeach; ?>
+        <?php endif; ?>
+      </div>
     </div>
   </div>
 
@@ -1031,7 +1128,7 @@ require_once __DIR__ . '/includes/admin_header.php';
       <a href="calls.php" class="btn-action">View All Calls &rarr;</a>
     </div>
 
-    <div class="table-responsive">
+    <div class="table-responsive desktop-only-table">
       <?php if (empty($followupsNeedingAttention)): ?>
         <div class="empty-state-banner" style="margin: 24px;">
           <div class="empty-state-icon">✓</div>
@@ -1093,6 +1190,73 @@ require_once __DIR__ . '/includes/admin_header.php';
             <?php endforeach; ?>
           </tbody>
         </table>
+      <?php endif; ?>
+    </div>
+
+    <!-- Mobile Follow-ups Cards View -->
+    <div class="mobile-followup-cards-list mobile-only-block">
+      <?php if (empty($followupsNeedingAttention)): ?>
+        <div class="empty-state-banner">
+          <div class="empty-state-icon">✓</div>
+          <div class="empty-state-title">No follow-ups scheduled.</div>
+          <p>All scheduled calls have been completed or attended to.</p>
+        </div>
+      <?php else: ?>
+        <?php foreach ($followupsNeedingAttention as $call): ?>
+          <?php
+            $isOverdue = strtotime($call['scheduled_at']) < time();
+            $cardClass = $isOverdue ? 'overdue' : 'upcoming';
+          ?>
+          <div class="mobile-followup-card <?= $cardClass ?>">
+            <div class="mobile-followup-card-header">
+              <div>
+                <a href="calls.php?search=<?= urlencode($call['contact_name']) ?>" class="mobile-followup-name">
+                  <?= e($call['contact_name']) ?>
+                </a>
+                <div class="mobile-followup-sub">
+                  <?= e($call['company'] ?? 'Personal / Independent') ?>
+                </div>
+              </div>
+              <div>
+                <?php if ($isOverdue): ?>
+                  <span class="badge-overdue">Overdue</span>
+                <?php else: ?>
+                  <span class="badge-upcoming">Upcoming</span>
+                <?php endif; ?>
+              </div>
+            </div>
+
+            <div class="mobile-followup-time">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <span><?= e(format_date($call['scheduled_at'], 'M j, Y — H:i')) ?></span>
+            </div>
+
+            <?php if (!empty($call['notes'])): ?>
+              <div class="mobile-followup-notes">
+                <?= e($call['notes']) ?>
+              </div>
+            <?php endif; ?>
+
+            <div class="mobile-followup-actions">
+              <?php if (!empty($call['phone'])): ?>
+                <a href="tel:<?= e($call['phone']) ?>" class="btn-call-action btn-touch-44">
+                  <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                  </svg>
+                  <span>Call</span>
+                </a>
+              <?php endif; ?>
+              <a href="calls.php?search=<?= urlencode($call['contact_name']) ?>" class="btn-history-action btn-touch-44">
+                <span>View</span>
+              </a>
+              <a href="calls.php" class="btn-history-action btn-touch-44">
+                <span>Edit</span>
+              </a>
+            </div>
+          </div>
+        <?php endforeach; ?>
       <?php endif; ?>
     </div>
   </div>
