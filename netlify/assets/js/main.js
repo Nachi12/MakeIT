@@ -496,8 +496,15 @@ document.addEventListener("DOMContentLoaded", () => {
     qnWrapper.querySelectorAll(".qn-next-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
         const nextNum = parseInt(btn.getAttribute("data-next"), 10);
-        if (currentStep === 2 && businessInput && inputCompany) {
-          inputCompany.value = businessInput.value.trim();
+        if (currentStep === 2 && businessInput) {
+          const val = businessInput.value.trim();
+          if (!val) {
+            businessInput.focus();
+            businessInput.style.borderColor = "#ff6b6b";
+            businessInput.style.boxShadow = "0 0 0 3px rgba(255, 107, 107, 0.25)";
+            return;
+          }
+          if (inputCompany) inputCompany.value = val;
         }
         goToStep(nextNum);
       });
@@ -517,9 +524,21 @@ document.addEventListener("DOMContentLoaded", () => {
       businessInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
           e.preventDefault();
-          if (inputCompany) inputCompany.value = businessInput.value.trim();
+          const val = businessInput.value.trim();
+          if (!val) {
+            businessInput.focus();
+            businessInput.style.borderColor = "#ff6b6b";
+            businessInput.style.boxShadow = "0 0 0 3px rgba(255, 107, 107, 0.25)";
+            return;
+          }
+          if (inputCompany) inputCompany.value = val;
           goToStep(3);
         }
+      });
+
+      businessInput.addEventListener("input", () => {
+        businessInput.style.borderColor = "";
+        businessInput.style.boxShadow = "";
       });
     }
 
