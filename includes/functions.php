@@ -672,11 +672,30 @@ function process_lead_inquiry(array $input): array
     $email    = sanitize_email($input['email'] ?? '');
     $phone    = sanitize_text($input['phone'] ?? '');
     $company  = sanitize_text($input['company'] ?? $input['business'] ?? '');
-    $service  = sanitize_text($input['service'] ?? 'Website Development');
+    $service  = sanitize_text($input['service'] ?? '');
     $budget   = sanitize_text($input['budget'] ?? '');
     $goal     = sanitize_text($input['goal'] ?? '');
     $details  = sanitize_text($input['message'] ?? $input['project_details'] ?? '');
     $source   = sanitize_text($input['source'] ?? $input['lead_source'] ?? 'Website Questionnaire');
+
+    // Strict validation for Website Questionnaire submissions
+    if ($source === 'Website Questionnaire' || !empty($input['qn_questionnaire'])) {
+        if (empty($service)) {
+            return ['success' => false, 'error' => 'Please select a service before continuing.', 'message' => ''];
+        }
+        if (empty($company)) {
+            return ['success' => false, 'error' => 'Please enter your business or brand name.', 'message' => ''];
+        }
+        if (empty($goal)) {
+            return ['success' => false, 'error' => 'Please select a project goal.', 'message' => ''];
+        }
+        if (empty($budget)) {
+            return ['success' => false, 'error' => 'Please select an estimated budget range.', 'message' => ''];
+        }
+        if (empty($phone)) {
+            return ['success' => false, 'error' => 'Please provide a valid phone or WhatsApp number.', 'message' => ''];
+        }
+    }
 
     $message  = '';
     if (!empty($goal)) {
@@ -776,8 +795,8 @@ function process_lead_inquiry(array $input): array
         'email'              => $email,
         'phone'              => !empty($phone) ? $phone : null,
         'company'            => !empty($company) ? $company : null,
-        'service'            => $service,
-        'service_interested' => $service,
+        'service'            => !empty($service) ? $service : 'Website Development',
+        'service_interested' => !empty($service) ? $service : 'Website Development',
         'budget'             => !empty($budget) ? $budget : null,
         'message'            => $message,
         'source'             => $source,

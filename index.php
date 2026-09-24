@@ -568,10 +568,10 @@ require_once __DIR__ . '/includes/header.php';
               </div>
 
               <!-- Hidden Storage Inputs for Questionnaire Selections -->
-              <input type="hidden" name="service" id="qnInputService" value="Website Development">
+              <input type="hidden" name="service" id="qnInputService" value="">
               <input type="hidden" name="company" id="qnInputCompany" value="">
               <input type="hidden" name="goal" id="qnInputGoal" value="">
-              <input type="hidden" name="budget" id="qnInputBudget" value="Not sure yet">
+              <input type="hidden" name="budget" id="qnInputBudget" value="">
 
               <div class="qn-steps-container">
                 <!-- STEP 1: SERVICE SELECTION -->
@@ -580,7 +580,7 @@ require_once __DIR__ . '/includes/header.php';
                   <p class="qn-question-sub">Tell us what you need and we'll help shape the right solution.</p>
 
                   <div class="qn-options-grid">
-                    <button type="button" class="qn-option-card selected" data-value="Website Development">
+                    <button type="button" class="qn-option-card" data-value="Website Development">
                       <span class="qn-option-num">01</span>
                       <span class="qn-option-text">Website Development</span>
                       <span class="qn-option-arrow">↗</span>
@@ -692,7 +692,7 @@ require_once __DIR__ . '/includes/header.php';
                       <span class="qn-option-text">₹1,00,000+</span>
                       <span class="qn-option-arrow">↗</span>
                     </button>
-                    <button type="button" class="qn-option-card budget-card selected" data-value="Not sure yet">
+                    <button type="button" class="qn-option-card budget-card" data-value="Not sure yet">
                       <span class="qn-option-text">Not sure yet</span>
                       <span class="qn-option-arrow">↗</span>
                     </button>

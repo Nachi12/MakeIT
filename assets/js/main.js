@@ -443,6 +443,51 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputBudget = document.getElementById("qnInputBudget");
     const businessInput = document.getElementById("qnBusinessInput");
 
+    // Single Questionnaire State Object
+    const qnState = {
+      service: inputService ? inputService.value.trim() : "",
+      company: inputCompany ? inputCompany.value.trim() : "",
+      goal: inputGoal ? inputGoal.value.trim() : "",
+      budget: inputBudget ? inputBudget.value.trim() : "",
+      name: "",
+      phone: "",
+      email: "",
+      projectDetails: ""
+    };
+
+    // Inline Step Validation Message Helpers
+    function showStepError(stepEl, message) {
+      if (!stepEl) return;
+      let errEl = stepEl.querySelector(".qn-step-error");
+      if (!errEl) {
+        errEl = document.createElement("div");
+        errEl.className = "qn-step-error";
+        errEl.style.color = "#ff6b6b";
+        errEl.style.fontSize = "13px";
+        errEl.style.marginTop = "12px";
+        errEl.style.marginBottom = "8px";
+        errEl.style.fontFamily = "var(--font-heading, sans-serif)";
+        errEl.style.letterSpacing = "0.02em";
+        const actions = stepEl.querySelector(".qn-actions");
+        if (actions) {
+          stepEl.insertBefore(errEl, actions);
+        } else {
+          stepEl.appendChild(errEl);
+        }
+      }
+      errEl.textContent = message;
+      errEl.style.display = "block";
+    }
+
+    function clearStepError(stepEl) {
+      if (!stepEl) return;
+      const errEl = stepEl.querySelector(".qn-step-error");
+      if (errEl) {
+        errEl.style.display = "none";
+        errEl.textContent = "";
+      }
+    }
+
     // Guarantee clean initial step state (only Step 1 active)
     qnWrapper.querySelectorAll(".qn-step").forEach((el) => {
       el.classList.toggle("active", el.getAttribute("data-step") === "1");
@@ -470,6 +515,46 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
+    // Validate specific step choice/input
+    function validateStep(stepNumber) {
+      const stepEl = qnWrapper.querySelector(`.qn-step[data-step="${stepNumber}"]`);
+      clearStepError(stepEl);
+
+      if (stepNumber === 1) {
+        const val = inputService ? inputService.value.trim() : qnState.service;
+        if (!val) {
+          showStepError(stepEl, "Please select an option to continue.");
+          return false;
+        }
+      } else if (stepNumber === 2) {
+        const val = businessInput ? businessInput.value.trim() : qnState.company;
+        if (!val) {
+          showStepError(stepEl, "Please enter your business or brand name.");
+          if (businessInput) {
+            businessInput.focus();
+            businessInput.style.borderColor = "#ff6b6b";
+            businessInput.style.boxShadow = "0 0 0 3px rgba(255, 107, 107, 0.25)";
+          }
+          return false;
+        }
+        qnState.company = val;
+        if (inputCompany) inputCompany.value = val;
+      } else if (stepNumber === 3) {
+        const val = inputGoal ? inputGoal.value.trim() : qnState.goal;
+        if (!val) {
+          showStepError(stepEl, "Please select an option to continue.");
+          return false;
+        }
+      } else if (stepNumber === 4) {
+        const val = inputBudget ? inputBudget.value.trim() : qnState.budget;
+        if (!val) {
+          showStepError(stepEl, "Please select an option to continue.");
+          return false;
+        }
+      }
+      return true;
+    }
+
     // Option Cards (Step 1, 3, 4)
     qnWrapper.querySelectorAll(".qn-option-card").forEach((card) => {
       card.addEventListener("click", () => {
@@ -477,12 +562,21 @@ document.addEventListener("DOMContentLoaded", () => {
         const stepNum = parseInt(stepEl.getAttribute("data-step"), 10);
         const val = card.getAttribute("data-value");
 
+        clearStepError(stepEl);
+
         stepEl.querySelectorAll(".qn-option-card").forEach((c) => c.classList.remove("selected"));
         card.classList.add("selected");
 
-        if (stepNum === 1 && inputService) inputService.value = val;
-        if (stepNum === 3 && inputGoal) inputGoal.value = val;
-        if (stepNum === 4 && inputBudget) inputBudget.value = val;
+        if (stepNum === 1) {
+          qnState.service = val;
+          if (inputService) inputService.value = val;
+        } else if (stepNum === 3) {
+          qnState.goal = val;
+          if (inputGoal) inputGoal.value = val;
+        } else if (stepNum === 4) {
+          qnState.budget = val;
+          if (inputBudget) inputBudget.value = val;
+        }
 
         setTimeout(() => {
           if (currentStep < totalSteps) {
@@ -496,16 +590,7 @@ document.addEventListener("DOMContentLoaded", () => {
     qnWrapper.querySelectorAll(".qn-next-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
         const nextNum = parseInt(btn.getAttribute("data-next"), 10);
-        if (currentStep === 2 && businessInput) {
-          const val = businessInput.value.trim();
-          if (!val) {
-            businessInput.focus();
-            businessInput.style.borderColor = "#ff6b6b";
-            businessInput.style.boxShadow = "0 0 0 3px rgba(255, 107, 107, 0.25)";
-            return;
-          }
-          if (inputCompany) inputCompany.value = val;
-        }
+        if (!validateStep(currentStep)) return;
         goToStep(nextNum);
       });
     });
@@ -519,19 +604,12 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // Enter Key on Business Input
+    // Enter Key & Input handling on Business Input
     if (businessInput) {
       businessInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
           e.preventDefault();
-          const val = businessInput.value.trim();
-          if (!val) {
-            businessInput.focus();
-            businessInput.style.borderColor = "#ff6b6b";
-            businessInput.style.boxShadow = "0 0 0 3px rgba(255, 107, 107, 0.25)";
-            return;
-          }
-          if (inputCompany) inputCompany.value = val;
+          if (!validateStep(2)) return;
           goToStep(3);
         }
       });
@@ -539,6 +617,8 @@ document.addEventListener("DOMContentLoaded", () => {
       businessInput.addEventListener("input", () => {
         businessInput.style.borderColor = "";
         businessInput.style.boxShadow = "";
+        const stepEl = businessInput.closest(".qn-step");
+        if (stepEl) clearStepError(stepEl);
       });
     }
 
@@ -551,9 +631,51 @@ document.addEventListener("DOMContentLoaded", () => {
           feedbackMsg.className = "qn-feedback-msg";
         }
 
-        if (businessInput && inputCompany) {
-          inputCompany.value = businessInput.value.trim();
+        // Validate all steps prior to submission
+        if (!validateStep(1)) { goToStep(1); return; }
+        if (!validateStep(2)) { goToStep(2); return; }
+        if (!validateStep(3)) { goToStep(3); return; }
+        if (!validateStep(4)) { goToStep(4); return; }
+
+        // Sync inputs from DOM
+        const nameVal = document.getElementById("qnNameInput")?.value.trim() || "";
+        const phoneVal = document.getElementById("qnPhoneInput")?.value.trim() || "";
+        const emailVal = document.getElementById("qnEmailInput")?.value.trim() || "";
+
+        if (!nameVal || nameVal.length < 2) {
+          if (feedbackMsg) {
+            feedbackMsg.textContent = "Please enter your name (minimum 2 characters).";
+            feedbackMsg.classList.add("error");
+            feedbackMsg.style.display = "block";
+          }
+          document.getElementById("qnNameInput")?.focus();
+          return;
         }
+
+        if (!phoneVal) {
+          if (feedbackMsg) {
+            feedbackMsg.textContent = "Please enter your phone or WhatsApp number.";
+            feedbackMsg.classList.add("error");
+            feedbackMsg.style.display = "block";
+          }
+          document.getElementById("qnPhoneInput")?.focus();
+          return;
+        }
+
+        if (!emailVal || !emailVal.includes("@") || !emailVal.includes(".")) {
+          if (feedbackMsg) {
+            feedbackMsg.textContent = "Please enter a valid email address.";
+            feedbackMsg.classList.add("error");
+            feedbackMsg.style.display = "block";
+          }
+          document.getElementById("qnEmailInput")?.focus();
+          return;
+        }
+
+        if (inputService) inputService.value = qnState.service;
+        if (inputCompany) inputCompany.value = qnState.company;
+        if (inputGoal) inputGoal.value = qnState.goal;
+        if (inputBudget) inputBudget.value = qnState.budget;
 
         const submitBtn = document.getElementById("qnSubmitBtn");
         if (submitBtn) {
@@ -579,14 +701,14 @@ document.addEventListener("DOMContentLoaded", () => {
             if (successScreen) successScreen.style.display = "block";
           } else {
             if (feedbackMsg) {
-              feedbackMsg.textContent = data.error || "Submission failed. Please check your fields and try again.";
+              feedbackMsg.textContent = data.error || "We couldn't send your enquiry. Please try again.";
               feedbackMsg.classList.add("error");
               feedbackMsg.style.display = "block";
             }
           }
         } catch (err) {
           if (feedbackMsg) {
-            feedbackMsg.textContent = "Network connection notice. Please try again.";
+            feedbackMsg.textContent = "We couldn't send your enquiry. Please check your connection and try again.";
             feedbackMsg.classList.add("error");
             feedbackMsg.style.display = "block";
           }
@@ -606,6 +728,30 @@ document.addEventListener("DOMContentLoaded", () => {
           form.reset();
           form.style.display = "block";
         }
+        qnState.service = "";
+        qnState.company = "";
+        qnState.goal = "";
+        qnState.budget = "";
+        qnState.name = "";
+        qnState.phone = "";
+        qnState.email = "";
+        qnState.projectDetails = "";
+
+        if (inputService) inputService.value = "";
+        if (inputCompany) inputCompany.value = "";
+        if (inputGoal) inputGoal.value = "";
+        if (inputBudget) inputBudget.value = "";
+        if (businessInput) businessInput.value = "";
+
+        qnWrapper.querySelectorAll(".qn-option-card").forEach((card) => card.classList.remove("selected"));
+        qnWrapper.querySelectorAll(".qn-step").forEach((stepEl) => clearStepError(stepEl));
+
+        if (feedbackMsg) {
+          feedbackMsg.style.display = "none";
+          feedbackMsg.textContent = "";
+          feedbackMsg.className = "qn-feedback-msg";
+        }
+
         if (successScreen) successScreen.style.display = "none";
         goToStep(1);
 
