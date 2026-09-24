@@ -195,22 +195,21 @@ $initials = strtoupper(substr($nameParts[0], 0, 1) . (isset($nameParts[1]) ? sub
       </div>
 
       <!-- Global CRM Search Bar -->
-      <div class="topbar-search-wrap" style="position: relative; flex: 1; max-width: 440px; margin: 0 20px;">
-        <div style="position: relative; display: flex; align-items: center;">
-          <svg style="position: absolute; left: 12px; width: 16px; height: 16px; color: var(--text-muted); pointer-events: none;" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <div class="topbar-search-wrap">
+        <div class="topbar-search-box">
+          <svg class="topbar-search-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
           </svg>
           <input type="text"
                  id="globalCrmSearchInput"
-                 placeholder="Search clients, leads, companies, phones... (Press /)"
+                 placeholder="Search clients, leads, companies..."
                  autocomplete="off"
-                 style="width: 100%; padding: 8px 36px 8px 36px; border-radius: 20px; border: 1px solid var(--border-light); font-size: 12px; background: #ffffff; color: var(--text-dark); transition: all 0.2s ease; outline: none;" />
-          <span style="position: absolute; right: 12px; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-muted); background: var(--main-bg); padding: 2px 6px; border-radius: 4px; pointer-events: none;">/</span>
+                 class="topbar-search-input" />
+          <span class="topbar-search-badge">/</span>
         </div>
 
         <!-- Dropdown Results Preview -->
-        <div id="globalSearchDropdown"
-             style="display: none; position: absolute; top: calc(100% + 6px); left: 0; right: 0; background: #ffffff; border: 1px solid var(--border-light); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); z-index: 1000; max-height: 420px; overflow-y: auto; padding: 8px 0;">
+        <div id="globalSearchDropdown" class="global-search-dropdown">
         </div>
       </div>
 
