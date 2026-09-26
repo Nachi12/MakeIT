@@ -493,10 +493,96 @@ try {
 } catch (\Throwable) {}
 
 // -----------------------------------------------------------------------------
-// AJAX MODE: Return only table rows HTML & pagination metadata for live search
+// HELPER: Render Mobile Client Card
+// -----------------------------------------------------------------------------
+function render_mobile_client_card(PDO|Database $db, array $client): string {
+    $rev = get_client_revenue_summary($db, $client['client_name'], $client['company_name'], (int)$client['id']);
+    $lastContact = get_client_last_contact($db, $client['client_name'], $client['company_name'], $client['created_at'], (int)$client['id']);
+    $initials = strtoupper(substr($client['client_name'], 0, 1));
+    $nameParts = explode(' ', trim($client['client_name']));
+    if (isset($nameParts[1])) { $initials .= strtoupper(substr($nameParts[1], 0, 1)); }
+    $phone = trim((string)($client['phone'] ?? ''));
+    $hasPhone = !empty($phone);
+
+    ob_start();
+    ?>
+    <div class="mobile-client-card" data-client-id="<?= (int)$client['id'] ?>">
+      <div class="mobile-client-card-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div class="client-avatar-badge"><?= e($initials) ?></div>
+          <div>
+            <a href="javascript:void(0)" class="mobile-client-card-title btn-view-client" data-id="<?= (int)$client['id'] ?>">
+              <?= e($client['client_name']) ?>
+            </a>
+            <div class="mobile-client-card-company"><?= e($client['company_name'] ?: 'Individual Client') ?></div>
+          </div>
+        </div>
+        <span class="status-pill status-<?= strtolower(e($client['status'])) ?>">
+          <?= e($client['status']) ?>
+        </span>
+      </div>
+
+      <div class="mobile-client-card-body">
+        <div class="mobile-card-row">
+          <span class="mobile-card-label">Service</span>
+          <span style="font-family: 'DM Mono', monospace; font-size: 11px; background: #ffffff; padding: 2px 8px; border-radius: 4px; border: 1px solid var(--border-light);">
+            <?= e($client['service'] ?? 'General') ?>
+          </span>
+        </div>
+
+        <?php if ($hasPhone): ?>
+          <div class="mobile-card-row">
+            <span class="mobile-card-label">Phone</span>
+            <a href="tel:<?= e($phone) ?>" class="mobile-card-phone"><?= e($phone) ?></a>
+          </div>
+        <?php endif; ?>
+
+        <div class="mobile-card-row">
+          <span class="mobile-card-label">Revenue</span>
+          <div>
+            <strong style="font-family: 'DM Mono', monospace;">₹<?= number_format($rev['total'], 2) ?></strong>
+            <?php if ($rev['pending'] > 0): ?>
+              <span style="font-size: 10px; color: #b45309; margin-left: 4px;">(₹<?= number_format($rev['pending'], 0) ?> pend)</span>
+            <?php endif; ?>
+          </div>
+        </div>
+
+        <div class="mobile-card-row">
+          <span class="mobile-card-label">Last Contact</span>
+          <span style="font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-muted);"><?= e(format_date($lastContact, 'M j, Y')) ?></span>
+        </div>
+      </div>
+
+      <div class="mobile-client-card-actions">
+        <?php if ($hasPhone): ?>
+          <a href="tel:<?= e($phone) ?>" class="btn-call-action btn-touch-44">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+            </svg>
+            <span>Call</span>
+          </a>
+        <?php endif; ?>
+        <button type="button" class="btn-action btn-view-client btn-touch-44" data-id="<?= (int)$client['id'] ?>">
+          <span>View</span>
+        </button>
+        <button type="button" class="btn-action btn-edit-client btn-touch-44" 
+                data-id="<?= (int)$client['id'] ?>"
+                data-client='<?= htmlspecialchars(json_encode($client), ENT_QUOTES, 'UTF-8') ?>'>
+          <span>Edit</span>
+        </button>
+      </div>
+    </div>
+    <?php
+    return ob_get_clean();
+}
+
+// -----------------------------------------------------------------------------
+// AJAX MODE: Return table rows HTML, mobile cards HTML & pagination metadata
 // -----------------------------------------------------------------------------
 if (isset($_GET['ajax']) && $_GET['ajax'] === '1') {
     header('Content-Type: application/json; charset=utf-8');
+    
+    // Render Desktop Table Rows
     ob_start();
     ?>
     <?php if (empty($clients)): ?>
@@ -599,6 +685,21 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === '1') {
     <?php
     $rowsHtml = ob_get_clean();
 
+    // Render Mobile Cards
+    ob_start();
+    ?>
+    <?php if (empty($clients)): ?>
+      <div class="empty-state" style="padding: 40px 20px;">
+        No clients found matching your search criteria.
+      </div>
+    <?php else: ?>
+      <?php foreach ($clients as $client): ?>
+        <?= render_mobile_client_card($db, $client) ?>
+      <?php endforeach; ?>
+    <?php endif; ?>
+    <?php
+    $mobileCardsHtml = ob_get_clean();
+
     // Render pagination links
     ob_start();
     ?>
@@ -620,12 +721,13 @@ if (isset($_GET['ajax']) && $_GET['ajax'] === '1') {
     $paginationHtml = ob_get_clean();
 
     echo json_encode([
-        'success'    => true,
-        'html'       => $rowsHtml,
-        'pagination' => $paginationHtml,
-        'total'      => $totalFiltered,
-        'page'       => $currentPageNo,
-        'pages'      => $totalPages
+        'success'      => true,
+        'html'         => $rowsHtml,
+        'mobile_cards' => $mobileCardsHtml,
+        'pagination'   => $paginationHtml,
+        'total'        => $totalFiltered,
+        'page'         => $currentPageNo,
+        'pages'        => $totalPages
     ]);
     exit;
 }
@@ -716,10 +818,10 @@ require_once dirname(__DIR__) . '/includes/admin_header.php';
 
   <!-- SEARCH & FILTER TOOLBAR -->
   <div class="filter-toolbar">
-    <div class="filter-group">
+    <div class="filter-group" style="flex: 1;">
       <!-- Search Input -->
-      <div class="search-box" style="width: 320px; position: relative;">
-        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="position: absolute; left: 12px; top: 12px; color: var(--text-muted);">
+      <div class="search-box" style="position: relative; flex: 1; max-width: 420px;">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none;">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
         </svg>
         <input
@@ -727,25 +829,36 @@ require_once dirname(__DIR__) . '/includes/admin_header.php';
           id="clientSearchInput"
           placeholder="Search client, company, email, phone..."
           value="<?= e($searchQuery) ?>"
-          style="width: 100%; padding: 9px 12px 9px 36px; border: 1px solid var(--border-light); border-radius: var(--radius-sm); font-size: 13px; background: #ffffff; outline: none;"
+          style="width: 100%; padding: 10px 36px 10px 36px; border: 1px solid var(--border-light); border-radius: var(--radius-sm); font-size: 13px; background: #ffffff; outline: none;"
         />
+        <button type="button" id="clearClientSearchBtn" aria-label="Clear search" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); display: none; background: transparent; border: 0; color: var(--text-muted); font-size: 14px; padding: 4px; cursor: pointer;">
+          ✕
+        </button>
       </div>
 
-      <!-- Status Filter -->
-      <select id="statusFilterSelect" class="filter-select">
+      <!-- Desktop Status Filter -->
+      <select id="statusFilterSelect" class="filter-select desktop-only-inline">
         <option value="all" <?= $statusFilter === 'all' ? 'selected' : '' ?>>All Statuses</option>
         <?php foreach ($validStatuses as $st): ?>
           <option value="<?= e($st) ?>" <?= $statusFilter === $st ? 'selected' : '' ?>><?= e($st) ?></option>
         <?php endforeach; ?>
       </select>
 
-      <!-- Service Filter -->
-      <select id="serviceFilterSelect" class="filter-select">
+      <!-- Desktop Service Filter -->
+      <select id="serviceFilterSelect" class="filter-select desktop-only-inline">
         <option value="all" <?= $serviceFilter === 'all' ? 'selected' : '' ?>>All Services</option>
         <?php foreach ($validServices as $svc): ?>
           <option value="<?= e($svc) ?>" <?= $serviceFilter === $svc ? 'selected' : '' ?>><?= e($svc) ?></option>
         <?php endforeach; ?>
       </select>
+
+      <!-- Mobile Filter Trigger Button -->
+      <button type="button" class="btn-action mobile-only-inline" id="openMobileFilterBtn" style="padding: 10px 14px; background: #ffffff; min-height: 44px; display: inline-flex; align-items: center; gap: 6px;">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+        </svg>
+        <span>Filters</span>
+      </button>
     </div>
 
     <div style="font-size: 12px; color: var(--text-muted); font-family: 'DM Mono', monospace;" id="searchIndicator">
@@ -753,9 +866,55 @@ require_once dirname(__DIR__) . '/includes/admin_header.php';
     </div>
   </div>
 
-  <!-- CLIENTS DATA TABLE -->
+  <!-- MOBILE FILTER BOTTOM SHEET MODAL -->
+  <div class="admin-modal-backdrop" id="mobileFilterModalBackdrop">
+    <div class="admin-modal-box modal-md" role="dialog" aria-modal="true" style="border-radius: 20px 20px 0 0; margin-bottom: 0;">
+      <div class="modal-header">
+        <h3 class="modal-title">Filter Clients</h3>
+        <button class="modal-close-btn" id="closeMobileFilterModal" aria-label="Close filters">&times;</button>
+      </div>
+
+      <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px;">
+        <div class="admin-form-group">
+          <label class="admin-form-label">Client Status</label>
+          <select id="mobileStatusFilterSelect" class="admin-form-input">
+            <option value="all" <?= $statusFilter === 'all' ? 'selected' : '' ?>>All Statuses</option>
+            <?php foreach ($validStatuses as $st): ?>
+              <option value="<?= e($st) ?>" <?= $statusFilter === $st ? 'selected' : '' ?>><?= e($st) ?></option>
+            <?php endforeach; ?>
+          </select>
+        </div>
+
+        <div class="admin-form-group">
+          <label class="admin-form-label">Service Contracted</label>
+          <select id="mobileServiceFilterSelect" class="admin-form-input">
+            <option value="all" <?= $serviceFilter === 'all' ? 'selected' : '' ?>>All Services</option>
+            <?php foreach ($validServices as $svc): ?>
+              <option value="<?= e($svc) ?>" <?= $serviceFilter === $svc ? 'selected' : '' ?>><?= e($svc) ?></option>
+            <?php endforeach; ?>
+          </select>
+        </div>
+
+        <div class="admin-form-group">
+          <label class="admin-form-label">Created Date</label>
+          <input type="date" id="mobileDateFilterInput" class="admin-form-input" value="<?= e($dateFilter) ?>">
+        </div>
+      </div>
+
+      <div class="modal-footer" style="flex-direction: column; gap: 10px;">
+        <button type="button" class="btn-modal-confirm primary" id="applyMobileFiltersBtn" style="width: 100%; min-height: 44px;">
+          Apply Filters
+        </button>
+        <button type="button" class="btn-modal-cancel" id="resetMobileFiltersBtn" style="width: 100%; min-height: 44px;">
+          Reset Filters
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLIENTS DATA CONTAINER -->
   <div class="data-card">
-    <div class="table-responsive">
+    <div class="table-responsive desktop-only-table">
       <table class="admin-table">
         <thead>
           <tr>
@@ -870,6 +1029,19 @@ require_once dirname(__DIR__) . '/includes/admin_header.php';
           <?php endif; ?>
         </tbody>
       </table>
+    </div>
+
+    <!-- Mobile Client Cards Container -->
+    <div class="mobile-client-cards-list mobile-only-block" id="mobileClientsCardsBody">
+      <?php if (empty($clients)): ?>
+        <div class="empty-state" style="padding: 40px 20px;">
+          No clients found matching your search criteria.
+        </div>
+      <?php else: ?>
+        <?php foreach ($clients as $client): ?>
+          <?= render_mobile_client_card($db, $client) ?>
+        <?php endforeach; ?>
+      <?php endif; ?>
     </div>
 
     <!-- PAGINATION -->
@@ -1114,7 +1286,7 @@ require_once dirname(__DIR__) . '/includes/admin_header.php';
 
         <div class="modal-footer">
           <button type="button" class="btn-modal-cancel" id="cancelEditClientModal">Cancel</button>
-          <button type="submit" class="btn-modal-confirm primary">Update Client</button>
+          <button type="submit" class="btn-modal-confirm primary">Save Changes</button>
         </div>
       </form>
     </div>
@@ -1171,13 +1343,47 @@ require_once dirname(__DIR__) . '/includes/admin_header.php';
     const paginationBox = document.getElementById('paginationContainer');
     const searchIndicator = document.getElementById('searchIndicator');
 
+    const mobileCardsBody = document.getElementById('mobileClientsCardsBody');
+    const clearSearchBtn = document.getElementById('clearClientSearchBtn');
+    
+    // Mobile Filter Modal Elements
+    const mobileFilterModal = document.getElementById('mobileFilterModalBackdrop');
+    const openMobileFilterBtn = document.getElementById('openMobileFilterBtn');
+    const closeMobileFilterBtn = document.getElementById('closeMobileFilterModal');
+    const applyMobileFiltersBtn = document.getElementById('applyMobileFiltersBtn');
+    const resetMobileFiltersBtn = document.getElementById('resetMobileFiltersBtn');
+    const mobileStatusSelect = document.getElementById('mobileStatusFilterSelect');
+    const mobileServiceSelect = document.getElementById('mobileServiceFilterSelect');
+    const mobileDateInput = document.getElementById('mobileDateFilterInput');
+
     let debounceTimer = null;
+
+    // Toggle clear search button visibility
+    function toggleClearSearchBtn() {
+      if (!clearSearchBtn || !searchInput) return;
+      if (searchInput.value.trim().length > 0) {
+        clearSearchBtn.style.display = 'block';
+      } else {
+        clearSearchBtn.style.display = 'none';
+      }
+    }
+
+    if (clearSearchBtn && searchInput) {
+      toggleClearSearchBtn();
+      clearSearchBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        toggleClearSearchBtn();
+        fetchClients(1);
+        searchInput.focus();
+      });
+    }
 
     // 1. Asynchronous Dynamic Search without full page reload
     function fetchClients(page = 1) {
       const q = searchInput ? searchInput.value.trim() : '';
-      const status = statusSelect ? statusSelect.value : 'all';
-      const service = serviceSelect ? serviceSelect.value : 'all';
+      const status = statusSelect ? statusSelect.value : (mobileStatusSelect ? mobileStatusSelect.value : 'all');
+      const service = serviceSelect ? serviceSelect.value : (mobileServiceSelect ? mobileServiceSelect.value : 'all');
+      const dateVal = mobileDateInput ? mobileDateInput.value.trim() : '';
 
       if (searchIndicator) {
         searchIndicator.textContent = 'Filtering...';
@@ -1188,6 +1394,7 @@ require_once dirname(__DIR__) . '/includes/admin_header.php';
         q: q,
         status: status,
         service: service,
+        date: dateVal,
         page: page
       });
 
@@ -1195,12 +1402,13 @@ require_once dirname(__DIR__) . '/includes/admin_header.php';
         .then(res => res.json())
         .then(data => {
           if (data.success) {
-            tableBody.innerHTML = data.html;
-            paginationBox.innerHTML = data.pagination;
+            if (tableBody) tableBody.innerHTML = data.html;
+            if (mobileCardsBody && data.mobile_cards) mobileCardsBody.innerHTML = data.mobile_cards;
+            if (paginationBox) paginationBox.innerHTML = data.pagination;
             if (searchIndicator) {
               searchIndicator.textContent = `${data.total} clients matched`;
             }
-            // Bind actions on new rows
+            // Bind actions on new rows & cards
             bindTableEvents();
 
             // Update browser URL without reload
@@ -1208,6 +1416,7 @@ require_once dirname(__DIR__) . '/includes/admin_header.php';
               q: q,
               status: status,
               service: service,
+              date: dateVal,
               page: page
             });
             window.history.replaceState({}, '', `clients.php?${viewParams.toString()}`);
@@ -1223,17 +1432,60 @@ require_once dirname(__DIR__) . '/includes/admin_header.php';
 
     if (searchInput) {
       searchInput.addEventListener('input', () => {
+        toggleClearSearchBtn();
         clearTimeout(debounceTimer);
         debounceTimer = setTimeout(() => fetchClients(1), 300);
       });
     }
 
     if (statusSelect) {
-      statusSelect.addEventListener('change', () => fetchClients(1));
+      statusSelect.addEventListener('change', () => {
+        if (mobileStatusSelect) mobileStatusSelect.value = statusSelect.value;
+        fetchClients(1);
+      });
     }
 
     if (serviceSelect) {
-      serviceSelect.addEventListener('change', () => fetchClients(1));
+      serviceSelect.addEventListener('change', () => {
+        if (mobileServiceSelect) mobileServiceSelect.value = serviceSelect.value;
+        fetchClients(1);
+      });
+    }
+
+    // Mobile Filter Modal Handlers
+    if (openMobileFilterBtn && mobileFilterModal) {
+      openMobileFilterBtn.addEventListener('click', () => {
+        if (mobileStatusSelect && statusSelect) mobileStatusSelect.value = statusSelect.value;
+        if (mobileServiceSelect && serviceSelect) mobileServiceSelect.value = serviceSelect.value;
+        mobileFilterModal.classList.add('active');
+      });
+
+      const closeMobileFilter = () => mobileFilterModal.classList.remove('active');
+      if (closeMobileFilterBtn) closeMobileFilterBtn.addEventListener('click', closeMobileFilter);
+      mobileFilterModal.addEventListener('click', (e) => {
+        if (e.target === mobileFilterModal) closeMobileFilter();
+      });
+
+      if (applyMobileFiltersBtn) {
+        applyMobileFiltersBtn.addEventListener('click', () => {
+          if (statusSelect && mobileStatusSelect) statusSelect.value = mobileStatusSelect.value;
+          if (serviceSelect && mobileServiceSelect) serviceSelect.value = mobileServiceSelect.value;
+          closeMobileFilter();
+          fetchClients(1);
+        });
+      }
+
+      if (resetMobileFiltersBtn) {
+        resetMobileFiltersBtn.addEventListener('click', () => {
+          if (statusSelect) statusSelect.value = 'all';
+          if (serviceSelect) serviceSelect.value = 'all';
+          if (mobileStatusSelect) mobileStatusSelect.value = 'all';
+          if (mobileServiceSelect) mobileServiceSelect.value = 'all';
+          if (mobileDateInput) mobileDateInput.value = '';
+          closeMobileFilter();
+          fetchClients(1);
+        });
+      }
     }
 
     // Pagination link clicks (delegate)

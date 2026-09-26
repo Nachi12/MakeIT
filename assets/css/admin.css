@@ -3411,3 +3411,181 @@ tr.row-selected {
   justify-content: center;
 }
 
+/* =========================================================
+   PHASE 3: MOBILE CLIENT MANAGEMENT CSS
+========================================================= */
+
+/* Mobile Client Cards Container */
+.mobile-client-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 0;
+}
+
+.mobile-client-card {
+  background: #ffffff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+
+.mobile-client-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.client-avatar-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #181922;
+  color: var(--lime);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+  font-family: 'Space Grotesk', sans-serif;
+  flex-shrink: 0;
+  border: 1px solid #282a38;
+}
+
+.mobile-client-card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-dark);
+  text-decoration: none;
+}
+
+.mobile-client-card-company {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+.mobile-client-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px;
+  background: var(--main-bg);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+}
+
+.mobile-card-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12.5px;
+}
+
+.mobile-card-label {
+  color: var(--text-muted);
+  font-size: 11.5px;
+  font-weight: 500;
+}
+
+.mobile-card-phone {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.mobile-client-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.mobile-client-card-actions .btn-call-action,
+.mobile-client-card-actions .btn-action {
+  flex: 1;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+}
+
+.mobile-client-card-actions .btn-call-action {
+  background: #047857;
+  color: #ffffff;
+  border: none;
+  gap: 6px;
+  text-decoration: none;
+}
+
+.mobile-client-card-actions .btn-call-action:hover {
+  background: #065f46;
+}
+
+@media (max-width: 768px) {
+  /* Search Box full width on mobile */
+  .filter-toolbar .search-box {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .filter-toolbar .search-box input[type="search"] {
+    min-height: 44px !important;
+    font-size: 14px !important;
+  }
+
+  /* Form controls full width & comfortable touch targets */
+  .admin-modal-box .admin-form-input,
+  .admin-modal-box select.admin-form-input,
+  .admin-modal-box textarea.admin-form-input {
+    width: 100% !important;
+    min-height: 44px !important;
+    font-size: 14px !important;
+  }
+
+  .admin-modal-box textarea.admin-form-input {
+    min-height: 80px !important;
+  }
+
+  .admin-modal-box .form-grid-2 {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .admin-modal-box .modal-footer button {
+    width: 100% !important;
+    min-height: 44px !important;
+  }
+
+  /* Bottom sheet modal animation for mobile filters */
+  #mobileFilterModalBackdrop.active .admin-modal-box {
+    animation: slideUpBottomSheet 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* Client Profile vertical cards stacking */
+  .profile-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+}
+
+@keyframes slideUpBottomSheet {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+

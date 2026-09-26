@@ -1034,3 +1034,217 @@ function exotel_click_to_call(string $agentPhone, string $clientPhone, ?string $
         'message'  => ''
     ];
 }
+
+/**
+ * Render hyper-realistic HTML/CSS website or product UI preview inside browser frame
+ *
+ * @param array<string, mixed> $project
+ * @return string
+ */
+function render_project_preview_html(array $project): string
+{
+    $slug = strtolower((string)($project['slug'] ?? ''));
+    $title = (string)($project['title'] ?? '');
+    $category = (string)($project['category'] ?? '');
+    $imgUrl = get_image_url($project['image'] ?? $project['image_path'] ?? null, 'project');
+
+    if (strpos($slug, 'apex') !== false || strpos(strtolower($title), 'apex') !== false) {
+        return '
+        <div class="preview-site preview-apex">
+          <div class="browser-address">
+            <span class="browser-lock">🔒</span>
+            <span class="browser-url-text">https://apex-logistics.com/portal/dispatch</span>
+          </div>
+          <div class="apex-header">
+            <div class="apex-logo"><span class="apex-icon">▲</span> APEX <strong>LOGISTICS</strong></div>
+            <div class="apex-nav">
+              <span>Fleet</span>
+              <span>Consignments</span>
+              <span>Live Tracking</span>
+              <span>Rates</span>
+            </div>
+            <div class="apex-status-pill">● System Online</div>
+          </div>
+          <div class="apex-hero" style="background-image: linear-gradient(180deg, rgba(10, 18, 30, 0.75) 0%, rgba(10, 18, 30, 0.92) 100%), url(\'' . e($imgUrl) . '\');">
+            <div>
+              <div class="apex-eyebrow">GLOBAL FREIGHT &amp; TELEMETRY</div>
+              <h4 class="apex-title">Real-Time Dispatch &amp; Fleet Control</h4>
+              <div class="apex-search-box">
+                <span class="apex-search-icon">🔍</span>
+                <span class="apex-search-input">Enter Container / Airway Bill (e.g. APX-9842-US)...</span>
+                <button class="apex-search-btn" type="button">Track Freight ↗</button>
+              </div>
+            </div>
+            <div class="apex-metrics">
+              <div class="apex-metric-card">
+                <div class="apex-metric-val">14,280</div>
+                <div class="apex-metric-lbl">Active Consignments</div>
+              </div>
+              <div class="apex-metric-card">
+                <div class="apex-metric-val">99.8%</div>
+                <div class="apex-metric-lbl">On-Time Dispatch</div>
+              </div>
+              <div class="apex-metric-card">
+                <div class="apex-metric-val">42ms</div>
+                <div class="apex-metric-lbl">Telemetry Latency</div>
+              </div>
+            </div>
+          </div>
+        </div>';
+    }
+
+    if (strpos($slug, 'kroma') !== false || strpos(strtolower($title), 'kroma') !== false) {
+        return '
+        <div class="preview-site preview-kroma">
+          <div class="browser-address">
+            <span class="browser-lock">🔒</span>
+            <span class="browser-url-text">https://kroma.design</span>
+          </div>
+          <div class="kroma-header">
+            <div class="kroma-logo">KROMA™</div>
+            <div class="kroma-nav">
+              <span class="active">WORK</span>
+              <span>STUDIO</span>
+              <span>JOURNAL</span>
+              <span>CONTACT</span>
+            </div>
+            <div class="kroma-cta">LET\'S TALK ↗</div>
+          </div>
+          <div class="kroma-body">
+            <div>
+              <div class="kroma-eyebrow">DESIGN &amp; ARCHITECTURAL DIRECTION</div>
+              <h4 class="kroma-title">CRAFTING DIGITAL ELEGANCE &amp; ARCHITECTURAL DISRUPTION</h4>
+            </div>
+            <div class="kroma-grid">
+              <div class="kroma-card">
+                <div class="kroma-card-img" style="background-image: url(\'' . e($imgUrl) . '\');"></div>
+                <div class="kroma-card-meta">
+                  <span class="kroma-card-title">AURA ARCHITECTURE STUDIO</span>
+                  <span class="kroma-card-cat">INTERIOR / 2026</span>
+                </div>
+              </div>
+              <div class="kroma-card kroma-card-text">
+                <div class="kroma-quote">"Form follows function. Precision rules execution."</div>
+                <div class="kroma-tag-list">
+                  <span>MINIMALISM</span>
+                  <span>TYPOGRAPHY</span>
+                  <span>SPATIAL UX</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>';
+    }
+
+    if (strpos($slug, 'veloce') !== false || strpos(strtolower($title), 'veloce') !== false) {
+        return '
+        <div class="preview-site preview-veloce">
+          <div class="browser-address">
+            <span class="browser-lock">🔒</span>
+            <span class="browser-url-text">https://veloce-store.com/shop</span>
+          </div>
+          <div class="veloce-top-bar">SPRING COLLECTION \'26 — FREE EXPRESS SHIPPING WORLDWIDE</div>
+          <div class="veloce-header">
+            <div class="veloce-logo">VELOCE</div>
+            <div class="veloce-nav">
+              <span>New Arrivals</span>
+              <span class="active">Apparel</span>
+              <span>Footwear</span>
+              <span>Accessories</span>
+            </div>
+            <div class="veloce-cart">BAG (2)</div>
+          </div>
+          <div class="veloce-body">
+            <div class="veloce-product-layout">
+              <div class="veloce-img-box" style="background-image: url(\'' . e($imgUrl) . '\');">
+                <span class="veloce-badge">NEW ARRIVAL</span>
+              </div>
+              <div class="veloce-details">
+                <div>
+                  <div class="veloce-cat">MENSWEAR / ESSENTIALS</div>
+                  <h4 class="veloce-name">Technical Tailored Wool Trench</h4>
+                  <div class="veloce-rating">★★★★★ <span class="veloce-count">(148 reviews)</span></div>
+                  <div class="veloce-price">$340.00 <span class="veloce-stock">In Stock</span></div>
+                </div>
+                <div class="veloce-options">
+                  <div class="veloce-opt-label">COLOR: <strong>SAND BEIGE</strong></div>
+                  <div class="veloce-swatches">
+                    <span class="swatch active" style="background: #d4c5b3;"></span>
+                    <span class="swatch" style="background: #1a1a1a;"></span>
+                    <span class="swatch" style="background: #4a5043;"></span>
+                  </div>
+                </div>
+                <button class="veloce-btn" type="button">Add to Bag ↗</button>
+              </div>
+            </div>
+          </div>
+        </div>';
+    }
+
+    if (strpos($slug, 'omniflow') !== false || strpos(strtolower($title), 'omniflow') !== false) {
+        return '
+        <div class="preview-site preview-omniflow">
+          <div class="browser-address">
+            <span class="browser-lock">🔒</span>
+            <span class="browser-url-text">https://app.omniflow.io/workflows/crm-sync</span>
+          </div>
+          <div class="omni-header">
+            <div class="omni-brand">
+              <span class="omni-logo-icon">⚡</span>
+              <span class="omni-name">OMNIFLOW</span>
+            </div>
+            <div class="omni-breadcrumb">Workflows / Customer Onboarding Pipeline #04</div>
+            <div class="omni-status">● Live Engine (12ms)</div>
+          </div>
+          <div class="omni-body">
+            <div class="omni-sidebar">
+              <div class="omni-side-item active">⚡ Flows</div>
+              <div class="omni-side-item">📊 Metrics</div>
+              <div class="omni-side-item">🔗 APIs</div>
+              <div class="omni-side-item">🛡️ Security</div>
+            </div>
+            <div class="omni-canvas">
+              <div class="omni-nodes-container">
+                <div class="omni-node node-trigger">
+                  <div class="node-header"><span class="node-type">TRIGGER</span> Stripe Webhook</div>
+                  <div class="node-title">Payment Received</div>
+                  <div class="node-status">Event ID #evt_984</div>
+                </div>
+                <div class="node-connector">➜</div>
+                <div class="omni-node node-condition">
+                  <div class="node-header"><span class="node-type">FILTER</span> Tier Check</div>
+                  <div class="node-title">Amount &gt; $1,000</div>
+                  <div class="node-status">True ➔ Pass</div>
+                </div>
+                <div class="node-connector">➜</div>
+                <div class="omni-node node-action">
+                  <div class="node-header"><span class="node-type">ACTION</span> CRM Sync</div>
+                  <div class="node-title">Generate Invoice PDF</div>
+                  <div class="node-status">Success (9ms)</div>
+                </div>
+              </div>
+              <div class="omni-footer-bar">
+                <span>⚡ Throughput: <strong>4,820 / min</strong></span>
+                <span>✓ Success Rate: <strong>99.98%</strong></span>
+                <span>⏱️ Latency: <strong>12ms</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>';
+    }
+
+    return '
+    <div class="preview-site" style="background:#111; color:#fff; padding:20px; font-family: sans-serif;">
+      <div class="browser-address">
+        <span class="browser-lock">🔒</span>
+        <span class="browser-url-text">https://' . e(slugify($title)) . '.com</span>
+      </div>
+      <div style="flex:1; background-size:cover; background-position:center; background-image:url(\'' . e($imgUrl) . '\'); display:flex; align-items:flex-end; padding:20px; border-radius:8px; margin-top:10px;">
+        <div style="background:rgba(0,0,0,0.8); backdrop-filter:blur(10px); padding:16px; border-radius:8px; width:100%;">
+          <div style="font-size:10px; font-family:monospace; color:#aaa; text-transform:uppercase;">' . e($category) . '</div>
+          <h4 style="font-size:18px; font-weight:700; margin:4px 0;">' . e($title) . '</h4>
+        </div>
+      </div>
+    </div>';
+}
+

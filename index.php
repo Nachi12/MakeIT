@@ -317,18 +317,7 @@ require_once __DIR__ . '/includes/header.php';
                       <div class="browser-dot"></div>
                       <div class="browser-dot"></div>
                     </div>
-                    <?php if ($hasCustomImage): ?>
-                      <div class="browser-img-wrap">
-                        <img src="<?= e($projectImg) ?>" alt="<?= e($project['title']) ?>" class="browser-project-img" loading="lazy">
-                      </div>
-                    <?php else: ?>
-                      <div class="browser-content">
-                        <div class="mock-label"><?= e(strtoupper($project['category'])) ?> / SYSTEM</div>
-                        <div class="mock-heading"><?= e($project['title']) ?></div>
-                        <div class="mock-bar"></div>
-                        <div class="mock-button"></div>
-                      </div>
-                    <?php endif; ?>
+                    <?= render_project_preview_html($project) ?>
                   </div>
                 </div>
 

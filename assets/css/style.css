@@ -3671,4 +3671,682 @@ body.modal-open {
   }
 }
 
+/* =========================================================
+   AUTHENTIC WEBSITE & PRODUCT PREVIEWS INSIDE PROJECT CARDS
+========================================================= */
+
+.browser-address {
+  height: 28px;
+  background: #e4e4e0;
+  border-bottom: 1px solid #d4d4d0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  color: #666;
+}
+
+.browser-lock {
+  font-size: 9px;
+  opacity: 0.7;
+}
+
+.browser-url-text {
+  letter-spacing: -0.01em;
+  color: #444;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.preview-site {
+  width: 100%;
+  height: calc(100% - 35px);
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* ---------------------------------------------------------
+   PROJECT 1: APEX LOGISTICS PORTAL
+--------------------------------------------------------- */
+.preview-apex {
+  background: #0a101d;
+  color: #ffffff;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+}
+
+.apex-header {
+  height: 38px;
+  background: rgba(15, 23, 42, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+
+.apex-logo {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #38bdf8;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.apex-logo strong {
+  color: #ffffff;
+}
+
+.apex-nav {
+  display: flex;
+  gap: 14px;
+  font-size: 9.5px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.apex-status-pill {
+  font-family: "DM Mono", monospace;
+  font-size: 8.5px;
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.1);
+  padding: 3px 8px;
+  border-radius: 100px;
+  border: 1px solid rgba(74, 222, 128, 0.25);
+}
+
+.apex-hero {
+  flex: 1;
+  padding: 22px 20px 16px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+
+.apex-eyebrow {
+  font-family: "DM Mono", monospace;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+  color: #38bdf8;
+  text-transform: uppercase;
+}
+
+.apex-title {
+  font-size: clamp(16px, 2.4vw, 24px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: 6px 0 14px;
+  color: #ffffff;
+  max-width: 480px;
+}
+
+.apex-search-box {
+  display: flex;
+  align-items: center;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 4px 6px 4px 12px;
+  gap: 8px;
+  max-width: 440px;
+  margin-bottom: 16px;
+}
+
+.apex-search-icon {
+  font-size: 11px;
+  opacity: 0.6;
+}
+
+.apex-search-input {
+  font-family: "DM Mono", monospace;
+  font-size: 9.5px;
+  color: #cbd5e1;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.apex-search-btn {
+  background: #0284c7;
+  color: #ffffff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 9.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.apex-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.apex-metric-card {
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.apex-metric-val {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #38bdf8;
+}
+
+.apex-metric-lbl {
+  font-size: 8px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+/* ---------------------------------------------------------
+   PROJECT 2: KROMA DESIGN STUDIO
+--------------------------------------------------------- */
+.preview-kroma {
+  background: #111111;
+  color: #f4f4f0;
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.kroma-header {
+  height: 38px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+}
+
+.kroma-logo {
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+}
+
+.kroma-nav {
+  display: flex;
+  gap: 16px;
+  font-family: "DM Mono", monospace;
+  font-size: 8.5px;
+  color: #888888;
+}
+
+.kroma-nav .active {
+  color: #ffffff;
+}
+
+.kroma-cta {
+  font-family: "DM Mono", monospace;
+  font-size: 8.5px;
+  color: #111111;
+  background: #ffffff;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.kroma-body {
+  flex: 1;
+  padding: 20px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.kroma-eyebrow {
+  font-family: "DM Mono", monospace;
+  font-size: 8px;
+  color: #888888;
+  letter-spacing: 0.1em;
+}
+
+.kroma-title {
+  font-size: clamp(15px, 2.2vw, 22px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  margin: 6px 0 14px;
+  color: #ffffff;
+  max-width: 520px;
+}
+
+.kroma-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.kroma-card {
+  border-radius: 8px;
+  overflow: hidden;
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+}
+
+.kroma-card-img {
+  height: 95px;
+  background-size: cover;
+  background-position: center;
+}
+
+.kroma-card-meta {
+  padding: 8px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #161616;
+}
+
+.kroma-card-title {
+  font-size: 9px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.kroma-card-cat {
+  font-family: "DM Mono", monospace;
+  font-size: 7.5px;
+  color: #888888;
+}
+
+.kroma-card-text {
+  padding: 12px;
+  justify-content: space-between;
+  background: #181818;
+}
+
+.kroma-quote {
+  font-size: 10.5px;
+  line-height: 1.4;
+  color: #cccccc;
+  font-style: italic;
+}
+
+.kroma-tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 10px;
+}
+
+.kroma-tag-list span {
+  font-family: "DM Mono", monospace;
+  font-size: 7.5px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 2px 6px;
+  border-radius: 3px;
+  color: #aaa;
+}
+
+/* ---------------------------------------------------------
+   PROJECT 3: VELOCE E-COMMERCE ENGINE
+--------------------------------------------------------- */
+.preview-veloce {
+  background: #fafaf8;
+  color: #1a1a1a;
+  font-family: "Space Grotesk", sans-serif;
+}
+
+.veloce-top-bar {
+  background: #111111;
+  color: #ffffff;
+  font-family: "DM Mono", monospace;
+  font-size: 7.5px;
+  text-align: center;
+  padding: 4px 8px;
+  letter-spacing: 0.08em;
+}
+
+.veloce-header {
+  height: 36px;
+  border-bottom: 1px solid #e8e8e4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background: #ffffff;
+}
+
+.veloce-logo {
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: -0.05em;
+}
+
+.veloce-nav {
+  display: flex;
+  gap: 14px;
+  font-size: 9px;
+  color: #666666;
+  font-weight: 500;
+}
+
+.veloce-nav .active {
+  color: #111111;
+  font-weight: 700;
+}
+
+.veloce-cart {
+  font-family: "DM Mono", monospace;
+  font-size: 8.5px;
+  background: #111111;
+  color: #ffffff;
+  padding: 3px 8px;
+  border-radius: 100px;
+}
+
+.veloce-body {
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.veloce-product-layout {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 14px;
+  height: 100%;
+}
+
+.veloce-img-box {
+  border-radius: 10px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  border: 1px solid #e4e4e0;
+}
+
+.veloce-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: #111111;
+  color: #ffffff;
+  font-family: "DM Mono", monospace;
+  font-size: 7.5px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+.veloce-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 4px 0;
+}
+
+.veloce-cat {
+  font-family: "DM Mono", monospace;
+  font-size: 8px;
+  color: #888888;
+  letter-spacing: 0.08em;
+}
+
+.veloce-name {
+  font-size: clamp(14px, 1.8vw, 18px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin: 4px 0;
+  line-height: 1.2;
+}
+
+.veloce-rating {
+  font-size: 9px;
+  color: #f59e0b;
+}
+
+.veloce-count {
+  color: #777777;
+  font-family: "DM Mono", monospace;
+  font-size: 8px;
+}
+
+.veloce-price {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.veloce-stock {
+  font-family: "DM Mono", monospace;
+  font-size: 8px;
+  color: #16a34a;
+  background: rgba(22, 163, 74, 0.1);
+  padding: 2px 6px;
+  border-radius: 100px;
+}
+
+.veloce-options {
+  margin-bottom: 10px;
+}
+
+.veloce-opt-label {
+  font-size: 8px;
+  color: #666666;
+  margin-bottom: 4px;
+}
+
+.veloce-swatches {
+  display: flex;
+  gap: 6px;
+}
+
+.swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+}
+
+.swatch.active {
+  outline: 1.5px solid #111;
+}
+
+.veloce-btn {
+  background: #111111;
+  color: #ffffff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 9.5px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* ---------------------------------------------------------
+   PROJECT 4: OMNIFLOW WORKFLOW AUTOMATION
+--------------------------------------------------------- */
+.preview-omniflow {
+  background: #0d1117;
+  color: #c9d1d9;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+}
+
+.omni-header {
+  height: 38px;
+  background: #161b22;
+  border-bottom: 1px solid #30363d;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+}
+
+.omni-brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 800;
+  font-size: 11px;
+  color: #58a6ff;
+}
+
+.omni-name {
+  color: #f0f6fc;
+}
+
+.omni-breadcrumb {
+  font-family: "DM Mono", monospace;
+  font-size: 8.5px;
+  color: #8b949e;
+}
+
+.omni-status {
+  font-family: "DM Mono", monospace;
+  font-size: 8px;
+  color: #3fb950;
+  background: rgba(63, 185, 80, 0.12);
+  padding: 3px 8px;
+  border-radius: 100px;
+  border: 1px solid rgba(63, 185, 80, 0.25);
+}
+
+.omni-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.omni-sidebar {
+  width: 95px;
+  background: #161b22;
+  border-right: 1px solid #30363d;
+  padding: 12px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.omni-side-item {
+  font-family: "DM Mono", monospace;
+  font-size: 8.5px;
+  padding: 6px 8px;
+  border-radius: 5px;
+  color: #8b949e;
+  cursor: pointer;
+}
+
+.omni-side-item.active {
+  background: #21262d;
+  color: #58a6ff;
+  font-weight: 600;
+}
+
+.omni-canvas {
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-image: radial-gradient(#30363d 1px, transparent 1px);
+  background-size: 12px 12px;
+}
+
+.omni-nodes-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+}
+
+.omni-node {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 10px 12px;
+  min-width: 135px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.node-trigger {
+  border-left: 3px solid #e3b341;
+}
+
+.node-condition {
+  border-left: 3px solid #a371f7;
+}
+
+.node-action {
+  border-left: 3px solid #3fb950;
+}
+
+.node-header {
+  font-family: "DM Mono", monospace;
+  font-size: 7.5px;
+  color: #8b949e;
+  display: flex;
+  gap: 4px;
+}
+
+.node-type {
+  font-weight: 700;
+  color: #f0f6fc;
+}
+
+.node-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: #f0f6fc;
+  margin: 4px 0 2px;
+}
+
+.node-status {
+  font-family: "DM Mono", monospace;
+  font-size: 7.5px;
+  color: #3fb950;
+}
+
+.node-connector {
+  font-size: 12px;
+  color: #58a6ff;
+  font-weight: 700;
+}
+
+.omni-footer-bar {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  padding: 6px 12px;
+  display: flex;
+  justify-content: space-between;
+  font-family: "DM Mono", monospace;
+  font-size: 8px;
+  color: #8b949e;
+}
+
+.omni-footer-bar strong {
+  color: #f0f6fc;
+}
+
+
 

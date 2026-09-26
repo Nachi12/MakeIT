@@ -94,24 +94,13 @@ require_once __DIR__ . '/includes/header.php';
                   </div>
 
                   <!-- Visual browser mock or image -->
-                  <div class="browser" style="box-shadow: 0 25px 60px rgba(0,0,0,0.12); transform: none;">
+                  <div class="browser" style="box-shadow: 0 25px 60px rgba(0,0,0,0.12); transform: none; min-height: 280px;">
                     <div class="browser-top">
                       <div class="browser-dot"></div>
                       <div class="browser-dot"></div>
                       <div class="browser-dot"></div>
                     </div>
-                    <?php if ($hasCustomImage): ?>
-                      <div class="browser-img-wrap">
-                        <img src="<?= e($projectImg) ?>" alt="<?= e($project['title']) ?>" class="browser-project-img" loading="lazy">
-                      </div>
-                    <?php else: ?>
-                      <div class="browser-content" style="padding: 40px 30px;">
-                        <div class="mock-label"><?= e(strtoupper($project['category'])) ?> / MAKEIT</div>
-                        <div class="mock-heading" style="font-size: 2.2rem;"><?= e($project['title']) ?></div>
-                        <div class="mock-bar" style="margin-top: 14px;"></div>
-                        <div class="mock-button" style="margin-top: 18px;"></div>
-                      </div>
-                    <?php endif; ?>
+                    <?= render_project_preview_html($project) ?>
                   </div>
                 </div>
               </article>
