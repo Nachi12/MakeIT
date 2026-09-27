@@ -198,7 +198,7 @@ require_once dirname(__DIR__) . '/includes/admin_header.php';
             name="client_name"
             class="admin-form-input"
             required
-            placeholder="e.g. Marcus Vance"
+            placeholder="e.g. Rajesh Menon"
             value="<?= e($editingItem['client_name'] ?? '') ?>"
           />
         </div>
@@ -211,7 +211,7 @@ require_once dirname(__DIR__) . '/includes/admin_header.php';
             name="company"
             class="admin-form-input"
             required
-            placeholder="e.g. Apex Global Logistics"
+            placeholder="e.g. Apex Logistics India"
             value="<?= e($editingItem['company'] ?? '') ?>"
           />
         </div>

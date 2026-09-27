@@ -206,9 +206,9 @@ function init_sqlite_database(string $sqliteFile): PDO
 
         // Seed Testimonials
         $testimonials = [
-            ['Marcus Vance', 'Apex Global Logistics', 'Chief Technology Officer', 'MakeIT transformed our dispatch platform from a sluggish legacy headache into a blisteringly fast powerhouse. The speed and clarity of their engineering is unparalleled.', 5, '/assets/images/testimonials/marcus.webp', 1, 'published'],
-            ['Elena Rostova', 'Kroma Creative Agency', 'Founder & Creative Director', 'Working with MakeIT was seamless. They understood both the delicate aesthetic nuances of our brand and the strict architectural requirements under the hood.', 5, '/assets/images/testimonials/elena.webp', 2, 'published'],
-            ['Julian Bennett', 'Veloce Luxury Group', 'Managing Director', 'Our online store conversion jumped by 34% within the first month after MakeIT rebuilt our checkout flow. Zero framework bloat, lightning speed, and total reliability.', 5, '/assets/images/testimonials/julian.webp', 3, 'published']
+            ['Rajesh Menon', 'Apex Logistics India', 'Chief Technology Officer', 'MakeIT transformed our dispatch platform from a sluggish legacy headache into a blisteringly fast powerhouse. The speed and clarity of their engineering is unparalleled.', 5, '/assets/images/testimonials/rajesh.webp', 1, 'published'],
+            ['Ananya Sen', 'Kroma Design Studio', 'Founder & Creative Director', 'Working with MakeIT was seamless. They understood both the delicate aesthetic nuances of our brand and the strict architectural requirements under the hood.', 5, '/assets/images/testimonials/ananya.webp', 2, 'published'],
+            ['Rohan Singhania', 'Veloce E-Commerce', 'Managing Director', 'Our online store conversion jumped by 34% within the first month after MakeIT rebuilt our checkout flow. Zero framework bloat, lightning speed, and total reliability.', 5, '/assets/images/testimonials/rohan.webp', 3, 'published']
         ];
         $tstStmt = $pdo->prepare("INSERT INTO testimonials (client_name, company, position, content, rating, image, display_order, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         foreach ($testimonials as $t) {
@@ -244,8 +244,8 @@ function init_sqlite_database(string $sqliteFile): PDO
             ['Sarah Jenkins', 'sarah@aetherdynamics.com', '+1 (555) 234-5678', 'Aether Dynamics', 'Software', '₹2,50,000 - ₹5,00,000', 'We need a custom inventory and dispatch dashboard to connect with our ERP.', '127.0.0.1', 'new', null, date('Y-m-d H:i:s', time() - 3600 * 2)],
             ['David Kim', 'david@nexusretail.co', '+1 (555) 345-6789', 'Nexus Retail', 'Websites', '₹1,00,000 - ₹2,50,000', 'Looking to overhaul our high-traffic e-commerce storefront for better mobile performance.', '127.0.0.1', 'new', null, date('Y-m-d H:i:s', time() - 3600 * 5)],
             ['Amara Okafor', 'amara@solacefin.io', '+1 (555) 456-7890', 'Solace Financial', 'AI + Automation', '₹5,00,000+', 'Automating client onboarding workflows and compliance checks via webhooks.', '127.0.0.1', 'contacted', 'Had initial discovery call on Tuesday.', date('Y-m-d H:i:s', time() - 86400)],
-            ['Marcus Vance', 'marcus@apexlogistics.com', '+1 (555) 567-8901', 'Apex Logistics', 'Websites', '₹1,50,000 - ₹3,00,000', 'Interested in expanding our current portal features.', '127.0.0.1', 'qualified', 'Ready for proposal review.', date('Y-m-d H:i:s', time() - 86400 * 2)],
-            ['Elena Rostova', 'elena@kromastudio.design', '+1 (555) 678-9012', 'Kroma Studio', 'Software', '₹2,50,000 - ₹5,00,000', 'Annual maintenance and server scaling setup.', '127.0.0.1', 'closed', 'Contract signed.', date('Y-m-d H:i:s', time() - 86400 * 4)]
+            ['Rajesh Menon', 'rajesh@apexlogistics.in', '+91 98201 12345', 'Apex Logistics India', 'Websites', '₹1,50,000 - ₹3,00,000', 'Interested in expanding our current portal features.', '127.0.0.1', 'qualified', 'Ready for proposal review.', date('Y-m-d H:i:s', time() - 86400 * 2)],
+            ['Ananya Sen', 'ananya@kromadesign.in', '+91 98302 23456', 'Kroma Design Studio', 'Software', '₹2,50,000 - ₹5,00,000', 'Annual maintenance and server scaling setup.', '127.0.0.1', 'closed', 'Contract signed.', date('Y-m-d H:i:s', time() - 86400 * 4)]
         ];
         $leadStmt = $pdo->prepare("INSERT INTO leads (name, email, phone, company, service_interested, budget, message, ip_address, status, notes, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         foreach ($sampleLeads as $l) {
@@ -414,10 +414,10 @@ function init_sqlite_database(string $sqliteFile): PDO
 
         // 1. Sample Clients
         $sampleClients = [
-            ['Marcus Vance', 'Apex Global Logistics', 'marcus@apexlogistics.com', '+1 (555) 567-8901', '+1 (555) 567-8999', 'Websites', 'Website Inquiry', 'Active', 'MakeIT Administrator', 'Enterprise dispatch and fleet management portal client.', date('Y-m-d H:i:s', time() - 86400 * 120), $now],
-            ['Elena Rostova', 'Kroma Creative Agency', 'elena@kromastudio.design', '+1 (555) 678-9012', null, 'Software', 'Referral', 'Active', 'MakeIT Administrator', 'Studio portfolio maintenance and server scaling setup.', date('Y-m-d H:i:s', time() - 86400 * 90), $now],
-            ['Julian Bennett', 'Veloce Luxury Group', 'julian@velocewear.com', '+1 (555) 789-0123', '+1 (555) 789-0199', 'AI + Automation', 'LinkedIn', 'Active', 'MakeIT Administrator', 'E-commerce headless checkout engine and automated inventory sync.', date('Y-m-d H:i:s', time() - 86400 * 60), $now],
-            ['David Kim', 'Nexus Retail Co', 'david@nexusretail.co', '+1 (555) 345-6789', null, 'Websites', 'Cold Outreach', 'Active', 'MakeIT Administrator', 'Multi-brand e-commerce frontend redesign with Shopify Plus.', date('Y-m-d H:i:s', time() - 86400 * 45), $now]
+            ['Rajesh Menon', 'Apex Logistics India', 'rajesh@apexlogistics.in', '+91 98201 12345', '+91 98201 12399', 'Websites', 'Website Inquiry', 'Active', 'MakeIT Administrator', 'Enterprise dispatch and fleet management portal client.', date('Y-m-d H:i:s', time() - 86400 * 120), $now],
+            ['Ananya Sen', 'Kroma Design Studio', 'ananya@kromadesign.in', '+91 98302 23456', null, 'Software', 'Referral', 'Active', 'MakeIT Administrator', 'Studio portfolio maintenance and server scaling setup.', date('Y-m-d H:i:s', time() - 86400 * 90), $now],
+            ['Rohan Singhania', 'Veloce E-Commerce', 'rohan@velocefashion.in', '+91 98403 34567', '+91 98403 34599', 'AI + Automation', 'LinkedIn', 'Active', 'MakeIT Administrator', 'E-commerce headless checkout engine and automated inventory sync.', date('Y-m-d H:i:s', time() - 86400 * 60), $now],
+            ['David Kim', 'Nexus Retail Co', 'david@nexusretail.co', '+91 98504 45678', null, 'Websites', 'Cold Outreach', 'Active', 'MakeIT Administrator', 'Multi-brand e-commerce frontend redesign with Shopify Plus.', date('Y-m-d H:i:s', time() - 86400 * 45), $now]
         ];
         $clientStmt = $pdo->prepare("INSERT INTO clients (client_name, company_name, email, phone, alternate_phone, service, source, status, assigned_to, notes, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         foreach ($sampleClients as $c) {
@@ -434,8 +434,8 @@ function init_sqlite_database(string $sqliteFile): PDO
             ['Sneha Roy', 'sneha@finflow.in', '+91 98706 67890', 'FinFlow Payments', 'AI + Automation', '₹2,20,000', 'Automated reconciliation and webhook gateway.', '127.0.0.1', 'Qualified', 'Technical assessment complete.', date('Y-m-d H:i:s', time() - 86400 * 6)],
             ['Arjun Verma', 'arjun@vermasteel.com', '+91 98807 78901', 'Verma Steel', 'Website', '₹1,20,000', 'Corporate manufacturing brand redesign.', '127.0.0.1', 'Proposal Sent', 'Proposal sent via email.', date('Y-m-d H:i:s', time() - 86400 * 8)],
             ['Divya Nair', 'divya@nairretail.in', '+91 98908 89012', 'Nair Retail Group', 'Software', '₹1,75,000', 'Inventory sync & billing POS portal.', '127.0.0.1', 'Proposal Sent', 'Awaiting board sign-off.', date('Y-m-d H:i:s', time() - 86400 * 10)],
-            ['Marcus Vance', 'marcus@apexlogistics.com', '+1 (555) 567-8901', 'Apex Global Logistics', 'Website', '₹4,50,000', 'Enterprise logistics portal build.', '127.0.0.1', 'Converted', 'Client converted and signed SLA contract.', date('Y-m-d H:i:s', time() - 86400 * 35)],
-            ['Elena Rostova', 'elena@kromastudio.design', '+1 (555) 678-9012', 'Kroma Creative', 'Software', '₹3,20,000', 'Design studio engine and retainers.', '127.0.0.1', 'Converted', 'Signed and active client.', date('Y-m-d H:i:s', time() - 86400 * 50)],
+            ['Rajesh Menon', 'rajesh@apexlogistics.in', '+91 98201 12345', 'Apex Logistics India', 'Website', '₹4,50,000', 'Enterprise logistics portal build.', '127.0.0.1', 'Converted', 'Client converted and signed SLA contract.', date('Y-m-d H:i:s', time() - 86400 * 35)],
+            ['Ananya Sen', 'ananya@kromadesign.in', '+91 98302 23456', 'Kroma Design Studio', 'Software', '₹3,20,000', 'Design studio engine and retainers.', '127.0.0.1', 'Converted', 'Signed and active client.', date('Y-m-d H:i:s', time() - 86400 * 50)],
             ['Tarun Khanna', 'tarun@khannatech.com', '+91 99009 90123', 'Khanna Tech', 'Other', '₹60,000', 'Legacy WordPress bug fixes.', '127.0.0.1', 'Lost', 'Budget out of alignment; archived.', date('Y-m-d H:i:s', time() - 86400 * 40)]
         ];
         $leadStmt = $pdo->prepare("INSERT INTO leads (name, email, phone, company, service_interested, budget, message, ip_address, status, notes, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -453,9 +453,9 @@ function init_sqlite_database(string $sqliteFile): PDO
             ['Sneha Roy', 'FinFlow Payments', '+91 98706 67890', 'discovery', 'completed', date('Y-m-d H:i:s', time() - 86400 * 2), 20, 'normal', 'Initial webhook architecture discussion', 'Connected', date('Y-m-d H:i:s', time() - 86400 * 2)],
             ['Arjun Verma', 'Verma Steel', '+91 98807 78901', 'proposal_review', 'completed', date('Y-m-d H:i:s', time() - 86400 * 3), 40, 'high', 'Walkthrough of website milestone pricing', 'Call Back', date('Y-m-d H:i:s', time() - 86400 * 3)],
             ['Divya Nair', 'Nair Retail Group', '+91 98908 89012', 'check_in', 'completed', date('Y-m-d H:i:s', time() - 86400 * 4), 15, 'low', 'Left voicemail regarding contract amendment', 'No Answer', date('Y-m-d H:i:s', time() - 86400 * 4)],
-            ['Marcus Vance', 'Apex Logistics', '+1 (555) 567-8901', 'check_in', 'completed', date('Y-m-d H:i:s', time() - 86400 * 5), 25, 'normal', 'SLA server health review call', 'Connected', date('Y-m-d H:i:s', time() - 86400 * 5)],
-            ['Elena Rostova', 'Kroma Creative', '+1 (555) 678-9012', 'follow_up', 'completed', date('Y-m-d H:i:s', time() - 86400 * 6), 20, 'normal', 'Client requested afternoon call back', 'Call Back', date('Y-m-d H:i:s', time() - 86400 * 6)],
-            ['Julian Bennett', 'Veloce Luxury', '+1 (555) 789-0123', 'check_in', 'completed', date('Y-m-d H:i:s', time() - 86400 * 7), 30, 'normal', 'E-commerce campaign sync', 'Connected', date('Y-m-d H:i:s', time() - 86400 * 7)],
+            ['Rajesh Menon', 'Apex Logistics India', '+91 98201 12345', 'check_in', 'completed', date('Y-m-d H:i:s', time() - 86400 * 5), 25, 'normal', 'SLA server health review call', 'Connected', date('Y-m-d H:i:s', time() - 86400 * 5)],
+            ['Ananya Sen', 'Kroma Design Studio', '+91 98302 23456', 'follow_up', 'completed', date('Y-m-d H:i:s', time() - 86400 * 6), 20, 'normal', 'Client requested afternoon call back', 'Call Back', date('Y-m-d H:i:s', time() - 86400 * 6)],
+            ['Rohan Singhania', 'Veloce E-Commerce', '+91 98403 34567', 'check_in', 'completed', date('Y-m-d H:i:s', time() - 86400 * 7), 30, 'normal', 'E-commerce campaign sync', 'Connected', date('Y-m-d H:i:s', time() - 86400 * 7)],
             ['David Kim', 'Nexus Retail', '+1 (555) 345-6789', 'check_in', 'completed', date('Y-m-d H:i:s', time() - 86400 * 12), 10, 'low', 'Followed up on quote; phone rang out', 'No Answer', date('Y-m-d H:i:s', time() - 86400 * 12)]
         ];
         $callStmt = $pdo->prepare("INSERT INTO calls (contact_name, company, phone, type, status, scheduled_at, duration_minutes, priority, notes, outcome, created_at, call_datetime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");

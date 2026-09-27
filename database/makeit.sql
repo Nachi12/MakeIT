@@ -251,9 +251,9 @@ INSERT INTO `process_steps` (`step_number`, `title`, `description`, `display_ord
 
 -- Seed Testimonials
 INSERT INTO `testimonials` (`client_name`, `company`, `position`, `content`, `rating`, `image`, `display_order`, `status`) VALUES
-('Marcus Vance', 'Apex Global Logistics', 'Chief Technology Officer', 'MakeIT transformed our dispatch platform from a sluggish legacy headache into a blisteringly fast powerhouse. The speed and clarity of their engineering is unparalleled.', 5, '/assets/images/testimonials/marcus.webp', 1, 'published'),
-('Elena Rostova', 'Kroma Creative Agency', 'Founder & Creative Director', 'Working with MakeIT was seamless. They understood both the delicate aesthetic nuances of our brand and the strict architectural requirements under the hood.', 5, '/assets/images/testimonials/elena.webp', 2, 'published'),
-('Julian Bennett', 'Veloce Luxury Group', 'Managing Director', 'Our online store conversion jumped by 34% within the first month after MakeIT rebuilt our checkout flow. Zero framework bloat, lightning speed, and total reliability.', 5, '/assets/images/testimonials/julian.webp', 3, 'published');
+('Rajesh Menon', 'Apex Logistics India', 'Chief Technology Officer', 'MakeIT transformed our dispatch platform from a sluggish legacy headache into a blisteringly fast powerhouse. The speed and clarity of their engineering is unparalleled.', 5, '/assets/images/testimonials/rajesh.webp', 1, 'published'),
+('Ananya Sen', 'Kroma Design Studio', 'Founder & Creative Director', 'Working with MakeIT was seamless. They understood both the delicate aesthetic nuances of our brand and the strict architectural requirements under the hood.', 5, '/assets/images/testimonials/ananya.webp', 2, 'published'),
+('Rohan Singhania', 'Veloce E-Commerce', 'Managing Director', 'Our online store conversion jumped by 34% within the first month after MakeIT rebuilt our checkout flow. Zero framework bloat, lightning speed, and total reliability.', 5, '/assets/images/testimonials/rohan.webp', 3, 'published');
 
 -- Seed Superadmin Users
 INSERT INTO `admins` (`id`, `username`, `email`, `password_hash`, `full_name`, `role`, `is_active`, `created_at`) VALUES

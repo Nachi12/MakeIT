@@ -1110,19 +1110,19 @@ require_once dirname(__DIR__) . '/includes/admin_header.php';
           <div class="form-grid-2">
             <div class="admin-form-group">
               <label class="admin-form-label" for="add_client_name">Client Name <span style="color:#ef4444;">*</span></label>
-              <input type="text" id="add_client_name" name="client_name" class="admin-form-input" placeholder="e.g. Marcus Vance" required maxlength="150" />
+              <input type="text" id="add_client_name" name="client_name" class="admin-form-input" placeholder="e.g. Rajesh Menon" required maxlength="150" />
             </div>
 
             <div class="admin-form-group">
               <label class="admin-form-label" for="add_company_name">Company Name</label>
-              <input type="text" id="add_company_name" name="company_name" class="admin-form-input" placeholder="e.g. Apex Global Logistics" maxlength="150" />
+              <input type="text" id="add_company_name" name="company_name" class="admin-form-input" placeholder="e.g. Apex Logistics India" maxlength="150" />
             </div>
           </div>
 
           <div class="form-grid-2">
             <div class="admin-form-group">
               <label class="admin-form-label" for="add_email">Email Address <span style="color:#ef4444;">*</span></label>
-              <input type="email" id="add_email" name="email" class="admin-form-input" placeholder="e.g. marcus@apexlogistics.com" required maxlength="191" />
+              <input type="email" id="add_email" name="email" class="admin-form-input" placeholder="e.g. rajesh@apexlogistics.in" required maxlength="191" />
             </div>
 
             <div class="admin-form-group">

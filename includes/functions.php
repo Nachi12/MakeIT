@@ -495,34 +495,34 @@ function get_testimonials(?int $limit = null): array
     $defaults = [
         [
             'id' => 1,
-            'client_name' => 'Marcus Vance',
-            'company' => 'Apex Global Logistics',
+            'client_name' => 'Rajesh Menon',
+            'company' => 'Apex Logistics India',
             'position' => 'Chief Technology Officer',
             'content' => 'MakeIT transformed our dispatch platform from a sluggish legacy headache into a blisteringly fast powerhouse. The speed and clarity of their engineering is unparalleled.',
             'rating' => 5,
-            'image' => '/assets/images/testimonials/marcus.webp',
+            'image' => '/assets/images/testimonials/rajesh.webp',
             'display_order' => 1,
             'status' => 'published'
         ],
         [
             'id' => 2,
-            'client_name' => 'Elena Rostova',
-            'company' => 'Kroma Creative Agency',
+            'client_name' => 'Ananya Sen',
+            'company' => 'Kroma Design Studio',
             'position' => 'Founder & Creative Director',
             'content' => 'Working with MakeIT was seamless. They understood both the delicate aesthetic nuances of our brand and the strict architectural requirements under the hood.',
             'rating' => 5,
-            'image' => '/assets/images/testimonials/elena.webp',
+            'image' => '/assets/images/testimonials/ananya.webp',
             'display_order' => 2,
             'status' => 'published'
         ],
         [
             'id' => 3,
-            'client_name' => 'Julian Bennett',
-            'company' => 'Veloce Luxury Group',
+            'client_name' => 'Rohan Singhania',
+            'company' => 'Veloce E-Commerce',
             'position' => 'Managing Director',
             'content' => 'Our online store conversion jumped by 34% within the first month after MakeIT rebuilt our checkout flow. Zero framework bloat, lightning speed, and total reliability.',
             'rating' => 5,
-            'image' => '/assets/images/testimonials/julian.webp',
+            'image' => '/assets/images/testimonials/rohan.webp',
             'display_order' => 3,
             'status' => 'published'
         ]
