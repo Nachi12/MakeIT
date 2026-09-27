@@ -226,13 +226,13 @@ function get_hero_content(): array
 
     $defaults = [
         'badge_text'            => 'Digital studio / 2026',
-        'headline'              => "WE MAKE\nDIGITAL\nTHINGS WORK.",
-        'subheadline'           => 'We turn ideas into websites, software and digital experiences that actually work.',
-        'description'           => 'From the first sketch to the final launch, MakeIT designs and builds digital products around the way your business actually works.',
-        'primary_button_text'   => 'Start a Project',
+        'headline'              => "WE BUILD\nDIGITAL\nPRODUCTS\nTHAT SCALE.",
+        'subheadline'           => 'Award-winning software engineering and architecture.',
+        'description'           => 'MakeIT transforms complex systems into high-performing platforms.',
+        'primary_button_text'   => 'Get in Touch',
         'primary_button_link'   => '#contact',
-        'secondary_button_text' => 'Explore Services',
-        'secondary_button_link' => '#services',
+        'secondary_button_text' => 'View Showcase',
+        'secondary_button_link' => '#work',
         'stats_json'            => '[{"label":"Client Satisfaction","value":"99.4%"},{"label":"Projects Shipped","value":"150+"},{"label":"Avg Performance","value":"98/100"},{"label":"System Reliability","value":"99.9%"}]'
     ];
 
@@ -676,6 +676,9 @@ function process_lead_inquiry(array $input): array
     $budget   = sanitize_text($input['budget'] ?? '');
     $goal     = sanitize_text($input['goal'] ?? '');
     $details  = sanitize_text($input['message'] ?? $input['project_details'] ?? '');
+    if (empty($goal) && !empty($details)) {
+        $goal = 'Inquiry / Project Discussion';
+    }
     $source   = sanitize_text($input['source'] ?? $input['lead_source'] ?? 'Website Questionnaire');
 
     // Strict validation for Website Questionnaire submissions

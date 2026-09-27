@@ -38,8 +38,21 @@ function assertCondition(bool $condition, string $testName, string $failureDetai
 }
 
 // Helper to fetch local dev server HTML
+function getTestBaseUrl(): string {
+    static $base = null;
+    if ($base !== null) return $base;
+    foreach (['http://127.0.0.1:8000', 'http://127.0.0.1:8088', 'http://localhost:8000', 'http://localhost:8080'] as $candidate) {
+        if (@file_get_contents($candidate . '/index.php')) {
+            $base = $candidate;
+            return $base;
+        }
+    }
+    $base = 'http://127.0.0.1:8000';
+    return $base;
+}
+
 function fetchUrl(string $path): string {
-    $ch = curl_init('http://127.0.0.1:8088' . $path);
+    $ch = curl_init(getTestBaseUrl() . $path);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
     curl_setopt($ch, CURLOPT_TIMEOUT, 5);
@@ -90,7 +103,7 @@ assertCondition(
 );
 
 // Restore hero
-$db->query("UPDATE hero_content SET headline = 'WE MAKE\nDIGITAL\nTHINGS WORK.' WHERE id = 1");
+$db->query("UPDATE hero_content SET headline = 'WE BUILD\nDIGITAL\nPRODUCTS\nTHAT SCALE.' WHERE id = 1");
 
 // Test CamelCase API aliases
 assertCondition(

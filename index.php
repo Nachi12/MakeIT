@@ -136,6 +136,19 @@ require_once __DIR__ . '/includes/header.php';
 
           <!-- RIGHT ZONE: Floating Visual Counterweight -->
           <div class="hero-right">
+            <!-- Subtle Studio Architectural Anchor & Backdrop System -->
+            <div class="hero-visual-anchor" aria-hidden="true">
+              <div class="hero-architectural-frame">
+                <span class="arch-coord arch-tl">SYS / 01</span>
+                <span class="arch-coord arch-tr">GRID 2026</span>
+                <span class="arch-crosshair crosshair-tl"></span>
+                <span class="arch-crosshair crosshair-tr"></span>
+                <span class="arch-crosshair crosshair-bl"></span>
+                <span class="arch-crosshair crosshair-br"></span>
+              </div>
+              <div class="hero-outline-word">MAKEIT</div>
+            </div>
+
             <div class="floating-system" id="floatingSystem" aria-hidden="true">
               <div class="float-card one">
                 <div class="float-label">MAKEIT / WEBSITE</div>
