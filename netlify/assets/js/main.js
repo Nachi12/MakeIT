@@ -761,4 +761,48 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   }
+
+  /* =========================================================
+     AUDIENCE SECTION ("BUILT FOR") INTERACTION COORDINATION
+  ========================================================= */
+  const audItems = document.querySelectorAll(".aud-item");
+  const audNodes = document.querySelectorAll(".aud-node");
+
+  if (audItems.length && audNodes.length) {
+    audItems.forEach((item) => {
+      item.addEventListener("mouseenter", () => {
+        const key = item.getAttribute("data-aud");
+        audNodes.forEach((node) => {
+          const matchKeys = (node.getAttribute("data-node") || "").split(" ");
+          if (matchKeys.includes(key)) {
+            node.classList.add("is-active");
+          } else {
+            node.classList.remove("is-active");
+          }
+        });
+      });
+
+      item.addEventListener("mouseleave", () => {
+        audNodes.forEach((node) => node.classList.remove("is-active"));
+      });
+    });
+
+    audNodes.forEach((node) => {
+      node.addEventListener("mouseenter", () => {
+        const matchKeys = (node.getAttribute("data-node") || "").split(" ");
+        audItems.forEach((item) => {
+          const key = item.getAttribute("data-aud");
+          if (matchKeys.includes(key)) {
+            item.classList.add("is-active");
+          } else {
+            item.classList.remove("is-active");
+          }
+        });
+      });
+
+      node.addEventListener("mouseleave", () => {
+        audItems.forEach((item) => item.classList.remove("is-active"));
+      });
+    });
+  }
 });
